@@ -1,3 +1,26 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">OpenSpaces</string>
+    <string name="title_sign_in">Sign In</string>
+    <string name="title_sign_up">Sign Up</string>
+    <string name="hint_login">Login</string>
+    <string name="hint_password">Password</string>
+    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_up">Sign Up</string>
+
+    <string name="characters_length_placeholder">From %1$d to %2$d characters</string>
+    <string name="characters_length_error_placeholder">Must be %1$d to %2$d characters</string>
+
+
+    <!--errors-->
+    <string name="user_not_found">User not found</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="captcha_image_description">captcha image</string>
+    <string name="captcha_input_code">Input code</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_account">Add account</string>
+    <string name="delete_description">delete</string>
+    <string name="ok" tools:ignore="ButtonCase,Typos">Ok</string>
+    <string name="remove_account">Are you sure?</string>
+    <string name="remove_account_description">Remove account?</string>
 </resources>
