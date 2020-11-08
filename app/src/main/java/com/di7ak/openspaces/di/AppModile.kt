@@ -5,7 +5,10 @@ import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.local.AuthDao
 import com.di7ak.openspaces.data.remote.AuthDataSource
 import com.di7ak.openspaces.data.remote.AuthService
+import com.di7ak.openspaces.data.remote.LentaDataSource
+import com.di7ak.openspaces.data.remote.LentaService
 import com.di7ak.openspaces.data.repository.AuthRepository
+import com.di7ak.openspaces.data.repository.LentaRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -75,6 +78,14 @@ object AppModule {
     @Provides
     fun provideAuthDataSource(authService: AuthService) = AuthDataSource(authService)
 
+    @Provides
+    fun provideLentaService(retrofit: Retrofit): LentaService =
+        retrofit.create(LentaService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideLentaDataSource(lentaService: LentaService) = LentaDataSource(lentaService)
+
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext appContext: Context) =
@@ -91,4 +102,11 @@ object AppModule {
         localDataSource: AuthDao
     ) =
         AuthRepository(remoteDataSource, localDataSource)
+
+    @Singleton
+    @Provides
+    fun provideLentaRepository(
+        remoteDataSource: LentaDataSource
+    ) =
+        LentaRepository(remoteDataSource)
 }

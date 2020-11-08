@@ -38,6 +38,10 @@
         <action
             android:id="@+id/action_accountsFragment_to_webFragment"
             app:destination="@id/webFragment" />
+
+        <action
+            android:id="@+id/action_accountsFragment_to_lentaFragment"
+            app:destination="@id/lentaFragment" />
     </fragment>
 
     <fragment
@@ -47,6 +51,18 @@
         tools:layout="@layout/web_fragment">
         <action
             android:id="@+id/action_webFragment_to_accountsFragment"
+            app:destination="@id/accountsFragment" />
+
+        <argument android:name="userId" app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/lentaFragment"
+        android:name="com.di7ak.openspaces.ui.features.lenta.LentaFragment"
+        android:label="Lenta"
+        tools:layout="@layout/lenta_fragment">
+        <action
+            android:id="@+id/action_lentaFragment_to_accountsFragment"
             app:destination="@id/accountsFragment" />
 
         <argument android:name="userId" app:argType="integer" />

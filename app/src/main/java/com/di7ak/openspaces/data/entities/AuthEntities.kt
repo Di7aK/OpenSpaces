@@ -19,9 +19,3 @@ data class AuthAttributes(
     @PrimaryKey @SerializedName("nid") val userId: Int = 0,
     @SerializedName("channel_id") val channelId: String = ""
 )
-
-data class AuthRequest(
-    val method: String = "login",
-    val login: String = "",
-    val password: String = ""
-)

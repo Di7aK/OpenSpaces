@@ -10,11 +10,11 @@ interface AuthDao {
     fun getAllSessions() : LiveData<List<AuthAttributes>>
 
     @Query("SELECT * FROM sessions WHERE userId = :userId")
-    fun getSession(userId: Int): LiveData<AuthAttributes>
+    suspend fun getSession(userId: Int): AuthAttributes
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(session: AuthAttributes)
 
-    @Delete//@Query("SELECT * FROM sessions WHERE userId = :userId")
+    @Delete
     fun delete(userId: AuthAttributes)
 }

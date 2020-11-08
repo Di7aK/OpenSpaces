@@ -67,7 +67,7 @@ class AccountsFragment : Fragment(), AccountsAdapter.AccountsItemListener {
 
     override fun onClickedSession(view: View, session: AuthAttributes) {
         val extras = FragmentNavigatorExtras(view to session.userId.toString())
-        findNavController().navigate(R.id.action_accountsFragment_to_webFragment, bundleOf("userId" to session.userId), null, extras)
+        findNavController().navigate(R.id.action_accountsFragment_to_lentaFragment, bundleOf("userId" to session.userId), null, extras)
     }
 
     override fun onClickedDelete(session: AuthAttributes) {

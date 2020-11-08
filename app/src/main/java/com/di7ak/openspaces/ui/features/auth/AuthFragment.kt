@@ -28,6 +28,7 @@ class AuthFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 500L
+            this.
             isElevationShadowEnabled = false
             setAllContainerColors(Color.WHITE)
         }
