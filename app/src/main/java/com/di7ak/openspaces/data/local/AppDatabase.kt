@@ -8,7 +8,7 @@ import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.ui.features.lenta.Author
 import com.di7ak.openspaces.ui.features.lenta.LentaModel
 
-@Database(entities = [AuthAttributes::class, LentaModel::class, Author::class], version = 3, exportSchema = false)
+@Database(entities = [AuthAttributes::class, LentaModel::class, Author::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun authDao(): AuthDao

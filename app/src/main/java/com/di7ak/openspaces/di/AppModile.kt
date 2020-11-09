@@ -4,12 +4,10 @@ import android.content.Context
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.local.AuthDao
-import com.di7ak.openspaces.data.remote.AuthDataSource
-import com.di7ak.openspaces.data.remote.AuthService
-import com.di7ak.openspaces.data.remote.LentaDataSource
-import com.di7ak.openspaces.data.remote.LentaService
+import com.di7ak.openspaces.data.remote.*
 import com.di7ak.openspaces.data.repository.AuthRepository
 import com.di7ak.openspaces.data.repository.LentaRepository
+import com.di7ak.openspaces.data.repository.VoteRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -115,6 +113,22 @@ object AppModule {
         session: Session
     ) =
         LentaRepository(remoteDataSource, session)
+
+    @Singleton
+    @Provides
+    fun provideVoteDataSource(voteService: VoteService) = VoteDataSource(voteService)
+
+    @Provides
+    fun provideVoteService(retrofit: Retrofit): VoteService =
+        retrofit.create(VoteService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideVoteRepository(
+        remoteDataSource: VoteDataSource,
+        session: Session
+    ) =
+        VoteRepository(remoteDataSource, session)
 
     @Singleton
     @Provides

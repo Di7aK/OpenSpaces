@@ -77,4 +77,12 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     override fun onClickedItem(view: View, item: LentaModel) {
 
     }
+
+    override fun onClickedDislike(view: View, item: LentaModel) {
+        viewModel.like(item, false)
+    }
+
+    override fun onClickedLike(view: View, item: LentaModel) {
+        viewModel.like(item, true)
+    }
 }

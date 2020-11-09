@@ -5,10 +5,11 @@ import com.di7ak.openspaces.data.EVENT_TYPE_FORUM
 import com.di7ak.openspaces.data.entities.lenta2.Events
 
 fun Events.toLentaModel() : LentaModel {
-    val id = id
     val profileImage = author_avatar.previewURL
     val detail = items.first()
 
+    val id = detail.id
+    val type = detail.type
     val idSource1 = detail.userWidget?.siteLink?.id
     val idSource2 = author_widget?.siteLink?.id
     val profileId = idSource1 ?: idSource2 ?: 0
@@ -50,6 +51,7 @@ fun Events.toLentaModel() : LentaModel {
         dislikes,
         disliked,
         commentsCount,
-        event_type
+        event_type,
+        type
     )
 }

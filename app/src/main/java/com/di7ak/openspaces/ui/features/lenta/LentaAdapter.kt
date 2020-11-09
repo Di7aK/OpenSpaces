@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,6 +19,8 @@ class LentaAdapter(private val listener: LentaItemListener) :
 
     interface LentaItemListener {
         fun onClickedItem(view: View, item: LentaModel)
+        fun onClickedLike(view: View, item: LentaModel)
+        fun onClickedDislike(view: View, item: LentaModel)
     }
 
     private val items = ArrayList<LentaModel>()
@@ -49,11 +52,14 @@ class LentaViewHolder(
 
     init {
         itemBinding.itemContainer.setOnClickListener(this)
+        itemBinding.btnLike.setOnClickListener(this)
+        itemBinding.btnDislike.setOnClickListener(this)
     }
 
     @SuppressLint("SetTextI18n")
     fun bind(item: LentaModel) {
         this.event = item
+        val context = itemBinding.root.context
 
         itemBinding.name.text = item.author?.name ?: ""
         itemBinding.title.text = item.title.fromHtml()
@@ -62,6 +68,17 @@ class LentaViewHolder(
         itemBinding.dislikes.text = item.dislikes.toString()
         itemBinding.comments.text = item.commentsCount.toString()
         itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date)
+
+        if(event.liked) {
+            itemBinding.btnLike.setColorFilter(ContextCompat.getColor(context, R.color.colorLike))
+        } else {
+            itemBinding.btnLike.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
+        }
+        if(event.disliked) {
+            itemBinding.btnDislike.setColorFilter(ContextCompat.getColor(context, R.color.colorDislike))
+        } else {
+            itemBinding.btnDislike.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
+        }
 
         item.author?.profileImage?.let { url ->
             Glide.with(itemBinding.root)
@@ -73,8 +90,16 @@ class LentaViewHolder(
     }
 
     override fun onClick(v: View) {
-        if (v.id == R.id.item_container) {
-            listener.onClickedItem(v, event)
+        when (v.id) {
+            R.id.item_container -> {
+                listener.onClickedItem(v, event)
+            }
+            R.id.btnLike -> {
+                listener.onClickedLike(v, event)
+            }
+            R.id.btnDislike -> {
+                listener.onClickedDislike(v, event)
+            }
         }
     }
 }

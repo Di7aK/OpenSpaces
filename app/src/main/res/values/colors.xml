@@ -13,4 +13,7 @@
     <color name="colorButtonOutlinedTextEnabled">#555</color>
     <color name="colorButtonOutlinedTextDisabled">#999</color>
     <color name="post_button_tint">#ccc</color>
+
+    <color name="colorLike">#438726</color>
+    <color name="colorDislike">#A64F39</color>
 </resources>

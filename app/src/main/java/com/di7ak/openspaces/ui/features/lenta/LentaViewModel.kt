@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.local.LentaDao
 import com.di7ak.openspaces.data.repository.LentaRepository
+import com.di7ak.openspaces.data.repository.VoteRepository
 import com.di7ak.openspaces.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class LentaViewModel @ViewModelInject constructor(
     private val lentaRepository: LentaRepository,
     private val lentaDao: LentaDao,
+    private val voteRepository: VoteRepository,
     private val session: Session
 ) : ViewModel() {
     private val _events = MutableLiveData<Resource<List<LentaModel>>>()
@@ -28,6 +30,28 @@ class LentaViewModel @ViewModelInject constructor(
         EVENT_TYPE_FORUM,
         EVENT_TYPE_FORUM_COMM
     )
+
+    fun like(lentaModel: LentaModel, up: Boolean) {
+        viewModelScope.launch {
+            val down = if(up) 0 else 1
+            voteRepository.like(lentaModel.id ?: 0, lentaModel.type ?: 0, down).collect {
+                if(lentaModel.liked && down == 0) {
+                    lentaModel.liked = false
+                    lentaModel.likes --
+                } else if(lentaModel.disliked && down == 1) {
+                    lentaModel.disliked = false
+                    lentaModel.dislikes --
+                } else if(!lentaModel.liked && down == 0) {
+                    lentaModel.liked = true
+                    lentaModel.likes ++
+                } else if(!lentaModel.disliked && down == 1) {
+                    lentaModel.disliked = false
+                    lentaModel.dislikes ++
+                }
+                lentaDao.insert(lentaModel)
+            }
+        }
+    }
 
     fun fetch() {
         viewModelScope.launch {
