@@ -9,8 +9,8 @@ class LentaRepository @Inject constructor(
     private val remoteDataSource: LentaDataSource
 ) {
 
-    fun fetch(sid: String) = performGetOperation(
-        networkCall = { remoteDataSource.fetch(sid = sid) },
+    fun fetch() = performGetOperation(
+        networkCall = { remoteDataSource.fetch() },
         saveCallResult = { }
     )
 

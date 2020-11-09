@@ -7,20 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.databinding.AuthFragmentBinding
-import com.di7ak.openspaces.ui.utils.CaptchaDialog
+import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AuthFragment : Fragment() {
+class AuthFragment : BaseFragment() {
 
     private var binding: AuthFragmentBinding by autoCleared()
     private val viewModel: AuthViewModel by viewModels()
@@ -82,14 +81,7 @@ class AuthFragment : Fragment() {
                             findNavController().popBackStack()
                         }
                         CODE_NEED_CAPTCHA, CODE_WRONG_CAPTCHA -> {
-                            CaptchaDialog(requireContext(), object : CaptchaDialog.CaptchaListener {
-                                override fun onEnter(code: String) {
-                                    val login = binding.loginInput.text.toString()
-                                    val password = binding.passwordInput.text.toString()
-
-                                    viewModel.login(login, password, code)
-                                }
-                            }).captchaUrl = it.data.captchaUrl
+                            showCaptcha(it.data.captchaUrl)
                         }
                         CODE_WRONG_LOGIN_OR_PASSWORD, CODE_USER_NOT_FOUND -> {
                             binding.loginInputLayout.error = "Wrong login or password"
@@ -110,4 +102,12 @@ class AuthFragment : Fragment() {
         })
     }
 
+    override fun onCaptchaEntered(code: String) {
+        super.onCaptchaEntered(code)
+
+        val login = binding.loginInput.text.toString()
+        val password = binding.passwordInput.text.toString()
+
+        viewModel.login(login, password, code)
+    }
 }

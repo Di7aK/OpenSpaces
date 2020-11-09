@@ -18,6 +18,7 @@ class CaptchaDialog(context: Context, private val listener: CaptchaListener) :
             Glide.with(binding.captchaImage)
                 .load(value)
                 .into(binding.captchaImage)
+            binding.code.setText("")
             show()
         }
 
@@ -38,12 +39,12 @@ class CaptchaDialog(context: Context, private val listener: CaptchaListener) :
     override fun onClick(v: View?) {
         if (v?.id == R.id.btnCancel) hide()
         else if (v?.id == R.id.btnSend) {
-            listener.onEnter(binding.code.text.toString())
+            listener.onCaptchaEntered(binding.code.text.toString())
             hide()
         }
     }
 
     interface CaptchaListener {
-        fun onEnter(code: String)
+        fun onCaptchaEntered(code: String)
     }
 }

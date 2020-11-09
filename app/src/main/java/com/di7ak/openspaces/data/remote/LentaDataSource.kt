@@ -1,14 +1,16 @@
 package com.di7ak.openspaces.data.remote
 
+import com.di7ak.openspaces.data.Session
 import javax.inject.Inject
 
 
 class LentaDataSource @Inject constructor(
-    private val lentaService: LentaService
+    private val lentaService: LentaService,
+    private val session: Session
 ): BaseDataSource() {
 
-    suspend fun fetch(sid: String) = getResult {
+    suspend fun fetch() = getResult {
         lentaService.fetch(
-            sid = sid)
+            sid = session.current?.sid ?: "")
     }
 }

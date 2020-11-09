@@ -22,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AccountsFragment : Fragment(), AccountsAdapter.AccountsItemListener {
-
     private var binding: AccountsFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by viewModels()
     private lateinit var adapter: AccountsAdapter
@@ -43,6 +42,8 @@ class AccountsFragment : Fragment(), AccountsAdapter.AccountsItemListener {
 
         postponeEnterTransition ()
         view.doOnPreDraw {startPostponedEnterTransition ()}
+
+        viewModel.fetchSessions()
     }
 
     private fun setupListeners() {
@@ -66,6 +67,8 @@ class AccountsFragment : Fragment(), AccountsAdapter.AccountsItemListener {
     }
 
     override fun onClickedSession(view: View, session: AuthAttributes) {
+        viewModel.currentSession = session
+
         val extras = FragmentNavigatorExtras(view to session.userId.toString())
         findNavController().navigate(R.id.action_accountsFragment_to_lentaFragment, bundleOf("userId" to session.userId), null, extras)
     }

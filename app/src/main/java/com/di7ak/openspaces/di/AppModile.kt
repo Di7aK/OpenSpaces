@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.di
 
 import android.content.Context
+import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.local.AuthDao
 import com.di7ak.openspaces.data.remote.AuthDataSource
@@ -84,7 +85,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLentaDataSource(lentaService: LentaService) = LentaDataSource(lentaService)
+    fun provideLentaDataSource(lentaService: LentaService, session: Session) = LentaDataSource(lentaService, session)
 
     @Singleton
     @Provides
@@ -102,6 +103,10 @@ object AppModule {
         localDataSource: AuthDao
     ) =
         AuthRepository(remoteDataSource, localDataSource)
+
+    @Singleton
+    @Provides
+    fun provideSession() = Session()
 
     @Singleton
     @Provides

@@ -12,25 +12,16 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.di7ak.openspaces.data.entities.lenta.Events
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
+import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.autoCleared
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LentaFragment : Fragment(), LentaAdapter.LentaItemListener {
+class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private var binding: LentaFragmentBinding by autoCleared()
     private val viewModel: LentaViewModel by viewModels()
     private lateinit var adapter: LentaAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 500L
-            isElevationShadowEnabled = true
-            setAllContainerColors(Color.WHITE)
-        }
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +42,7 @@ class LentaFragment : Fragment(), LentaAdapter.LentaItemListener {
             binding.detailContainer.transitionName = userId.toString()
         }
 
-        viewModel.setUser(userId)
+        viewModel.fetch()
     }
 
     private fun setupRecyclerView() {
