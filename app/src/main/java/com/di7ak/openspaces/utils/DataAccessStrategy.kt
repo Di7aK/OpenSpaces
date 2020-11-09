@@ -43,7 +43,7 @@ fun <T> performGetOperation(networkCall: suspend () -> Resource<T>,
 
 fun <T> performGetOperation(networkCall: suspend () -> Resource<T>,
                             saveCallResult: suspend (T) -> Unit): Flow<Resource<T>> =
-    flow<Resource<T>> {
+    flow {
         emit(Resource.loading())
 
         val responseStatus = networkCall.invoke()

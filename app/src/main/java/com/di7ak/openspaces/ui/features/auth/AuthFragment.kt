@@ -1,6 +1,5 @@
 package com.di7ak.openspaces.ui.features.auth
 
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,24 +14,12 @@ import com.di7ak.openspaces.databinding.AuthFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
-import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AuthFragment : BaseFragment() {
-
     private var binding: AuthFragmentBinding by autoCleared()
     private val viewModel: AuthViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 500L
-            this.
-            isElevationShadowEnabled = false
-            setAllContainerColors(Color.WHITE)
-        }
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

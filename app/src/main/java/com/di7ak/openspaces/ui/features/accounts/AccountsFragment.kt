@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -16,12 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.databinding.AccountsFragmentBinding
+import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AccountsFragment : Fragment(), AccountsAdapter.AccountsItemListener {
+class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
     private var binding: AccountsFragmentBinding by autoCleared()
     private val viewModel: AccountsViewModel by viewModels()
     private lateinit var adapter: AccountsAdapter

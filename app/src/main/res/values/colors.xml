@@ -12,4 +12,5 @@
     <color name="colorTextButtonDisabled">#9E9E9E</color>
     <color name="colorButtonOutlinedTextEnabled">#555</color>
     <color name="colorButtonOutlinedTextDisabled">#999</color>
+    <color name="post_button_tint">#ccc</color>
 </resources>

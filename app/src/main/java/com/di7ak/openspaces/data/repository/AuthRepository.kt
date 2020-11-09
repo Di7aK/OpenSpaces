@@ -26,7 +26,7 @@ class AuthRepository @Inject constructor(
         }
     )
 
-    suspend fun getSessions() =  localDataSource.getAllSessions()
+    fun getSessions() =  localDataSource.getAllSessions()
     suspend fun getSession(userId: Int) =  localDataSource.getSession(userId = userId)
 
     fun deleteSession(userId: AuthAttributes) = ioThread { localDataSource.delete(userId) }

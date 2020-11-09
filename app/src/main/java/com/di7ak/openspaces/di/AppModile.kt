@@ -85,7 +85,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLentaDataSource(lentaService: LentaService, session: Session) = LentaDataSource(lentaService, session)
+    fun provideLentaDataSource(lentaService: LentaService) = LentaDataSource(lentaService)
 
     @Singleton
     @Provides
@@ -111,7 +111,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideLentaRepository(
-        remoteDataSource: LentaDataSource
+        remoteDataSource: LentaDataSource,
+        session: Session
     ) =
-        LentaRepository(remoteDataSource)
+        LentaRepository(remoteDataSource, session)
+
+    @Singleton
+    @Provides
+    fun provideLentaDao(db: AppDatabase) = db.lentaDao()
 }

@@ -23,4 +23,36 @@
     <string name="ok" tools:ignore="ButtonCase,Typos">Ok</string>
     <string name="remove_account">Are you sure?</string>
     <string name="remove_account_description">Remove account?</string>
+    <string name="like">like</string>
+
+
+    <string name="advert_date_now">только что</string>
+
+    <string name="advert_date_minutes_ago_one">%1$s минуту назад</string>
+    <string name="advert_date_minutes_ago_few">%1$s минуты назад</string>
+    <string name="advert_date_minutes_ago_many">%1$s минут назад</string>
+    <string name="advert_date_minutes_ago_other">%1$s минуты назад</string>
+
+    <string name="advert_date_hour_ago_one">%1$s час назад</string>
+    <string name="advert_date_hour_ago_few">%1$s часа назад</string>
+    <string name="advert_date_hour_ago_many">%1$s часов назад</string>
+    <string name="advert_date_hour_ago_other">%1$s часа назад</string>
+
+    <string name="advert_date_day_yesterday">Вчера</string>
+    <string name="advert_date_long_ago">Давно</string>
+
+    <string name="advert_date_minutes_left_one">%1$s минуту</string>
+    <string name="advert_date_minutes_left_few">%1$s минуты</string>
+    <string name="advert_date_minutes_left_many">%1$s минут</string>
+    <string name="advert_date_minutes_left_other">%1$s минуты</string>
+
+    <string name="advert_date_hour_left_one">%1$s час</string>
+    <string name="advert_date_hour_left_few">%1$s часа</string>
+    <string name="advert_date_hour_left_many">%1$s часов</string>
+    <string name="advert_date_hour_left_other">%1$s часа</string>
+
+    <string name="today">Сегодня</string>
+    <string name="last_visit">был %1$s</string>
+
+
 </resources>

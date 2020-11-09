@@ -11,7 +11,7 @@ open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 300L
+            duration = 400L
             isElevationShadowEnabled = true
             setAllContainerColors(Color.WHITE)
         }
