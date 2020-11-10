@@ -9,4 +9,8 @@ class VoteDataSource @Inject constructor(
     suspend fun like(sid: String, ck: String, objectId: Int, objectType: Int, down: Int) = getResult {
         voteService.like(sid = sid, ck = ck, objectId = objectId, objectType = objectType, down = down)
     }
+
+    suspend fun unlike(sid: String, ck: String, objectId: Int, objectType: Int) = getResult {
+        voteService.unlike(sid = sid, ck = ck, objectId = objectId, objectType = objectType)
+    }
 }

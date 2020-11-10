@@ -1,5 +1,6 @@
 package com.di7ak.openspaces.ui.features.lenta
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,7 @@ import com.di7ak.openspaces.data.repository.LentaRepository
 import com.di7ak.openspaces.data.repository.VoteRepository
 import com.di7ak.openspaces.utils.Resource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -33,23 +35,52 @@ class LentaViewModel @ViewModelInject constructor(
 
     fun like(lentaModel: LentaModel, up: Boolean) {
         viewModelScope.launch {
-            val down = if(up) 0 else 1
-            voteRepository.like(lentaModel.id ?: 0, lentaModel.type ?: 0, down).collect {
-                if(lentaModel.liked && down == 0) {
-                    lentaModel.liked = false
-                    lentaModel.likes --
-                } else if(lentaModel.disliked && down == 1) {
-                    lentaModel.disliked = false
-                    lentaModel.dislikes --
-                } else if(!lentaModel.liked && down == 0) {
-                    lentaModel.liked = true
-                    lentaModel.likes ++
-                } else if(!lentaModel.disliked && down == 1) {
-                    lentaModel.disliked = false
-                    lentaModel.dislikes ++
+            val start = System.currentTimeMillis()
+            val minDelay = 500L
+            val isChange = (lentaModel.liked && !up) || (lentaModel.disliked && up)
+            val isNewVote = !lentaModel.liked && !lentaModel.disliked
+            if(!isChange && !isNewVote) {
+                voteRepository.unlike(lentaModel.id, lentaModel.type).collect {
+                    if(it.status == Resource.Status.SUCCESS) {
+                            if (up) {
+                                lentaModel.liked = false
+                                lentaModel.likes --
+                            } else {
+                                lentaModel.disliked = false
+                                lentaModel.dislikes --
+                            }
+                        }
                 }
-                lentaDao.insert(lentaModel)
+            } else {
+                voteRepository.like(lentaModel.id, lentaModel.type, !up).collect {
+                    if(it.status == Resource.Status.SUCCESS) {
+                        if (isChange) {
+                            if (up) {
+                                lentaModel.liked = true
+                                lentaModel.likes ++
+                                lentaModel.disliked = false
+                                lentaModel.dislikes --
+                            } else {
+                                lentaModel.liked = false
+                                lentaModel.likes --
+                                lentaModel.disliked = true
+                                lentaModel.dislikes ++
+                            }
+                        } else {
+                            if (up) {
+                                Log.d("okhttp", "like")
+                                lentaModel.liked = true
+                                lentaModel.likes ++
+                            } else {
+                                lentaModel.disliked = true
+                                lentaModel.dislikes ++
+                            }
+                        }
+                    }
+                }
             }
+            delay(minDelay - (System.currentTimeMillis() - start))
+            lentaDao.insert(lentaModel)
         }
     }
 
@@ -68,10 +99,11 @@ class LentaViewModel @ViewModelInject constructor(
                         }?.map { event ->
                             event.toLentaModel().apply {
                                 userId = session.current?.userId ?: 0
+                                //Log.d("okhttp", "type ${type}, $this")
                             }
                         } ?: listOf()
+
                         lentaDao.insertAll(events)
-                        _events.postValue(Resource.success(events))
                     }
                     Resource.Status.ERROR -> {
                         _events.postValue(Resource.error(it.message ?: ""))

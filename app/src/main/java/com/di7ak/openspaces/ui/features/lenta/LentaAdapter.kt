@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -49,11 +50,15 @@ class LentaViewHolder(
 ) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener {
     private lateinit var event: LentaModel
+    private var animationVoteUp: Animation
+    private var animationVoteDown: Animation
 
     init {
         itemBinding.itemContainer.setOnClickListener(this)
         itemBinding.btnLike.setOnClickListener(this)
         itemBinding.btnDislike.setOnClickListener(this)
+        animationVoteUp = AnimationUtils.loadAnimation(itemBinding.root.context, R.anim.vote_up)
+        animationVoteDown = AnimationUtils.loadAnimation(itemBinding.root.context, R.anim.vote_down)
     }
 
     @SuppressLint("SetTextI18n")
@@ -95,9 +100,13 @@ class LentaViewHolder(
                 listener.onClickedItem(v, event)
             }
             R.id.btnLike -> {
+                animationVoteUp.reset()
+                v.startAnimation(animationVoteUp)
                 listener.onClickedLike(v, event)
             }
             R.id.btnDislike -> {
+                animationVoteDown.reset()
+                v.startAnimation(animationVoteDown)
                 listener.onClickedDislike(v, event)
             }
         }

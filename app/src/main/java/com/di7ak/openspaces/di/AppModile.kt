@@ -7,7 +7,6 @@ import com.di7ak.openspaces.data.local.AuthDao
 import com.di7ak.openspaces.data.remote.*
 import com.di7ak.openspaces.data.repository.AuthRepository
 import com.di7ak.openspaces.data.repository.LentaRepository
-import com.di7ak.openspaces.data.repository.VoteRepository
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -69,22 +68,6 @@ object AppModule {
     @Provides
     fun provideGson(): Gson = GsonBuilder().create()
 
-    @Provides
-    fun provideAuthService(retrofit: Retrofit): AuthService =
-        retrofit.create(AuthService::class.java)
-
-    @Singleton
-    @Provides
-    fun provideAuthDataSource(authService: AuthService) = AuthDataSource(authService)
-
-    @Provides
-    fun provideLentaService(retrofit: Retrofit): LentaService =
-        retrofit.create(LentaService::class.java)
-
-    @Singleton
-    @Provides
-    fun provideLentaDataSource(lentaService: LentaService) = LentaDataSource(lentaService)
-
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext appContext: Context) =
@@ -92,45 +75,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAuthDao(db: AppDatabase) = db.authDao()
-
-    @Singleton
-    @Provides
-    fun provideAuthRepository(
-        remoteDataSource: AuthDataSource,
-        localDataSource: AuthDao
-    ) =
-        AuthRepository(remoteDataSource, localDataSource)
-
-    @Singleton
-    @Provides
     fun provideSession() = Session()
-
-    @Singleton
-    @Provides
-    fun provideLentaRepository(
-        remoteDataSource: LentaDataSource,
-        session: Session
-    ) =
-        LentaRepository(remoteDataSource, session)
-
-    @Singleton
-    @Provides
-    fun provideVoteDataSource(voteService: VoteService) = VoteDataSource(voteService)
-
-    @Provides
-    fun provideVoteService(retrofit: Retrofit): VoteService =
-        retrofit.create(VoteService::class.java)
-
-    @Singleton
-    @Provides
-    fun provideVoteRepository(
-        remoteDataSource: VoteDataSource,
-        session: Session
-    ) =
-        VoteRepository(remoteDataSource, session)
-
-    @Singleton
-    @Provides
-    fun provideLentaDao(db: AppDatabase) = db.lentaDao()
 }

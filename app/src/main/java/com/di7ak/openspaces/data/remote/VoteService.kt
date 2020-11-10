@@ -17,4 +17,13 @@ interface VoteService {
         @Field("Down") down: Int = 0
     ) : Response<BaseEntity>
 
+    @FormUrlEncoded
+    @POST("api/voting/delete")
+    suspend fun unlike(
+        @Field("sid") sid: String = "",
+        @Field("CK") ck: String = "",
+        @Field("Oid") objectId: Int = 0,
+        @Field("Ot") objectType: Int = 0
+    ) : Response<BaseEntity>
+
 }

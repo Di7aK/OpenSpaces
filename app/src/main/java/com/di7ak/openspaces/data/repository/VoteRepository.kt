@@ -9,14 +9,25 @@ class VoteRepository @Inject constructor(
     private val remoteDataSource: VoteDataSource,
     private val session: Session
 ) {
-    fun like(objectId: Int, objectType: Int, down: Int) = performGetOperation(
+    fun like(objectId: Int, objectType: Int, down: Boolean) = performGetOperation(
         networkCall = {
             remoteDataSource.like(
                 sid = session.current?.sid ?: "",
                 ck = session.current?.ck ?: "",
                 objectId = objectId,
                 objectType = objectType,
-                down = down
+                down = if(down) 1 else 0
+            )
+        },
+        saveCallResult = { }
+    )
+    fun unlike(objectId: Int, objectType: Int) = performGetOperation(
+        networkCall = {
+            remoteDataSource.unlike(
+                sid = session.current?.sid ?: "",
+                ck = session.current?.ck ?: "",
+                objectId = objectId,
+                objectType = objectType
             )
         },
         saveCallResult = { }

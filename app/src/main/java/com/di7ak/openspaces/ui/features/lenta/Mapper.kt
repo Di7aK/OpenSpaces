@@ -1,18 +1,28 @@
 package com.di7ak.openspaces.ui.features.lenta
 
+import android.net.Uri
 import com.di7ak.openspaces.data.EVENT_TYPE_DIARY
 import com.di7ak.openspaces.data.EVENT_TYPE_FORUM
 import com.di7ak.openspaces.data.entities.lenta2.Events
+import com.di7ak.openspaces.utils.fromHtml
 
 fun Events.toLentaModel() : LentaModel {
     val profileImage = author_avatar.previewURL
     val detail = items.first()
 
-    val id = detail.id
-    val type = detail.type
+    val id = detail.id ?: detail.nid ?: 0
+
+    var type = detail.type
+    if(type == 0) {
+        val link = detail.links.bookmark_link
+        val uri = Uri.parse(link.fromHtml().toString())
+        type = uri.getQueryParameter("object_type")?.toIntOrNull() ?: 0
+    }
+
     val idSource1 = detail.userWidget?.siteLink?.id
     val idSource2 = author_widget?.siteLink?.id
-    val profileId = idSource1 ?: idSource2 ?: 0
+    val idSource3 = author_widget?.id
+    val profileId = idSource1 ?: idSource2 ?: idSource3 ?: 0
 
     val nameSource1 = detail.userWidget?.siteLink?.user_name
     val nameSource2 = detail.userWidget?.name
@@ -41,17 +51,17 @@ fun Events.toLentaModel() : LentaModel {
     val commentsCount = detail.comments
 
     return LentaModel(
-        id,
-        Author(profileId, userName, profileImage),
-        title,
-        body,
-        date,
-        likes,
-        liked,
-        dislikes,
-        disliked,
-        commentsCount,
-        event_type,
-        type
+        id = id,
+        author = Author(profileId, userName, profileImage),
+        title = title,
+        body = body,
+        date = date,
+        likes = likes,
+        liked = liked,
+        dislikes = dislikes,
+        disliked = disliked,
+        commentsCount = commentsCount,
+        eventType = event_type,
+        type = type
     )
 }

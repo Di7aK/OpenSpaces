@@ -13,7 +13,7 @@ data class AuthorWidget(
     val deny_preload: Any,
     val disable_reason: Any,
     val grant: String,
-    val id: String,
+    val id: Long?,
     val is_apart: String,
     val is_button: String,
     val is_completed: String,
