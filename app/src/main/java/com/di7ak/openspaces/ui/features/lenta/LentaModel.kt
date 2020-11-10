@@ -18,8 +18,12 @@ data class LentaModel(
     var eventType: Int = 0,
     var type: Int = 0,
 
+    @Ignore
+    var test: List<Test> = listOf(),
     var userId: Int = 0
 )
+
+data class Test(var id: Int = 0)
 
 @Entity(tableName = "authors")
 data class Author(

@@ -1,5 +1,6 @@
 package com.di7ak.openspaces.ui.features.lenta
 
+import android.content.Context
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -8,9 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.local.LentaDao
+import com.di7ak.openspaces.data.repository.AssetsRepository
 import com.di7ak.openspaces.data.repository.LentaRepository
 import com.di7ak.openspaces.data.repository.VoteRepository
 import com.di7ak.openspaces.utils.Resource
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -21,7 +24,8 @@ class LentaViewModel @ViewModelInject constructor(
     private val lentaRepository: LentaRepository,
     private val lentaDao: LentaDao,
     private val voteRepository: VoteRepository,
-    private val session: Session
+    private val session: Session,
+    private val assetsRepository: AssetsRepository
 ) : ViewModel() {
     private val _events = MutableLiveData<Resource<List<LentaModel>>>()
     val events: LiveData<Resource<List<LentaModel>>> = _events
@@ -97,7 +101,7 @@ class LentaViewModel @ViewModelInject constructor(
                         val events = it.data?.events_list?.filter { event ->
                             event.event_type in filter
                         }?.map { event ->
-                            event.toLentaModel().apply {
+                            event.toLentaModel(assetsRepository).apply {
                                 userId = session.current?.userId ?: 0
                                 //Log.d("okhttp", "type ${type}, $this")
                             }

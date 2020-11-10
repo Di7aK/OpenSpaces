@@ -3,15 +3,16 @@ package com.di7ak.openspaces.di
 import android.content.Context
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
-import com.di7ak.openspaces.data.local.AuthDao
-import com.di7ak.openspaces.data.remote.*
-import com.di7ak.openspaces.data.repository.AuthRepository
-import com.di7ak.openspaces.data.repository.LentaRepository
+import com.di7ak.openspaces.data.repository.AssetsRepository
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.CipherSuite
@@ -30,8 +31,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("https://spaces.im")
+    fun provideRetrofit(remoteConfig: FirebaseRemoteConfig, gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl(remoteConfig.getString("base_url"))
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
@@ -76,4 +77,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideSession() = Session()
+
+    @Singleton
+    @Provides
+    fun provideConfig() = Firebase.remoteConfig
+
+    @Singleton
+    @Provides
+    fun provideAssets(@ApplicationContext context: Context) = AssetsRepository(context)
 }

@@ -1,0 +1,14 @@
+{
+  "id": [
+    "$.items[0].userWidget.siteLink.id",
+    "$.author_widget.siteLink.id",
+    "$.author_widget.id"
+  ],
+  "profileImage": ["$.author_avatar.previewURL"],
+  "name": [
+    "$.items[0].userWidget.siteLink.user_name",
+    "$.items[0].userWidget.name",
+    "$.author_widget.siteLink.user_name",
+    "$.commWidget.name",
+  ]
+}

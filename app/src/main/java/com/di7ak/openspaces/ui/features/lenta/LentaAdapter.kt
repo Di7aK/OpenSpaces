@@ -14,6 +14,7 @@ import com.di7ak.openspaces.R
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.fromHtml
+import com.di7ak.openspaces.utils.setColorFilter
 
 class LentaAdapter(private val listener: LentaItemListener) :
     RecyclerView.Adapter<LentaViewHolder>() {
@@ -57,8 +58,10 @@ class LentaViewHolder(
         itemBinding.itemContainer.setOnClickListener(this)
         itemBinding.btnLike.setOnClickListener(this)
         itemBinding.btnDislike.setOnClickListener(this)
-        animationVoteUp = AnimationUtils.loadAnimation(itemBinding.root.context, R.anim.vote_up)
-        animationVoteDown = AnimationUtils.loadAnimation(itemBinding.root.context, R.anim.vote_down)
+
+        val context = itemBinding.root.context
+        animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
+        animationVoteDown = AnimationUtils.loadAnimation(context, R.anim.vote_down)
     }
 
     @SuppressLint("SetTextI18n")
@@ -75,14 +78,14 @@ class LentaViewHolder(
         itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date)
 
         if(event.liked) {
-            itemBinding.btnLike.setColorFilter(ContextCompat.getColor(context, R.color.colorLike))
+            itemBinding.btnLike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorLike))
         } else {
-            itemBinding.btnLike.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
+            itemBinding.btnLike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
         }
         if(event.disliked) {
-            itemBinding.btnDislike.setColorFilter(ContextCompat.getColor(context, R.color.colorDislike))
+            itemBinding.btnDislike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorDislike))
         } else {
-            itemBinding.btnDislike.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
+            itemBinding.btnDislike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
         }
 
         item.author?.profileImage?.let { url ->

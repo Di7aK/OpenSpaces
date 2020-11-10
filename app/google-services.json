@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "106504223575",
+    "firebase_url": "https://openspaces-87061.firebaseio.com",
+    "project_id": "openspaces-87061",
+    "storage_bucket": "openspaces-87061.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106504223575:android:4eaf2be3749a503a511c12",
+        "android_client_info": {
+          "package_name": "com.di7ak.openspaces"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106504223575-1r78r36e5le09vc091a2f5uv7ackg0j7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcbJXHLDoLPBplmBkyG8KtM0PbO6ZZ1GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106504223575-1r78r36e5le09vc091a2f5uv7ackg0j7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

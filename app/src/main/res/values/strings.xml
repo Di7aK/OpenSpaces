@@ -53,6 +53,8 @@
 
     <string name="today">Сегодня</string>
     <string name="last_visit">был %1$s</string>
+    <string name="load_configuration">Load configuration</string>
+    <string name="error_loading_configuration_file">Error loading configuration file</string>
 
 
 </resources>
