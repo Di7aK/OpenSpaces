@@ -6,7 +6,7 @@ import androidx.room.*
 data class LentaItemEntity(
     @PrimaryKey var id: Int = 0,
     @Embedded
-    var author: Author? = Author(),
+    var author: AuthorEntity? = AuthorEntity(),
     var title: String = "",
     var body: String = "",
     var date: Long = 0L,
@@ -17,19 +17,11 @@ data class LentaItemEntity(
     var commentsCount: Int = 0,
     var eventType: Int = 0,
     var type: Int = 0,
+    var commentUrl: String = "",
     @Ignore
     var attachments: List<Attach> = listOf(),
     var userId: Int = 0
 )
-
-@Entity(tableName = "authors")
-data class Author(
-    @ColumnInfo(name = "author_id")
-    @PrimaryKey var id: Long? = 0,
-    var name: String = "",
-    var profileImage: String = ""
-)
-
 
 @Entity(tableName = "attachments")
 data class Attach(

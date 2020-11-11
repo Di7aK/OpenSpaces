@@ -1,0 +1,149 @@
+{
+  "commentsCount": {
+    "type": "value",
+    "paths": [
+      "commentsBlock.comments.commentsCnt"
+    ]
+  },
+  "items": {
+    "type": "array",
+    "paths": [
+      "commentsBlock.comments.comments_list"
+    ],
+    "map": {
+      "id": {
+        "type": "value",
+        "paths": [
+          "comment_id"
+        ]
+      },
+      "type": {
+        "type": "value",
+        "paths": [
+          "comment_type"
+        ]
+      },
+      "replyCommentId": {
+        "type": "value",
+        "paths": [
+          "reply_comment_id"
+        ]
+      },
+      "replyCommentText": {
+        "type": "value",
+        "paths": [
+          "reply_comment_text"
+        ]
+      },
+      "replyUserName": {
+        "type": "value",
+        "paths": [
+          "reply_user_name"
+        ]
+      },
+      "author": {
+        "type": "object",
+        "map": {
+          "id": {
+            "type": "value",
+            "paths": [
+              "user.id"
+            ]
+          },
+          "profileImage": {
+            "type": "value",
+            "paths": [
+              "avatar.previewURL"
+            ]
+          },
+          "name": {
+            "type": "value",
+            "paths": [
+              "user.siteLink.user_name"
+            ]
+          }
+        }
+      },
+      "body": {
+        "type": "value",
+        "paths": [
+          "text"
+        ]
+      },
+      "likes": {
+        "type": "value",
+        "paths": [
+          "voting.likes_count"
+        ]
+      },
+      "vote": {
+        "type": "value",
+        "paths": [
+          "voting.vote"
+        ]
+      },
+      "dislikes": {
+        "type": "value",
+        "paths": [
+          "voting.dislikes_count"
+        ]
+      },
+      "date": {
+        "type": "value",
+        "paths": [
+          "ctime_unix"
+        ]
+      },
+
+      "attachments": {
+        "type": "array",
+        "paths": [
+          "attaches_widgets.list_items",
+          "attaches_widgets.tile_items"
+        ],
+        "map": {
+          "id": {
+            "type": "value",
+            "paths": [
+              "nid"
+            ]
+          },
+          "url": {
+            "type": "value",
+            "paths": [
+              "preview.downloadLinkSSL"
+            ]
+          },
+          "previewUrl": {
+            "type": "value",
+            "paths": [
+              "preview.previewURL"
+            ]
+          },
+          "height": {
+            "type": "value",
+            "paths": [
+              "preview.size.height"
+            ]
+          },
+          "type": {
+            "type": "value",
+            "paths": [
+              "preview.type"
+            ]
+          },
+          "parent": {
+            "type": "value",
+            "paths": [
+              "preview.parent.id"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "code": {
+    "type": "value",
+    "paths": ["code"]
+  }
+}

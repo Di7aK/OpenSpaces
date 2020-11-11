@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.utils
 
 import com.di7ak.openspaces.data.entities.AuthEntity
+import com.di7ak.openspaces.data.entities.CommentsEntity
 import com.di7ak.openspaces.data.entities.LentaEntity
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import okhttp3.ResponseBody
@@ -31,6 +32,11 @@ internal class SpacesConverterFactory private constructor(
             } else if(typed.isAssignableFrom(AuthEntity::class.java)) {
                 val json = JSONObject(responseBody.string())
                 val mapData = JSONObject(remoteConfig.getString("auth_mapper"))
+                val result = json.mapJsonTo(typed, mapData)
+                return result
+            } else if(typed.isAssignableFrom(CommentsEntity::class.java)) {
+                val json = JSONObject(responseBody.string())
+                val mapData = JSONObject(remoteConfig.getString("comments_mapper"))
                 val result = json.mapJsonTo(typed, mapData)
                 return result
             }

@@ -1,41 +1,40 @@
-package com.di7ak.openspaces.ui.features.lenta
+package com.di7ak.openspaces.ui.features.comments
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
-import com.di7ak.openspaces.data.entities.LentaItemEntity
-import com.di7ak.openspaces.databinding.LentaFragmentBinding
+import com.di7ak.openspaces.data.entities.CommentItemEntity
+import com.di7ak.openspaces.databinding.CommentsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
-    private var binding: LentaFragmentBinding by autoCleared()
-    private val viewModel: LentaViewModel by viewModels()
-    private lateinit var adapter: LentaAdapter
+class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
+    private var binding: CommentsFragmentBinding by autoCleared()
+    private val viewModel: CommentViewModel by viewModels()
+    private lateinit var adapter: CommentsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LentaFragmentBinding.inflate(inflater, container, false)
+        binding = CommentsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -44,18 +43,20 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         setupRecyclerView()
         setupObservers()
 
-        val userId = requireArguments().getInt("userId")
+        val postId = requireArguments().getInt("postId")
+        val postUrl = requireArguments().getString("postUrl")!!
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            binding.detailContainer.transitionName = userId.toString()
-        }
-
-        viewModel.fetch()
+        viewModel.fetch(postId, postUrl)
     }
 
     private fun setupRecyclerView() {
-        adapter = LentaAdapter(this)
+        adapter = CommentsAdapter(this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.comments_divider)!!)
+        binding.items.addItemDecoration(dividerItemDecoration)
+
         binding.items.layoutManager = LinearLayoutManager(requireContext())
         binding.items.adapter = adapter
     }
@@ -65,7 +66,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun setupObservers() {
-        viewModel.events.observe(viewLifecycleOwner, {
+        viewModel.comments.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
@@ -82,21 +83,20 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
                 }
             }
         })
-        viewModel.updatedEvent.observe(viewLifecycleOwner, {
+        viewModel.updatedComment.observe(viewLifecycleOwner, {
             adapter.updateItem(it)
         })
     }
 
-    override fun onClickedItem(view: View, item: LentaItemEntity) {
-        val args = bundleOf("postId" to item.id, "postUrl" to item.commentUrl)
-        findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
+    override fun onClickedItem(view: View, item: CommentItemEntity) {
+
     }
 
-    override fun onClickedDislike(view: View, item: LentaItemEntity) {
+    override fun onClickedDislike(view: View, item: CommentItemEntity) {
         viewModel.like(item, false)
     }
 
-    override fun onClickedLike(view: View, item: LentaItemEntity) {
+    override fun onClickedLike(view: View, item: CommentItemEntity) {
         viewModel.like(item, true)
     }
 

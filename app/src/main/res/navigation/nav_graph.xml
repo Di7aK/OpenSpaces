@@ -65,6 +65,20 @@
             android:id="@+id/action_lentaFragment_to_accountsFragment"
             app:destination="@id/accountsFragment" />
 
+        <action
+            android:id="@+id/action_lentaFragment_to_commentsFragment"
+            app:destination="@id/commentsFragment" />
+
         <argument android:name="userId" app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/commentsFragment"
+        android:name="com.di7ak.openspaces.ui.features.comments.CommentsFragment"
+        android:label="Comments"
+        tools:layout="@layout/comments_fragment">
+
+        <argument android:name="postId" app:argType="integer" />
+        <argument android:name="postUrl" app:argType="string" />
     </fragment>
 </navigation>

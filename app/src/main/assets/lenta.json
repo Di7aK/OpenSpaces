@@ -44,6 +44,12 @@
           "items[0].liked"
         ]
       },
+      "commentUrl": {
+        "type": "value",
+        "paths": [
+          "items[0].commentUrl"
+        ]
+      },
       "dislikes": {
         "type": "value",
         "paths": [
