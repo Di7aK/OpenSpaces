@@ -9,12 +9,14 @@ import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
@@ -46,6 +48,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
 
     private fun setupRecyclerView() {
         adapter = LentaAdapter(this)
+        (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.items.layoutManager = LinearLayoutManager(requireContext())
         binding.items.adapter = adapter
     }
@@ -71,6 +74,9 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
                     setProgress(true)
                 }
             }
+        })
+        viewModel.updatedEvent.observe(viewLifecycleOwner, {
+            adapter.updateItem(it)
         })
     }
 

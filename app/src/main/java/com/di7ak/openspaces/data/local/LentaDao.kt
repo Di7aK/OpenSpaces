@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LentaDao {
     @Query("SELECT * FROM lenta WHERE userId = :userId ORDER BY id DESC")
-    fun getEvents(userId: Int) : Flow<List<LentaItemEntity>>
+    fun getEvents(userId: Int) : List<LentaItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: LentaItemEntity)

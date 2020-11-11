@@ -1,45 +1,26 @@
 package com.di7ak.openspaces.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-fun <T, A> performGetOperation(databaseQuery: () -> LiveData<T>,
+fun <T, A> performGetOperation(databaseQuery: () -> T,
                                networkCall: suspend () -> Resource<A>,
-                               saveCallResult: suspend (A) -> Unit): LiveData<Resource<T>> =
-    liveData(Dispatchers.IO) {
+                               saveCallResult: suspend (A) -> Unit): Flow<Resource<T>> =
+    flow {
         emit(Resource.loading())
 
-        val source = databaseQuery.invoke().map { Resource.success(it) }
-        emitSource(source)
+        emit(Resource.success(databaseQuery.invoke()))
 
         val responseStatus = networkCall.invoke()
         if (responseStatus.status == Resource.Status.SUCCESS) {
             saveCallResult(responseStatus.data!!)
-
-        } else if (responseStatus.status == Resource.Status.ERROR) {
-            emit(Resource.error(responseStatus.message!!))
-            emitSource(source)
-        }
-    }
-
-/*
-fun <T> performGetOperation(networkCall: suspend () -> Resource<T>,
-                               saveCallResult: suspend (T) -> Unit): LiveData<Resource<T>> =
-    liveData(Dispatchers.IO) {
-        emit(Resource.loading())
-
-        val responseStatus = networkCall.invoke()
-        if (responseStatus.status == Resource.Status.SUCCESS) {
-            saveCallResult(responseStatus.data!!)
+            emit(Resource.success(databaseQuery.invoke()))
         } else if (responseStatus.status == Resource.Status.ERROR) {
             emit(Resource.error(responseStatus.message!!))
         }
-    }*/
+    }.flowOn(Dispatchers.IO)
 
 fun <T> performGetOperation(networkCall: suspend () -> Resource<T>,
                             saveCallResult: suspend (T) -> Unit): Flow<Resource<T>> =

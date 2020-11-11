@@ -1,6 +1,5 @@
 package com.di7ak.openspaces.ui.features.lenta
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,20 +11,19 @@ import com.di7ak.openspaces.data.local.LentaDao
 import com.di7ak.openspaces.data.repository.LentaRepository
 import com.di7ak.openspaces.data.repository.VoteRepository
 import com.di7ak.openspaces.utils.Resource
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class LentaViewModel @ViewModelInject constructor(
     private val lentaRepository: LentaRepository,
-    private val lentaDao: LentaDao,
     private val voteRepository: VoteRepository,
-    private val session: Session
+    private val lentaDao: LentaDao
 ) : ViewModel() {
     private val _events = MutableLiveData<Resource<List<LentaItemEntity>>>()
     val events: LiveData<Resource<List<LentaItemEntity>>> = _events
+    private val _updatedEvent = MutableLiveData<LentaItemEntity>()
+    val updatedEvent: LiveData<LentaItemEntity> = _updatedEvent
 
     private val filter = arrayOf(
         EVENT_TYPE_DIARY,
@@ -69,7 +67,6 @@ class LentaViewModel @ViewModelInject constructor(
                             }
                         } else {
                             if (up) {
-                                Log.d("okhttp", "like")
                                 lentaModel.liked = true
                                 lentaModel.likes ++
                             } else {
@@ -81,28 +78,20 @@ class LentaViewModel @ViewModelInject constructor(
                 }
             }
             delay(minDelay - (System.currentTimeMillis() - start))
+            _updatedEvent.postValue(lentaModel)
             lentaDao.insert(lentaModel)
         }
     }
 
     fun fetch() {
         viewModelScope.launch {
-            lentaDao.getEvents(session.current?.userId ?: 0).flowOn(Dispatchers.IO).collect {
-                if (it.isNotEmpty()) _events.postValue(Resource.success(it))
-            }
-        }
-        viewModelScope.launch {
             lentaRepository.fetch().collect {
                 when (it.status) {
                     Resource.Status.SUCCESS -> {
-                        val events = it.data?.items?.filter { event ->
+                        val events = it.data?.filter { event ->
                             event.eventType in filter
-                        }?.map { event ->
-                            event.userId = session.current?.userId ?: 0
-                            event
                         } ?: listOf()
-
-                        lentaDao.insertAll(events)
+                        _events.postValue(Resource.success(events))
                     }
                     Resource.Status.ERROR -> {
                         _events.postValue(Resource.error(it.message ?: ""))

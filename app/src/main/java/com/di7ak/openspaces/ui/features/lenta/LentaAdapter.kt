@@ -26,12 +26,19 @@ class LentaAdapter(private val listener: LentaItemListener) :
         fun onClickedDislike(view: View, item: LentaItemEntity)
     }
 
-    private val items = ArrayList<LentaItemEntity>()
+    private val items = mutableListOf<LentaItemEntity>()
 
     fun setItems(items: ArrayList<LentaItemEntity>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun updateItem(item: LentaItemEntity) {
+        val index = items.indexOf(item)
+        if(index != -1) {
+            notifyItemChanged(index)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LentaViewHolder {
