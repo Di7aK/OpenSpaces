@@ -39,15 +39,16 @@ fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                 val subMapperData = data.getJSONObject("map")
                 val genericType = (field.genericType as ParameterizedType).actualTypeArguments[0]
                 val target = getGenericList(genericType::class.java)
+                val genericClass = Class.forName(genericType.toString().substringAfter(" "))
                 for (i in 0 until paths.length()) {
                     val path = paths.getString(i)
 
                     val items = JSONArray(getValue(String::class.java, path))
-                    for (j in 0 until paths.length()) {
+                    for (j in 0 until items.length()) {
                         val item = items.getJSONObject(j)
                         Log.d("lol", item.toString())
                         val itemResult = item.mapJsonTo(
-                            genericType::class.java,
+                            genericClass,
                             subMapperData
                         )
                         Log.d("lol", "" + itemResult.toString())
@@ -59,30 +60,30 @@ fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
             }
         }
     }
-    return result
+    return result as T
 }
 
- fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
+fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
     val jsonPath = PathParser(path).parse()
     var temp: JSONObject = this
 
-     fun getTypedValue(type: Class<Type>, value: String) : Type? {
-         return when {
-             type.isAssignableFrom(Long::class.java) -> {
-                 value.toLong() as Type
-             }
-             type.isAssignableFrom(Boolean::class.java) -> {
-                 value.toBoolean() as Type
-             }
-             type.isAssignableFrom(Int::class.java) -> {
-                 value.toInt() as Type
-             }
-             type.isAssignableFrom(String::class.java) -> {
-                 value as Type
-             }
-             else -> null
-         }
-     }
+    fun getTypedValue(type: Class<Type>, value: String) : Type? {
+        return when {
+            type.isAssignableFrom(Long::class.java) -> {
+                value.toLong() as Type
+            }
+            type.isAssignableFrom(Boolean::class.java) -> {
+                value.toBoolean() as Type
+            }
+            type.isAssignableFrom(Int::class.java) -> {
+                value.toInt() as Type
+            }
+            type.isAssignableFrom(String::class.java) -> {
+                value as Type
+            }
+            else -> null
+        }
+    }
 
     jsonPath.forEach {
         when (it.type) {
