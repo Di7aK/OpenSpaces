@@ -2,6 +2,7 @@ package com.di7ak.openspaces.di
 
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
+import com.di7ak.openspaces.data.local.AttachmentsDao
 import com.di7ak.openspaces.data.local.LentaDao
 import com.di7ak.openspaces.data.remote.LentaDataSource
 import com.di7ak.openspaces.data.remote.LentaService
@@ -28,10 +29,11 @@ class LentaModule {
     @Provides
     fun provideLentaRepository(
         remoteDataSource: LentaDataSource,
-        dao: LentaDao,
+        lentaDao: LentaDao,
+        attachmentsDao: AttachmentsDao,
         session: Session
     ) =
-        LentaRepository(remoteDataSource, dao, session)
+        LentaRepository(remoteDataSource, lentaDao, attachmentsDao, session)
 
     @Singleton
     @Provides

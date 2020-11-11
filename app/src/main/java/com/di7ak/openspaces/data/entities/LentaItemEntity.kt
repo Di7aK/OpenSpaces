@@ -17,13 +17,10 @@ data class LentaItemEntity(
     var commentsCount: Int = 0,
     var eventType: Int = 0,
     var type: Int = 0,
-
     @Ignore
-    var test: List<Test> = listOf(),
+    var attachments: List<Attach> = listOf(),
     var userId: Int = 0
 )
-
-data class Test(var id: Int = 0)
 
 @Entity(tableName = "authors")
 data class Author(
@@ -32,3 +29,33 @@ data class Author(
     var name: String = "",
     var profileImage: String = ""
 )
+
+
+@Entity(
+    tableName = "attachments",
+    foreignKeys = [ForeignKey(
+        entity = LentaItemEntity::class,
+        parentColumns = ["id"],
+        childColumns = ["parent"])]
+)
+data class Attach(
+    @ColumnInfo(name = "attach_id")
+    @PrimaryKey var id: Long? = 0,
+    var url: String = "",
+    var previewUrl: String = "",
+    var height: Int = 0,
+    var type: Int = 0,
+    var parent: Int = 0
+)
+/*
+class AttachConverter {
+    @TypeConverter
+    fun fromList(attachments: List<Attach>): String {
+
+    }
+
+    @TypeConverter
+    fun toList(source: String): List<Attach> {
+
+    }
+}*/

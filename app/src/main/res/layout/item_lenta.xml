@@ -51,6 +51,29 @@
             app:layout_constraintTop_toBottomOf="@+id/name"
             tools:text="TextView" />
 
+        <ImageView
+            android:id="@+id/mainAttach"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:src="@drawable/play_circle_outline"
+            app:tint="@color/post_button_tint"
+            app:layout_constraintEnd_toEndOf="@id/mainAttach"
+            app:layout_constraintStart_toStartOf="@id/mainAttach"
+            app:layout_constraintTop_toTopOf="@+id/mainAttach"
+            app:layout_constraintBottom_toBottomOf="@+id/mainAttach"
+            tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/content"
             android:layout_width="0dp"
@@ -60,7 +83,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/mainAttach"
             tools:text="Content" />
 
         <ImageView

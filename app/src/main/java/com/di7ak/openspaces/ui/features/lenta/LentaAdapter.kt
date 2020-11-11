@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import android.view.animation.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
@@ -25,6 +27,7 @@ class LentaAdapter(private val listener: LentaItemListener) :
         fun onClickedItem(view: View, item: LentaItemEntity)
         fun onClickedLike(view: View, item: LentaItemEntity)
         fun onClickedDislike(view: View, item: LentaItemEntity)
+        fun onClickedAttach(view: View, item: Attach)
     }
 
     private val items = mutableListOf<LentaItemEntity>()
@@ -100,6 +103,21 @@ class LentaViewHolder(
             itemBinding.btnDislike.setImageDrawable(drawableDislikeColored)
         } else {
             itemBinding.btnDislike.setImageDrawable(drawableDislike)
+        }
+
+        if(item.attachments.isEmpty()) {
+            itemBinding.mainAttach.isGone = true
+            itemBinding.play.isGone = true
+        } else {
+            val attach = item.attachments.first()
+            itemBinding.mainAttach.setOnClickListener {
+                listener.onClickedAttach(it, attach)
+            }
+            itemBinding.play.isGone = attach.type != 25
+            itemBinding.mainAttach.isGone = false
+            Glide.with(itemBinding.root)
+                .load(attach.previewUrl)
+                .into(itemBinding.mainAttach)
         }
 
         item.author?.profileImage?.let { url ->

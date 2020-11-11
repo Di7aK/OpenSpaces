@@ -1,5 +1,7 @@
 package com.di7ak.openspaces.ui.features.lenta
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +12,8 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
+import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
@@ -90,5 +94,13 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
 
     override fun onClickedLike(view: View, item: LentaItemEntity) {
         viewModel.like(item, true)
+    }
+
+    override fun onClickedAttach(view: View, item: Attach) {
+        if(item.type == ATTACH_TYPE_INTERNAL_VIDEO) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(Uri.parse(item.url), "video/mp4")
+            startActivity(intent)
+        }
     }
 }

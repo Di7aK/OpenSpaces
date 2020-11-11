@@ -110,8 +110,56 @@
             ]
             }
             }
+            },
+            "attachments": {
+            "type": "array",
+            "paths": [
+            "items[0].MainAttachWidget.attachWidgets"
+            ],
+            "map": {
+            "id": {
+            "type": "value",
+            "paths": [
+            "attach.nid"
+            ]
+            },
+            "url": {
+            "type": "value",
+            "paths": [
+            "attach.downloadLinkSSL"
+            ]
+            },
+            "previewUrl": {
+            "type": "value",
+            "paths": [
+            "attach.preview.previewURL"
+            ]
+            },
+            "height": {
+            "type": "value",
+            "paths": [
+            "attach.preview.size.height"
+            ]
+            },
+            "type": {
+            "type": "value",
+            "paths": [
+            "attach.preview.type"
+            ]
+            },
+            "parent": {
+            "type": "value",
+            "paths": [
+            "attach.preview.parent.id"
+            ]
             }
             }
+            }
+            }
+            },
+            "code": {
+            "type": "value",
+            "paths": ["code"]
             }
             }
         </value>

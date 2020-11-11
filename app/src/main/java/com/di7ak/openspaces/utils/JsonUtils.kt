@@ -35,28 +35,31 @@ fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                 field.isAccessible = true
                 field.set(result, value)
             } else if (type == "array") {
-                val paths = data.getJSONArray("paths")
-                val subMapperData = data.getJSONObject("map")
-                val genericType = (field.genericType as ParameterizedType).actualTypeArguments[0]
-                val target = getGenericList(genericType::class.java)
-                val genericClass = Class.forName(genericType.toString().substringAfter(" "))
-                for (i in 0 until paths.length()) {
-                    val path = paths.getString(i)
+                try {
+                    val paths = data.getJSONArray("paths")
+                    val subMapperData = data.getJSONObject("map")
+                    val genericType = (field.genericType as ParameterizedType).actualTypeArguments[0]
+                    val target = getGenericList(genericType::class.java)
+                    val genericClass = Class.forName(genericType.toString().substringAfter(" "))
+                    for (i in 0 until paths.length()) {
+                        val path = paths.getString(i)
 
-                    val items = JSONArray(getValue(String::class.java, path))
-                    for (j in 0 until items.length()) {
-                        val item = items.getJSONObject(j)
-                        Log.d("lol", item.toString())
-                        val itemResult = item.mapJsonTo(
-                            genericClass,
-                            subMapperData
-                        )
-                        Log.d("lol", "" + itemResult.toString())
-                        add(target, itemResult)
+                        val items = JSONArray(getValue(String::class.java, path))
+                        for (j in 0 until items.length()) {
+                            val item = items.getJSONObject(j)
+                            val itemResult = item.mapJsonTo(
+                                genericClass,
+                                subMapperData
+                            )
+                            add(target, itemResult)
+                        }
                     }
+                    field.isAccessible = true
+                    field.set(result, target)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.d("lol", "parse", e)
                 }
-                field.isAccessible = true
-                field.set(result, target)
             }
         }
     }
