@@ -34,11 +34,8 @@ class LentaAdapter(private val listener: LentaItemListener) :
         notifyDataSetChanged()
     }
 
-    fun updateItem(item: LentaItemEntity) {
-        val index = items.indexOf(item)
-        if(index != -1) {
-            notifyItemChanged(index)
-        }
+    fun updateItem(item: LentaItemEntity) = items.indexOf(item).apply {
+        if(this != -1) notifyItemChanged(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LentaViewHolder {
