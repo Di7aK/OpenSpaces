@@ -43,15 +43,3 @@ data class Attach(
     var type: Int = 0,
     var parent: Int = 0
 )
-/*
-class AttachConverter {
-    @TypeConverter
-    fun fromList(attachments: List<Attach>): String {
-
-    }
-
-    @TypeConverter
-    fun toList(source: String): List<Attach> {
-
-    }
-}*/
