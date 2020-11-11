@@ -9,7 +9,7 @@ import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.data.entities.Author
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 
-@Database(entities = [AuthAttributes::class, LentaItemEntity::class, Author::class, Attach::class], version = 8, exportSchema = false)
+@Database(entities = [AuthAttributes::class, LentaItemEntity::class, Author::class, Attach::class], version = 9, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun authDao(): AuthDao

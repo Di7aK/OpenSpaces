@@ -32,11 +32,7 @@ data class Author(
 
 
 @Entity(
-    tableName = "attachments",
-    foreignKeys = [ForeignKey(
-        entity = LentaItemEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["parent"])]
+    tableName = "attachments"
 )
 data class Attach(
     @ColumnInfo(name = "attach_id")
