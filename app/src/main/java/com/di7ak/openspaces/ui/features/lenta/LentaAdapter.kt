@@ -94,6 +94,8 @@ class LentaViewHolder(
         itemBinding.comments.text = item.commentsCount.toString()
         itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
 
+        itemBinding.content.isGone = item.body.isEmpty()
+
         if(event.liked) {
             itemBinding.btnLike.setImageDrawable(drawableLikeColored)
         } else {
