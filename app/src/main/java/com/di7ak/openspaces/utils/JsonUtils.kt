@@ -72,7 +72,7 @@ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
 
     fun getTypedValue(type: Class<Type>, value: String) : Type? {
         return when {
-            type.isAssignableFrom(Long::class.java) -> {
+            type.isAssignableFrom(Long::class.java) || type.isAssignableFrom(java.lang.Long::class.java) -> {
                 value.toLong() as Type
             }
             type.isAssignableFrom(Boolean::class.java) -> {
@@ -88,7 +88,10 @@ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
             type.isAssignableFrom(String::class.java) -> {
                 value as Type
             }
-            else -> null
+            else -> {
+                Log.d("lol", value)
+                null
+            }
         }
     }
 
