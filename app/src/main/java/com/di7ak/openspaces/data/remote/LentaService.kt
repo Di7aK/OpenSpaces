@@ -1,6 +1,6 @@
 package com.di7ak.openspaces.data.remote
 
-import com.di7ak.openspaces.data.entities.lenta2.LentaEntity
+import com.di7ak.openspaces.data.entities.LentaEntity
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -13,5 +13,4 @@ interface LentaService {
     suspend fun fetch(
         @Field("sid") sid: String = ""
     ) : Response<LentaEntity>
-
 }

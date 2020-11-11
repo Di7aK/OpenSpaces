@@ -1,9 +1,9 @@
-package com.di7ak.openspaces.ui.features.lenta
+package com.di7ak.openspaces.data.entities
 
 import androidx.room.*
 
 @Entity(tableName = "lenta")
-data class LentaModel(
+data class LentaItemEntity(
     @PrimaryKey var id: Int = 0,
     @Embedded
     var author: Author? = Author(),

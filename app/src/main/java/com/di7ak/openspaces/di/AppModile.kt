@@ -4,15 +4,13 @@ import android.content.Context
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.repository.AssetsRepository
+import com.di7ak.openspaces.utils.SpacesConverterFactory
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.CipherSuite
@@ -21,7 +19,6 @@ import okhttp3.OkHttpClient
 import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import javax.inject.Singleton
 
@@ -31,10 +28,10 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(remoteConfig: FirebaseRemoteConfig, gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(remoteConfig: FirebaseRemoteConfig, client: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(remoteConfig.getString("base_url"))
         .client(client)
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(SpacesConverterFactory.create(remoteConfig))
         .build()
 
     @Singleton
@@ -65,9 +62,6 @@ object AppModule {
                     .build()
             )
         ).build()
-
-    @Provides
-    fun provideGson(): Gson = GsonBuilder().create()
 
     @Singleton
     @Provides

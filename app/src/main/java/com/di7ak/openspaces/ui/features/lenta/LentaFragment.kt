@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.Resource
@@ -55,7 +55,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun setupObservers() {
-        viewModel.events.observe(viewLifecycleOwner, Observer {
+        viewModel.events.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
@@ -74,15 +74,15 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         })
     }
 
-    override fun onClickedItem(view: View, item: LentaModel) {
+    override fun onClickedItem(view: View, item: LentaItemEntity) {
 
     }
 
-    override fun onClickedDislike(view: View, item: LentaModel) {
+    override fun onClickedDislike(view: View, item: LentaItemEntity) {
         viewModel.like(item, false)
     }
 
-    override fun onClickedLike(view: View, item: LentaModel) {
+    override fun onClickedLike(view: View, item: LentaItemEntity) {
         viewModel.like(item, true)
     }
 }

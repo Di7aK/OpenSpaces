@@ -8,6 +8,12 @@
         <key>lenta_mapper</key>
         <value>
             {
+            "items": {
+            "type": "array",
+            "paths": [
+            "events_list"
+            ],
+            "map": {
             "id": {
             "type": "value",
             "paths": [
@@ -101,6 +107,72 @@
             "items[0].userWidget.name",
             "author_widget.siteLink.user_name",
             "commWidget.name"
+            ]
+            }
+            }
+            }
+            }
+            }
+            }
+        </value>
+    </entry>
+    <entry>
+        <key>auth_mapper</key>
+        <value>
+            {
+            "code": {
+            "type": "value",
+            "paths": ["code"]
+            },
+            "attributes": {
+            "type": "object",
+            "map": {
+            "name": {
+            "type": "value",
+            "paths": [
+            "attributes.name"
+            ]
+            },
+            "confirmPhone": {
+            "type": "value",
+            "paths": [
+            "attributes.confirm_phone"
+            ]
+            },
+            "mysiteLink": {
+            "type": "value",
+            "paths": [
+            "attributes.mysite_link"
+            ]
+            },
+            "avatar": {
+            "type": "value",
+            "paths": [
+            "attributes.avatar"
+            ]
+            },
+            "sid": {
+            "type": "value",
+            "paths": [
+            "attributes.sid"
+            ]
+            },
+            "ck": {
+            "type": "value",
+            "paths": [
+            "attributes.CK"
+            ]
+            },
+            "userId": {
+            "type": "value",
+            "paths": [
+            "attributes.nid"
+            ]
+            },
+            "channelId": {
+            "type": "value",
+            "paths": [
+            "attributes.channel_id"
             ]
             }
             }

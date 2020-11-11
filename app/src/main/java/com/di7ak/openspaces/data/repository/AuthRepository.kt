@@ -15,14 +15,14 @@ class AuthRepository @Inject constructor(
     fun login(login: String, password: String, code: String) = performGetOperation(
         networkCall = { remoteDataSource.login(login = login, password = password, code = code) },
         saveCallResult = {
-            if(it.attributes != null) localDataSource.insert(it.attributes)
+            if(it.attributes != null) localDataSource.insert(it.attributes!!)
         }
     )
 
     fun check(sid: String) = performGetOperation(
         networkCall = { remoteDataSource.check(sid = sid) },
         saveCallResult = {
-            if(it.attributes != null) localDataSource.insert(it.attributes)
+            if(it.attributes != null) localDataSource.insert(it.attributes!!)
         }
     )
 

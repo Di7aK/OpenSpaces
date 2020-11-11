@@ -61,7 +61,6 @@ dependencies {
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
     //okhttp
     implementation "com.squareup.okhttp3:okhttp:3.12.1"
@@ -99,9 +98,6 @@ dependencies {
     //recyclerview and cardview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-
-    //JsonPath
-    implementation 'com.jayway.jsonpath:json-path:2.4.0'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:26.0.0')

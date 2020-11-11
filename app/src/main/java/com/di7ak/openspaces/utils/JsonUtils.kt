@@ -73,7 +73,11 @@ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
                 value.toLong() as Type
             }
             type.isAssignableFrom(Boolean::class.java) -> {
-                value.toBoolean() as Type
+                if(value.isInteger()) {
+                    (value.toInt() == 1) as Type
+                } else {
+                    value.toBoolean() as Type
+                }
             }
             type.isAssignableFrom(Int::class.java) -> {
                 value.toInt() as Type
@@ -116,6 +120,8 @@ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
     }
     return null
 }
+
+private fun String.isInteger() = toIntOrNull()?.let { true } ?: false
 
 private fun <Type> getGenericList(type: Class<Type>): MutableList<Type> {
     return mutableListOf()

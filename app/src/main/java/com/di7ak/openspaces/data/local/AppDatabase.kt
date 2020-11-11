@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.di7ak.openspaces.data.entities.AuthAttributes
-import com.di7ak.openspaces.ui.features.lenta.Author
-import com.di7ak.openspaces.ui.features.lenta.LentaModel
+import com.di7ak.openspaces.data.entities.Author
+import com.di7ak.openspaces.data.entities.LentaItemEntity
 
-@Database(entities = [AuthAttributes::class, LentaModel::class, Author::class], version = 6, exportSchema = false)
+@Database(entities = [AuthAttributes::class, LentaItemEntity::class, Author::class], version = 6, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun authDao(): AuthDao

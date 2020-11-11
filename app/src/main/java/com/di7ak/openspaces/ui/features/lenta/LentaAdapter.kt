@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.fromHtml
@@ -20,14 +21,14 @@ class LentaAdapter(private val listener: LentaItemListener) :
     RecyclerView.Adapter<LentaViewHolder>() {
 
     interface LentaItemListener {
-        fun onClickedItem(view: View, item: LentaModel)
-        fun onClickedLike(view: View, item: LentaModel)
-        fun onClickedDislike(view: View, item: LentaModel)
+        fun onClickedItem(view: View, item: LentaItemEntity)
+        fun onClickedLike(view: View, item: LentaItemEntity)
+        fun onClickedDislike(view: View, item: LentaItemEntity)
     }
 
-    private val items = ArrayList<LentaModel>()
+    private val items = ArrayList<LentaItemEntity>()
 
-    fun setItems(items: ArrayList<LentaModel>) {
+    fun setItems(items: ArrayList<LentaItemEntity>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
@@ -50,7 +51,7 @@ class LentaViewHolder(
     private val listener: LentaAdapter.LentaItemListener
 ) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener {
-    private lateinit var event: LentaModel
+    private lateinit var event: LentaItemEntity
     private var animationVoteUp: Animation
     private var animationVoteDown: Animation
 
@@ -65,7 +66,7 @@ class LentaViewHolder(
     }
 
     @SuppressLint("SetTextI18n")
-    fun bind(item: LentaModel) {
+    fun bind(item: LentaItemEntity) {
         this.event = item
         val context = itemBinding.root.context
 

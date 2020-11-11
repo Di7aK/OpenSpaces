@@ -1,20 +1,20 @@
 package com.di7ak.openspaces.data.local
 
 import androidx.room.*
-import com.di7ak.openspaces.ui.features.lenta.LentaModel
+import com.di7ak.openspaces.data.entities.LentaItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LentaDao {
     @Query("SELECT * FROM lenta WHERE userId = :userId ORDER BY id DESC")
-    fun getEvents(userId: Int) : Flow<List<LentaModel>>
+    fun getEvents(userId: Int) : Flow<List<LentaItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(item: LentaModel)
+    suspend fun insert(item: LentaItemEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(items: List<LentaModel>)
+    suspend fun insertAll(items: List<LentaItemEntity>)
 
     @Delete
-    fun delete(item: LentaModel)
+    fun delete(item: LentaItemEntity)
 }
