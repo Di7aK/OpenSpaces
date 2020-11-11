@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.ui.features.lenta
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.fromHtml
-import com.di7ak.openspaces.utils.setColorFilter
 
 class LentaAdapter(private val listener: LentaItemListener) :
     RecyclerView.Adapter<LentaViewHolder>() {
@@ -54,6 +54,10 @@ class LentaViewHolder(
     private lateinit var event: LentaItemEntity
     private var animationVoteUp: Animation
     private var animationVoteDown: Animation
+    private var drawableLikeColored: Drawable
+    private var drawableDislikeColored: Drawable
+    private var drawableLike: Drawable
+    private var drawableDislike: Drawable
 
     init {
         itemBinding.itemContainer.setOnClickListener(this)
@@ -63,12 +67,16 @@ class LentaViewHolder(
         val context = itemBinding.root.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
         animationVoteDown = AnimationUtils.loadAnimation(context, R.anim.vote_down)
+
+        drawableDislike = ContextCompat.getDrawable(context, R.drawable.thumb_down_outline)!!
+        drawableDislikeColored = ContextCompat.getDrawable(context, R.drawable.thumb_down_colored)!!
+        drawableLike = ContextCompat.getDrawable(context, R.drawable.thumb_up_outline)!!
+        drawableLikeColored = ContextCompat.getDrawable(context, R.drawable.thumb_up_colored)!!
     }
 
     @SuppressLint("SetTextI18n")
     fun bind(item: LentaItemEntity) {
         this.event = item
-        val context = itemBinding.root.context
 
         itemBinding.name.text = item.author?.name ?: ""
         itemBinding.title.text = item.title.fromHtml()
@@ -79,14 +87,14 @@ class LentaViewHolder(
         itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date)
 
         if(event.liked) {
-            itemBinding.btnLike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorLike))
+            itemBinding.btnLike.setImageDrawable(drawableLikeColored)
         } else {
-            itemBinding.btnLike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
+            itemBinding.btnLike.setImageDrawable(drawableLike)
         }
         if(event.disliked) {
-            itemBinding.btnDislike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.colorDislike))
+            itemBinding.btnDislike.setImageDrawable(drawableDislikeColored)
         } else {
-            itemBinding.btnDislike.drawable.setColorFilter(ContextCompat.getColor(context, R.color.post_button_tint))
+            itemBinding.btnDislike.setImageDrawable(drawableDislike)
         }
 
         item.author?.profileImage?.let { url ->
