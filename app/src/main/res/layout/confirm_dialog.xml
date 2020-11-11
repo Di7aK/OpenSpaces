@@ -21,7 +21,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
-                tools:src="@drawable/ic_home_black_24dp"
+                tools:src="@drawable/account_remove_outline"
                 android:contentDescription="@string/captcha_image_description" />
 
             <TextView
