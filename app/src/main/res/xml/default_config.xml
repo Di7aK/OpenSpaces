@@ -106,7 +106,8 @@
             "items[0].userWidget.siteLink.user_name",
             "items[0].userWidget.name",
             "author_widget.siteLink.user_name",
-            "commWidget.name"
+            "commWidget.name",
+            "items[0].channel_name.name"
             ]
             }
             }
