@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="5dp"
     android:layout_marginTop="6dp"
-    android:layout_marginBottom="6dp"
-    app:contentPadding="10dp">
+    android:layout_marginBottom="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="?attr/selectableItemBackground">
+        android:src="?attr/selectableItemBackground"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
             tools:src="@drawable/account_plus_outline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -69,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:src="@drawable/play_circle_outline"
-            app:tint="@color/post_button_tint"
+            android:layout_marginStart="10dp"
             app:layout_constraintEnd_toEndOf="@id/mainAttach"
             app:layout_constraintStart_toStartOf="@id/mainAttach"
             app:layout_constraintTop_toTopOf="@+id/mainAttach"
@@ -80,9 +82,9 @@
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:textSize="16sp"
+            android:layout_marginStart="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mainAttach"
@@ -94,7 +96,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
             android:layout_marginTop="6dp"
@@ -167,6 +169,7 @@
             app:layout_constraintTop_toTopOf="@+id/name"
             app:layout_constraintBottom_toBottomOf="@+id/name"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
             tools:text="45" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
