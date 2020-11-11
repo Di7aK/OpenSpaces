@@ -31,9 +31,7 @@ data class Author(
 )
 
 
-@Entity(
-    tableName = "attachments"
-)
+@Entity(tableName = "attachments")
 data class Attach(
     @ColumnInfo(name = "attach_id")
     @PrimaryKey var id: Long? = 0,
