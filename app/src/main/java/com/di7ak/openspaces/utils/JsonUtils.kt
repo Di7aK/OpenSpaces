@@ -86,7 +86,10 @@ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
                 value.toInt() as Type
             }
             type.isAssignableFrom(String::class.java) -> {
-                value as Type
+                if(value == "null") {
+                    return "" as Type
+                }
+                else value as Type
             }
             else -> {
                 Log.d("lol", value)
