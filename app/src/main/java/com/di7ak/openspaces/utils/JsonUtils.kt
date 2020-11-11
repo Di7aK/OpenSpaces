@@ -1,19 +1,14 @@
 package com.di7ak.openspaces.utils
 
 import android.util.Log
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.jayway.jsonpath.Configuration
-import com.jayway.jsonpath.JsonPath
-import com.jayway.jsonpath.spi.json.GsonJsonProvider
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.ParameterizedType
+import java.util.regex.Pattern
 
-
-fun <T> String.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
+fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
     val result = clazz.newInstance()
-    val json = JsonPath.parse(this)
+
     clazz.declaredFields.forEach { field ->
         val name = field.name
 
@@ -24,15 +19,14 @@ fun <T> String.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                 val paths = data.getJSONArray("paths")
                 for (i in 0 until paths.length()) {
                     val path = paths.getString(i)
-                    val jsonPath = JsonPath.compile(path)
                     try {
-                        val value = json.read(jsonPath, field.type)
+                        val value = getValue(field.type, path)
                         field.isAccessible = true
                         field.set(result, value)
                         break
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        //Log.d("lol", e.toString())
+                        Log.d("lol", e.toString())
                     }
                 }
             } else if (type == "object") {
@@ -48,18 +42,16 @@ fun <T> String.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                 for (i in 0 until paths.length()) {
                     val path = paths.getString(i)
 
-                    val conf = Configuration.builder().jsonProvider(GsonJsonProvider()).build()
-                    val items = JsonPath.using(conf).parse(json).read<JsonArray>(path)
-                    //val items: JSONArray = json.read(path)
+                    val items = JSONArray(getValue(String::class.java, path))
                     for (j in 0 until paths.length()) {
-                        val item = items[j]
+                        val item = items.getJSONObject(j)
                         Log.d("lol", item.toString())
-                            val itemResult = item.toString().mapJsonTo(
-                                genericType::class.java,
-                                subMapperData
-                            )
+                        val itemResult = item.mapJsonTo(
+                            genericType::class.java,
+                            subMapperData
+                        )
                         Log.d("lol", "" + itemResult.toString())
-                            add(target, itemResult)
+                        add(target, itemResult)
                     }
                 }
                 field.isAccessible = true
@@ -70,6 +62,60 @@ fun <T> String.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
     return result
 }
 
+ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
+    val jsonPath = PathParser(path).parse()
+    var temp: JSONObject = this
+
+     fun getTypedValue(type: Class<Type>, value: String) : Type? {
+         return when {
+             type.isAssignableFrom(Long::class.java) -> {
+                 value.toLong() as Type
+             }
+             type.isAssignableFrom(Boolean::class.java) -> {
+                 value.toBoolean() as Type
+             }
+             type.isAssignableFrom(Int::class.java) -> {
+                 value.toInt() as Type
+             }
+             type.isAssignableFrom(String::class.java) -> {
+                 value as Type
+             }
+             else -> null
+         }
+     }
+
+    jsonPath.forEach {
+        when (it.type) {
+            PathParser.PathType.OBJECT -> {
+                temp = temp.getJSONObject(it.nodeName)
+            }
+            PathParser.PathType.VALUE -> {
+                val value = temp.getString(it.nodeName)
+                return getTypedValue(type,value)
+            }
+            PathParser.PathType.ARRAY_OBJECT -> {
+                var array = temp.getJSONArray(it.nodeName)
+                val indexes = it.indexes
+                val last = indexes.removeLast()
+                for(j in indexes.indices) {
+                    array = array.getJSONArray(indexes[j])
+                }
+                temp = array.getJSONObject(last)
+            }
+            PathParser.PathType.ARRAY_VALUE -> {
+                var array = temp.getJSONArray(it.nodeName)
+                val last = it.indexes.removeLast()
+                for(j in it.indexes.indices) {
+                    array = array.getJSONArray(it.indexes[j])
+                }
+                val value = array.getString(last)
+                return getTypedValue(type,value)
+            }
+        }
+    }
+    return null
+}
+
 private fun <Type> getGenericList(type: Class<Type>): MutableList<Type> {
     return mutableListOf()
 }
@@ -77,49 +123,49 @@ private fun <Type> getGenericList(type: Class<Type>): MutableList<Type> {
 private fun <Type> add(target: MutableList<Type>, value: Any) {
     target.add(value as Type)
 }
-/*
-fun <T> String.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
-    val result = clazz.newInstance()
-    val json = JsonPath.parse(this)
-    clazz.declaredFields.forEach { field ->
-        val name = field.name
 
-        if (mapperData.has(name)) {
-            val gen = field.genericType.toString()
+class PathParser(path: String) {
+    private val indexPattern = Pattern.compile("\\[([0-9]+)\\]")
+    private val segments = path.split(".")
+    private var current = 0
 
-            if (gen.startsWith("class") && !gen.startsWith("class java.lang.")) {
-                val subMapperData = mapperData.getJSONObject(name)
-                val value = this.mapJsonTo(field.type, subMapperData)
-                field.isAccessible = true
-                field.set(result, value)
-            } else if (gen.startsWith("java.util.List")) {
-                val type = (field.genericType as ParameterizedType).actualTypeArguments[0]
-                val list = field::class.java.newInstance()
-                val array = json.read(field.type)
-            } else {
-                Log.d("lol", "${field.name} $gen")
-                val paths = mapperData.getJSONArray(name)
-                for (i in 0 until paths.length()) {
-                    val path = paths.getString(i)
-                    val jsonPath = JsonPath.compile(path)
+    fun parse(): List<Path> {
+        val result = mutableListOf<Path>()
+        while (hasNext()) result.add(next())
+        return result
+    }
 
-                    try {
-                        val value = json.read(jsonPath, field.type)
-                        field.isAccessible = true
-                        field.set(result, value)
-                        break
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        Log.d("lol", e.toString())
-                    }
-                }
-            }
+    fun hasNext() = current < segments.size
+
+    fun next(): Path {
+        var type: PathType? = null
+        val path = segments[current]
+        current++
+
+        val matcher = indexPattern.matcher(path)
+        val indexes = mutableListOf<Int>()
+        while (matcher.find()) {
+            type = if(hasNext()) PathType.ARRAY_OBJECT
+            else PathType.ARRAY_VALUE
+            val index =  matcher.group(1)?.toIntOrNull() ?: 0
+            indexes.add(index)
+        }
+        val nodeName = path.substringBefore("[")
+        if(type == null) {
+            type = if (hasNext()) PathType.OBJECT
+            else PathType.VALUE
         }
 
+        return Path(type, nodeName, indexes)
     }
-    return result
-}*/
 
-class test() {
-    var id: Int = 0
+    data class Path(
+        val type: PathType = PathType.VALUE,
+        val nodeName: String = "",
+        val indexes: MutableList<Int> = mutableListOf()
+    )
+
+    enum class PathType {
+        VALUE, ARRAY_OBJECT, ARRAY_VALUE, OBJECT
+    }
 }

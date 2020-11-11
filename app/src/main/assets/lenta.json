@@ -2,70 +2,70 @@
   "id": {
     "type": "value",
     "paths": [
-      "$.items[0].id",
-      "$.items[0].nid"
+      "items[0].id",
+      "items[0].nid"
     ]
   },
   "type": {
     "type": "value",
     "paths": [
-      "$.items[0].type"
+      "items[0].type"
     ]
   },
   "title": {
     "type": "value",
     "paths": [
-      "$.items[0].header",
-      "$.items[0].subject"
+      "items[0].header",
+      "items[0].subject"
     ]
   },
   "body": {
     "type": "value",
     "paths": [
-      "$.items[0].description",
-      "$.items[0].subject"
+      "items[0].description",
+      "items[0].subject"
     ]
   },
   "likes": {
     "type": "value",
     "paths": [
-      "$.items[0].likes"
+      "items[0].likes"
     ]
   },
   "liked": {
     "type": "value",
     "paths": [
-      "$.items[0].liked"
+      "items[0].liked"
     ]
   },
   "dislikes": {
     "type": "value",
     "paths": [
-      "$.items[0].dislikes"
+      "items[0].dislikes"
     ]
   },
   "disliked": {
     "type": "value",
     "paths": [
-      "$.items[0].disliked"
+      "items[0].disliked"
     ]
   },
   "date": {
     "type": "value",
     "paths": [
-      "$.sort_value"
+      "sort_value"
     ]
   },
   "commentsCount": {
     "type": "value",
     "paths": [
-      "$.items[0].comments"
+      "items[0].comments"
     ]
   },
   "eventType": {
     "type": "value",
     "paths": [
-      "$.event_type"
+      "event_type"
     ]
   },
   "author": {
@@ -74,38 +74,24 @@
       "id": {
         "type": "value",
         "paths": [
-          "$.items[0].userWidget.siteLink.id",
-          "$.author_widget.siteLink.id",
-          "$.author_widget.id"
+          "items[0].userWidget.siteLink.id",
+          "author_widget.siteLink.id",
+          "author_widget.id"
         ]
       },
       "profileImage": {
         "type": "value",
         "paths": [
-          "$.author_avatar.previewURL"
+          "author_avatar.previewURL"
         ]
       },
       "name": {
         "type": "value",
         "paths": [
-          "$.items[0].userWidget.siteLink.user_name",
-          "$.items[0].userWidget.name",
-          "$.author_widget.siteLink.user_name",
-          "$.commWidget.name"
-        ]
-      }
-    }
-  },
-  "test": {
-    "type": "array",
-    "paths": [
-      "$.items"
-    ],
-    "map": {
-      "id": {
-        "type": "value",
-        "paths": [
-          "$.id"
+          "items[0].userWidget.siteLink.user_name",
+          "items[0].userWidget.name",
+          "author_widget.siteLink.user_name",
+          "commWidget.name"
         ]
       }
     }

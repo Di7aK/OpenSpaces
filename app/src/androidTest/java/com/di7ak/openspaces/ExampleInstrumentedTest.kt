@@ -2,9 +2,6 @@ package com.di7ak.openspaces
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.di7ak.openspaces.utils.mapJsonTo
-import com.di7ak.openspaces.utils.test
-import org.json.JSONObject
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,15 +17,43 @@ import org.junit.Assert.*
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        val json = """
-            {"lol":{"kek":15}}
+        /*val jsonString = """
+            {
+                "id": 87,
+                "val1": ["kjhj"],
+                "val2": {
+                    "val1": ["123", "456"],
+                    "val2": [{
+                        "kkk":"123"
+                    },
+                    {
+                        "kkk":"456"
+                    }]
+                }
+            }
         """.trimIndent()
-        val mapper = """
-            {"id": ["$.lol.kek.k", "$.lol.kek"]}
+        val jsonPath = """
+            {
+                "id": {
+                    "type": "value",
+                    "paths": ["id"]
+                },
+                "val2": {
+                    "type": "array",
+                    "paths": ["val2.val2"],
+                    "map": {
+                        "kkk": {
+                            "type": "value",
+                            "paths": ["kkk"]
+                        }
+                    }
+                }
+            }
         """.trimIndent()
-        val mapperObj = JSONObject(mapper)
-        val result = json.mapJsonTo(test::class.java, mapperObj)
-        println(result)
+        val mapperData = JSONObject(jsonPath)
+        val json = JSONObject(jsonString)
+        val result = json.mapJsonTo(test::class.java, mapperData)
+        System.out.println(result)*/
 
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.di7ak.openspaces", appContext.packageName)

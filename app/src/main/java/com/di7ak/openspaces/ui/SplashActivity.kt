@@ -21,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
         val remoteConfig = Firebase.remoteConfig
         remoteConfig.setDefaultsAsync(R.xml.default_config)
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
+            minimumFetchIntervalInSeconds = 30//3600
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.fetchAndActivate()

@@ -8,7 +8,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +60,7 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
     }
 
     private fun setupObservers() {
-        viewModel.sessions.observe(viewLifecycleOwner, Observer {
+        viewModel.sessions.observe(viewLifecycleOwner, {
             adapter.setItems(ArrayList(it))
         })
     }
