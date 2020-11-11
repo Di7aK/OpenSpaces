@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_IMAGE
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.ItemCommentBinding
@@ -130,9 +131,10 @@ class CommentViewHolder(
                 listener.onClickedAttach(it, attach)
             }
             itemBinding.play.isGone = attach.type != 25
+            val url = if(attach.type == ATTACH_TYPE_INTERNAL_IMAGE) attach.url else attach.previewUrl
             itemBinding.mainAttach.isGone = false
             Glide.with(itemBinding.root)
-                .load(attach.previewUrl)
+                .load(url)
                 .into(itemBinding.mainAttach)
         }
 
