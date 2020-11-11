@@ -8,6 +8,7 @@ import com.di7ak.openspaces.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
     private static boolean isToday(Long milliseconds) {
@@ -97,7 +98,9 @@ public class DateUtils {
         return left / (1000 * 60);
     }
 
-    public static String formatAdverts(Context context, Long time) {
+    public static String formatAdverts(Context context, Long time, TimeUnit timeUnit) {
+        if(TimeUnit.SECONDS == timeUnit) time *= 1000;
+
         long minutes = getMinutesRight(time);
         long hours = minutes / 60;
         long days = hours / 24;
@@ -147,7 +150,7 @@ public class DateUtils {
         } else return formatShort(time);
     }
 
-    public static String formatUser(Context context, Long time) {
-        return context.getString(R.string.last_visit, formatAdverts(context, time).toLowerCase());
+    public static String formatUser(Context context, Long time, TimeUnit timeUnit) {
+        return context.getString(R.string.last_visit, formatAdverts(context, time, timeUnit).toLowerCase());
     }
 }

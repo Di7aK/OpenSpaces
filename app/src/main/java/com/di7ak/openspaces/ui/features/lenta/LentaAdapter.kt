@@ -16,6 +16,7 @@ import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.fromHtml
+import java.util.concurrent.TimeUnit
 
 class LentaAdapter(private val listener: LentaItemListener) :
     RecyclerView.Adapter<LentaViewHolder>() {
@@ -88,7 +89,7 @@ class LentaViewHolder(
         itemBinding.likes.text = item.likes.toString()
         itemBinding.dislikes.text = item.dislikes.toString()
         itemBinding.comments.text = item.commentsCount.toString()
-        itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date)
+        itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
 
         if(event.liked) {
             itemBinding.btnLike.setImageDrawable(drawableLikeColored)
