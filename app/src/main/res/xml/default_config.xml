@@ -135,7 +135,8 @@
             "url": {
             "type": "value",
             "paths": [
-            "attach.downloadLinkSSL"
+            "attach.downloadLinkSSL",
+            "attach.preview.downloadLinkSSL"
             ]
             },
             "previewUrl": {
