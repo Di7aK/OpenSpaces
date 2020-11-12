@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,7 +69,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
 
         binding.items.addOnScrollToBottomListener(2) {
-            if(viewModel.events.value?.status != Resource.Status.LOADING) {
+            if(viewModel.events.value?.status == Resource.Status.SUCCESS) {
                 viewModel.fetchNext()
             }
         }
