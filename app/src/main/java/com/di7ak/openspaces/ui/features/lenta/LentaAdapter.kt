@@ -6,20 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
-import com.di7ak.openspaces.databinding.ItemLentaBinding
-import com.di7ak.openspaces.databinding.ItemLentaImageBinding
-import com.di7ak.openspaces.databinding.ItemLentaWithImageBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.createDrawableCallback
@@ -32,7 +30,7 @@ class LentaAdapter(
     private val scope: CoroutineScope,
     private val listener: LentaItemListener
 ) :
-    RecyclerView.Adapter<LentaViewHolder<ViewBinding>>() {
+    RecyclerView.Adapter<LentaViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_POST = 0
@@ -59,64 +57,40 @@ class LentaAdapter(
         if (this != -1) notifyItemChanged(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LentaViewHolder<ViewBinding> {
-        return when (viewType) {
-            VIEW_TYPE_POST_WITH_IMAGE -> {
-                val binding: ItemLentaWithImageBinding =
-                    ItemLentaWithImageBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                LentaViewHolder(binding, imageGetter, scope, listener)
-            }
-            VIEW_TYPE_POST_IMAGE -> {
-                val binding: ItemLentaImageBinding =
-                    ItemLentaImageBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                LentaViewHolder(binding, imageGetter, scope, listener)
-            }
-            else -> {
-                val binding: ItemLentaBinding =
-                    ItemLentaBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                LentaViewHolder(binding, imageGetter, scope, listener)
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LentaViewHolder {
+        val layoutRes = when (viewType) {
+            VIEW_TYPE_POST_WITH_IMAGE -> R.layout.item_lenta_with_image
+            VIEW_TYPE_POST_IMAGE -> R.layout.item_lenta_image
+            else -> R.layout.item_lenta
         }
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(layoutRes, parent, false)
+        return LentaViewHolder(view, imageGetter, scope, listener)
     }
 
     override fun getItemViewType(position: Int): Int {
         val item = items[position]
-        return if(item.attachments.isNotEmpty() && item.body.isEmpty()) {
+        return if (item.attachments.isNotEmpty() && item.body.isEmpty()) {
             VIEW_TYPE_POST_IMAGE
-        } else if(item.attachments.isNotEmpty() && item.body.isNotEmpty()) {
+        } else if (item.attachments.isNotEmpty() && item.body.isNotEmpty()) {
             VIEW_TYPE_POST_WITH_IMAGE
-        } else if(item.attachments.isEmpty()) {
+        } else if (item.attachments.isEmpty()) {
             VIEW_TYPE_POST
         } else return super.getItemViewType(position)
     }
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: LentaViewHolder<ViewBinding>, position: Int) =
+    override fun onBindViewHolder(holder: LentaViewHolder, position: Int) =
         holder.bind(items[position])
 }
 
-//чото тут придумать надо чтобы не дублить эту хуйню
-//чото тут придумать надо чтобы не дублить эту хуйню
-//чото тут придумать надо чтобы не дублить эту хуйню
-class LentaViewHolder<T : ViewBinding>(
-    private val itemBinding: T,
+class LentaViewHolder(
+    private val view: View,
     private val imageGetter: HtmlImageGetter,
     private val scope: CoroutineScope,
     private val listener: LentaAdapter.LentaItemListener
-) : RecyclerView.ViewHolder(itemBinding.root),
+) : RecyclerView.ViewHolder(view),
     View.OnClickListener {
     private lateinit var event: LentaItemEntity
     private var animationVoteUp: Animation
@@ -127,25 +101,27 @@ class LentaViewHolder<T : ViewBinding>(
     private var drawableDislike: Drawable
     private var timePlaceholder: String
 
-    init {
-        if(itemBinding is ItemLentaBinding) {
-            itemBinding.itemContainer.setOnClickListener(this)
-            itemBinding.btnLike.setOnClickListener(this)
-            itemBinding.btnDislike.setOnClickListener(this)
-            itemBinding.btnComments.setOnClickListener(this)
-        } else if(itemBinding is ItemLentaImageBinding) {
-            itemBinding.itemContainer.setOnClickListener(this)
-            itemBinding.btnLike.setOnClickListener(this)
-            itemBinding.btnDislike.setOnClickListener(this)
-            itemBinding.btnComments.setOnClickListener(this)
-        } else if(itemBinding is ItemLentaWithImageBinding) {
-            itemBinding.itemContainer.setOnClickListener(this)
-            itemBinding.btnLike.setOnClickListener(this)
-            itemBinding.btnDislike.setOnClickListener(this)
-            itemBinding.btnComments.setOnClickListener(this)
-        }
+    private val name = view.findViewById<TextView>(R.id.name)!!
+    private val title = view.findViewById<TextView>(R.id.title)!!
+    private val content = view.findViewById<TextView>(R.id.content)!!
+    private val likes = view.findViewById<TextView>(R.id.likes)!!
+    private val dislikes = view.findViewById<TextView>(R.id.dislikes)!!
+    private val comments = view.findViewById<TextView>(R.id.comments)!!
+    private val date = view.findViewById<TextView>(R.id.date)!!
+    private val btnLike = view.findViewById<ImageView>(R.id.btnLike)!!
+    private val btnDislike = view.findViewById<ImageView>(R.id.btnDislike)!!
+    private val mainAttach = view.findViewById<ImageView>(R.id.mainAttach)!!
+    private val play = view.findViewById<ImageView>(R.id.play)!!
+    private val image = view.findViewById<ImageView>(R.id.image)!!
+    private val itemContainer = view.findViewById<View>(R.id.item_container)!!
 
-        val context = itemBinding.root.context
+    init {
+        view.findViewById<View>(R.id.item_container).setOnClickListener(this)
+        view.findViewById<View>(R.id.btnLike).setOnClickListener(this)
+        view.findViewById<View>(R.id.btnDislike).setOnClickListener(this)
+        view.findViewById<View>(R.id.btnComments).setOnClickListener(this)
+
+        val context = view.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
         animationVoteDown = AnimationUtils.loadAnimation(context, R.anim.vote_down)
 
@@ -161,180 +137,62 @@ class LentaViewHolder<T : ViewBinding>(
     fun bind(item: LentaItemEntity) {
         this.event = item
 
-        if(itemBinding is ItemLentaBinding) {
-            itemBinding.name.text = item.author?.name ?: ""
-            item.title.fromHtml(scope, imageGetter, {
-                itemBinding.title.text = it
-            }, itemBinding.title.createDrawableCallback())
-            item.body.fromHtml(scope, imageGetter, {
-                itemBinding.content.text = it
-            }, itemBinding.content.createDrawableCallback())
-            itemBinding.likes.text = item.likes.toString()
-            itemBinding.dislikes.text = item.dislikes.toString()
-            itemBinding.comments.text = item.commentsCount.toString()
-            itemBinding.date.text =
-                timePlaceholder.format(
-                    DateUtils.formatAdverts(
-                        itemBinding.root.context,
-                        item.date,
-                        TimeUnit.SECONDS
-                    )
+        name.text = item.author?.name ?: ""
+        item.title.fromHtml(scope, imageGetter, {
+            title.text = it
+        }, title.createDrawableCallback())
+        item.body.fromHtml(scope, imageGetter, {
+            content.text = it
+        }, content.createDrawableCallback())
+        likes.text = item.likes.toString()
+        dislikes.text = item.dislikes.toString()
+        comments.text = item.commentsCount.toString()
+        date.text =
+            timePlaceholder.format(
+                DateUtils.formatAdverts(
+                    view.context,
+                    item.date,
+                    TimeUnit.SECONDS
                 )
+            )
 
-            itemBinding.content.isGone = item.body.isEmpty()
+        content.isGone = item.body.isEmpty()
 
-            if (event.liked) {
-                itemBinding.btnLike.setImageDrawable(drawableLikeColored)
-            } else {
-                itemBinding.btnLike.setImageDrawable(drawableLike)
-            }
-            if (event.disliked) {
-                itemBinding.btnDislike.setImageDrawable(drawableDislikeColored)
-            } else {
-                itemBinding.btnDislike.setImageDrawable(drawableDislike)
-            }
-
-            if (item.attachments.isEmpty()) {
-                itemBinding.mainAttach.isGone = true
-                itemBinding.play.isGone = true
-            } else {
-                val attach = item.attachments.first()
-                itemBinding.mainAttach.setOnClickListener {
-                    listener.onClickedAttach(it, attach)
-                }
-                itemBinding.play.isGone = attach.type != 25
-                itemBinding.mainAttach.isGone = false
-                Glide.with(itemBinding.root)
-                    .load(attach.previewUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(itemBinding.mainAttach)
-            }
-
-            item.author?.profileImage?.let { url ->
-                Glide.with(itemBinding.root)
-                    .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .transform(CircleCrop())
-                    .into(itemBinding.image)
-            }
-            ViewCompat.setTransitionName(itemBinding.itemContainer, item.id.toString())
-        } else if(itemBinding is ItemLentaWithImageBinding) {
-            itemBinding.name.text = item.author?.name ?: ""
-            item.title.fromHtml(scope, imageGetter, {
-                itemBinding.title.text = it
-            }, itemBinding.title.createDrawableCallback())
-            item.body.fromHtml(scope, imageGetter, {
-                itemBinding.content.text = it
-            }, itemBinding.content.createDrawableCallback())
-            itemBinding.likes.text = item.likes.toString()
-            itemBinding.dislikes.text = item.dislikes.toString()
-            itemBinding.comments.text = item.commentsCount.toString()
-            itemBinding.date.text =
-                timePlaceholder.format(
-                    DateUtils.formatAdverts(
-                        itemBinding.root.context,
-                        item.date,
-                        TimeUnit.SECONDS
-                    )
-                )
-
-            itemBinding.content.isGone = item.body.isEmpty()
-
-            if (event.liked) {
-                itemBinding.btnLike.setImageDrawable(drawableLikeColored)
-            } else {
-                itemBinding.btnLike.setImageDrawable(drawableLike)
-            }
-            if (event.disliked) {
-                itemBinding.btnDislike.setImageDrawable(drawableDislikeColored)
-            } else {
-                itemBinding.btnDislike.setImageDrawable(drawableDislike)
-            }
-
-            if (item.attachments.isEmpty()) {
-                itemBinding.mainAttach.isGone = true
-                itemBinding.play.isGone = true
-            } else {
-                val attach = item.attachments.first()
-                itemBinding.mainAttach.setOnClickListener {
-                    listener.onClickedAttach(it, attach)
-                }
-                itemBinding.play.isGone = attach.type != 25
-                itemBinding.mainAttach.isGone = false
-                Glide.with(itemBinding.root)
-                    .load(attach.previewUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(itemBinding.mainAttach)
-            }
-
-            item.author?.profileImage?.let { url ->
-                Glide.with(itemBinding.root)
-                    .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .transform(CircleCrop())
-                    .into(itemBinding.image)
-            }
-            ViewCompat.setTransitionName(itemBinding.itemContainer, item.id.toString())
+        if (event.liked) {
+            btnLike.setImageDrawable(drawableLikeColored)
         } else {
-            if(itemBinding is ItemLentaImageBinding) {
-                itemBinding.name.text = item.author?.name ?: ""
-                item.title.fromHtml(scope, imageGetter, {
-                    itemBinding.title.text = it
-                }, itemBinding.title.createDrawableCallback())
-                item.body.fromHtml(scope, imageGetter, {
-                    itemBinding.content.text = it
-                }, itemBinding.content.createDrawableCallback())
-                itemBinding.likes.text = item.likes.toString()
-                itemBinding.dislikes.text = item.dislikes.toString()
-                itemBinding.comments.text = item.commentsCount.toString()
-                itemBinding.date.text =
-                    timePlaceholder.format(
-                        DateUtils.formatAdverts(
-                            itemBinding.root.context,
-                            item.date,
-                            TimeUnit.SECONDS
-                        )
-                    )
-
-                itemBinding.content.isGone = item.body.isEmpty()
-
-                if (event.liked) {
-                    itemBinding.btnLike.setImageDrawable(drawableLikeColored)
-                } else {
-                    itemBinding.btnLike.setImageDrawable(drawableLike)
-                }
-                if (event.disliked) {
-                    itemBinding.btnDislike.setImageDrawable(drawableDislikeColored)
-                } else {
-                    itemBinding.btnDislike.setImageDrawable(drawableDislike)
-                }
-
-                if (item.attachments.isEmpty()) {
-                    itemBinding.mainAttach.isGone = true
-                    itemBinding.play.isGone = true
-                } else {
-                    val attach = item.attachments.first()
-                    itemBinding.mainAttach.setOnClickListener {
-                        listener.onClickedAttach(it, attach)
-                    }
-                    itemBinding.play.isGone = attach.type != 25
-                    itemBinding.mainAttach.isGone = false
-                    Glide.with(itemBinding.root)
-                        .load(attach.previewUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(itemBinding.mainAttach)
-                }
-
-                item.author?.profileImage?.let { url ->
-                    Glide.with(itemBinding.root)
-                        .load(url)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .transform(CircleCrop())
-                        .into(itemBinding.image)
-                }
-                ViewCompat.setTransitionName(itemBinding.itemContainer, item.id.toString())
-            }
+            btnLike.setImageDrawable(drawableLike)
         }
+        if (event.disliked) {
+            btnDislike.setImageDrawable(drawableDislikeColored)
+        } else {
+            btnDislike.setImageDrawable(drawableDislike)
+        }
+
+        if (item.attachments.isEmpty()) {
+            mainAttach.isGone = true
+            play.isGone = true
+        } else {
+            val attach = item.attachments.first()
+            mainAttach.setOnClickListener {
+                listener.onClickedAttach(it, attach)
+            }
+            play.isGone = attach.type != 25
+            mainAttach.isGone = false
+            Glide.with(view)
+                .load(attach.previewUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(mainAttach)
+        }
+
+        item.author?.profileImage?.let { url ->
+            Glide.with(view)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transform(CircleCrop())
+                .into(image)
+        }
+        ViewCompat.setTransitionName(itemContainer, item.id.toString())
     }
 
     override fun onClick(v: View) {
