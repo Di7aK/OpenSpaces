@@ -11,7 +11,8 @@ fun <T, A> performGetOperation(databaseQuery: () -> T,
     flow {
         emit(Resource.loading())
 
-        emit(Resource.success(databaseQuery.invoke()))
+        val saved = databaseQuery.invoke()
+        if(saved is List<*> && saved.isNotEmpty()) emit(Resource.success(saved))
 
         val responseStatus = networkCall.invoke()
         if (responseStatus.status == Resource.Status.SUCCESS) {
