@@ -145,5 +145,9 @@
   "code": {
     "type": "value",
     "paths": ["code"]
+  },
+  "captchaUrl": {
+    "type": "value",
+    "paths": ["captcha_url"]
   }
 }

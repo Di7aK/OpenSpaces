@@ -1,5 +1,6 @@
 package com.di7ak.openspaces.data.remote
 
+import com.di7ak.openspaces.data.converters.MapperName
 import com.di7ak.openspaces.data.entities.BaseEntity
 import retrofit2.Response
 import retrofit2.http.Field
@@ -7,6 +8,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface VoteService {
+    @MapperName("base_mapper")
     @FormUrlEncoded
     @POST("api/voting/like/")
     suspend fun like(
@@ -17,6 +19,7 @@ interface VoteService {
         @Field("Down") down: Int = 0
     ) : Response<BaseEntity>
 
+    @MapperName("base_mapper")
     @FormUrlEncoded
     @POST("api/voting/delete")
     suspend fun unlike(

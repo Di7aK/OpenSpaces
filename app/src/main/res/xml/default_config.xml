@@ -179,6 +179,10 @@
             "type": "value",
             "paths": ["code"]
             },
+            "captchaUrl": {
+            "type": "value",
+            "paths": ["captcha_url"]
+            },
             "attributes": {
             "type": "object",
             "map": {
@@ -385,6 +389,29 @@
             "code": {
             "type": "value",
             "paths": ["code"]
+            },
+            "captchaUrl": {
+            "type": "value",
+            "paths": ["captcha_url"]
+            }
+            }
+        </value>
+    </entry>
+    <entry>
+        <key>base_mapper</key>
+        <value>
+            {
+            "code": {
+            "type": "value",
+            "paths": [
+            "code"
+            ]
+            },
+            "captchaUrl": {
+            "type": "value",
+            "paths": [
+            "captcha_url"
+            ]
             }
             }
         </value>

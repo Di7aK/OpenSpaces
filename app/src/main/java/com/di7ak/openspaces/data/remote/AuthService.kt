@@ -1,5 +1,6 @@
 package com.di7ak.openspaces.data.remote
 
+import com.di7ak.openspaces.data.converters.MapperName
 import com.di7ak.openspaces.data.entities.AuthEntity
 import retrofit2.Response
 import retrofit2.http.Field
@@ -7,6 +8,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface AuthService {
+    @MapperName("auth_mapper")
     @FormUrlEncoded
     @POST("api/auth/")
     suspend fun login(
@@ -15,6 +17,7 @@ interface AuthService {
         @Field("code") code: String = "",
         @Field("method") method: String = "login") : Response<AuthEntity>
 
+    @MapperName("auth_mapper")
     @FormUrlEncoded
     @POST("api/auth/")
     suspend fun check(
