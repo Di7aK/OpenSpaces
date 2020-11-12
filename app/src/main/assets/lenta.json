@@ -47,7 +47,8 @@
       "commentUrl": {
         "type": "value",
         "paths": [
-          "items[0].commentUrl"
+          "items[0].commentUrl",
+          "items[0].comment_read_href"
         ]
       },
       "dislikes": {
@@ -112,7 +113,8 @@
       "attachments": {
         "type": "array",
         "paths": [
-          "items[0].MainAttachWidget.attachWidgets"
+          "items[0].MainAttachWidget.attachWidgets",
+          "items[0].MainAttachWidget.pictureWidgets"
         ],
         "map": {
           "id": {
