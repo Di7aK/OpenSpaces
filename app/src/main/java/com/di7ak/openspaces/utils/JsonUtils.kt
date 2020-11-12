@@ -9,7 +9,7 @@ import java.util.regex.Pattern
 fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
     val result = clazz.newInstance()
 
-    clazz.declaredFields.forEach { field ->
+    (clazz.superclass.declaredFields + clazz.declaredFields).forEach { field ->
         val name = field.name
 
         if (mapperData.has(name)) {
