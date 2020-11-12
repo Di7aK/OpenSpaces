@@ -121,7 +121,6 @@ class LentaViewHolder(
             Glide.with(itemBinding.root)
                 .load(attach.previewUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .onlyRetrieveFromCache(true)
                 .into(itemBinding.mainAttach)
         }
 
