@@ -59,7 +59,7 @@ class AuthFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
-        viewModel.auth.observe(viewLifecycleOwner, Observer {
+        viewModel.auth.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
