@@ -35,7 +35,6 @@ class LentaAdapter(
     companion object {
         private const val VIEW_TYPE_POST = 0
         private const val VIEW_TYPE_POST_WITH_IMAGE = 1
-        private const val VIEW_TYPE_POST_IMAGE = 2
     }
 
     interface LentaItemListener {
@@ -60,7 +59,6 @@ class LentaAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LentaViewHolder {
         val layoutRes = when (viewType) {
             VIEW_TYPE_POST_WITH_IMAGE -> R.layout.item_lenta_with_image
-            VIEW_TYPE_POST_IMAGE -> R.layout.item_lenta_image
             else -> R.layout.item_lenta
         }
         val inflater = LayoutInflater.from(parent.context)
@@ -70,13 +68,15 @@ class LentaAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val item = items[position]
-        return if (item.attachments.isNotEmpty() && item.body.isEmpty()) {
-            VIEW_TYPE_POST_IMAGE
-        } else if (item.attachments.isNotEmpty() && item.body.isNotEmpty()) {
-            VIEW_TYPE_POST_WITH_IMAGE
-        } else if (item.attachments.isEmpty()) {
-            VIEW_TYPE_POST
-        } else return super.getItemViewType(position)
+        return when {
+            item.body.isNotEmpty() -> {
+                VIEW_TYPE_POST_WITH_IMAGE
+            }
+            item.attachments.isEmpty() -> {
+                VIEW_TYPE_POST
+            }
+            else -> return super.getItemViewType(position)
+        }
     }
 
     fun isEmpty() = itemCount == 0
