@@ -42,16 +42,20 @@ fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                     val target = getGenericList(genericType::class.java)
                     val genericClass = Class.forName(genericType.toString().substringAfter(" "))
                     for (i in 0 until paths.length()) {
-                        val path = paths.getString(i)
+                        try {
+                            val path = paths.getString(i)
 
-                        val items = JSONArray(getValue(String::class.java, path))
-                        for (j in 0 until items.length()) {
-                            val item = items.getJSONObject(j)
-                            val itemResult = item.mapJsonTo(
-                                genericClass,
-                                subMapperData
-                            )
-                            add(target, itemResult)
+                            val items = JSONArray(getValue(String::class.java, path))
+                            for (j in 0 until items.length()) {
+                                val item = items.getJSONObject(j)
+                                val itemResult = item.mapJsonTo(
+                                    genericClass,
+                                    subMapperData
+                                )
+                                add(target, itemResult)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                     field.isAccessible = true
