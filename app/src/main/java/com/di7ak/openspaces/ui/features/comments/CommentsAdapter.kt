@@ -81,6 +81,7 @@ class CommentViewHolder(
     private var colorDislike: Int
     private var colorLike: Int
     private var colorNormal: Int
+    private var timePlaceholder: String
 
     init {
         itemBinding.itemContainer.setOnClickListener(this)
@@ -99,6 +100,8 @@ class CommentViewHolder(
         colorDislike = ContextCompat.getColor(context, R.color.colorDislike)
         colorLike = ContextCompat.getColor(context, R.color.colorLike)
         colorNormal = ContextCompat.getColor(context, R.color.post_button_tint)
+
+        timePlaceholder = context.getString(R.string.time_holder)
     }
 
     @SuppressLint("SetTextI18n")
@@ -110,7 +113,7 @@ class CommentViewHolder(
             itemBinding.content.text = it
         }, itemBinding.content.createDrawableCallback())
         itemBinding.reply.text = item.replyUserName
-        itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
+        itemBinding.date.text = timePlaceholder.format(DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS))
 
         val likes = (item.likes - item.dislikes)
         itemBinding.likes.text = likes.toString()

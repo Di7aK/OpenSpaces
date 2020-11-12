@@ -7,15 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
@@ -57,10 +53,6 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     private fun setupRecyclerView() {
         adapter = CommentsAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
-        val dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.comments_divider)!!)
-        binding.items.addItemDecoration(dividerItemDecoration)
 
         binding.items.layoutManager = LinearLayoutManager(requireContext())
         binding.items.adapter = adapter

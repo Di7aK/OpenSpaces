@@ -38,8 +38,7 @@
     <string name="advert_date_hour_ago_many">%1$s часов назад</string>
     <string name="advert_date_hour_ago_other">%1$s часа назад</string>
 
-    <string name="advert_date_day_yesterday">Вчера</string>
-    <string name="advert_date_long_ago">Давно</string>
+    <string name="advert_date_day_yesterday">Вчера %1$s</string>
 
     <string name="advert_date_minutes_left_one">%1$s минуту</string>
     <string name="advert_date_minutes_left_few">%1$s минуты</string>
@@ -56,5 +55,6 @@
     <string name="load_configuration">Load configuration</string>
     <string name="error_loading_configuration_file">Error loading configuration file</string>
 
-
+    <string name="time_holder">• %1$s</string>
+    <string name="reply">Reply</string>
 </resources>

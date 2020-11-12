@@ -81,7 +81,7 @@ public class DateUtils {
     }
 
     @SuppressLint("SimpleDateFormat")
-    public  static String formatMessage(Long time) {
+    public  static String formatTime(Long time) {
         String format = "HH:mm";
         Date date = new Date();
         date.setTime(time);
@@ -117,8 +117,7 @@ public class DateUtils {
             else if(hours % 10 == 0) return context.getString(R.string.advert_date_hour_ago_many, Long.toString(hours));
             else if(hours % 10 == 2 || hours % 10 == 3 || hours % 10 == 4) return context.getString(R.string.advert_date_hour_ago_few, Long.toString(hours));
             else return context.getString(R.string.advert_date_hour_ago_many, Long.toString(hours));
-        } else if(hours < 24 * 2) return context.getString(R.string.advert_date_day_yesterday);
-        else if(days > 31) return context.getString(R.string.advert_date_long_ago);
+        } else if(hours < 24 * 2) return context.getString(R.string.advert_date_day_yesterday, formatTime(time));
         else return formatShort(time);
     }
 
