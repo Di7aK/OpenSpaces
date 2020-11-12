@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.Html
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ class HtmlImageGetter(context: Context): Html.ImageGetter {
 
     override fun getDrawable(source: String?) = drawables[source]
 
-    fun preloadFromHtml(scope: CoroutineScope, html: String, callback: () -> Unit) {
+    fun preloadFromHtml(scope: CoroutineScope, html: String, callback: () -> Unit, drawableCallback: Drawable.Callback? = null) {
         scope.launch(Dispatchers.IO) {
             val matcher = pattern.matcher(html)
             while (matcher.find()) {
@@ -29,6 +30,10 @@ class HtmlImageGetter(context: Context): Html.ImageGetter {
                             val width = (intrinsicWidth * density).toInt()
                             val height = (intrinsicHeight * density).toInt()
                             setBounds(0, 0, width, height)
+                            if (this is GifDrawable) {
+                                start()
+                                this.callback = drawableCallback
+                            }
                         }
                     }
                 }

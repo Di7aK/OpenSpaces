@@ -1,5 +1,6 @@
 package com.di7ak.openspaces.utils
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
@@ -10,7 +11,8 @@ import kotlinx.coroutines.launch
 fun String?.fromHtml(
     scope: CoroutineScope,
     imageGetter: HtmlImageGetter,
-    callback: (Spanned) -> Unit
+    callback: (Spanned) -> Unit,
+    drawableCallback: Drawable.Callback? = null
 ) {
     fun setHtml() {
         val html = this ?: ""
@@ -25,7 +27,7 @@ fun String?.fromHtml(
     setHtml()
     if (this == null) return
 
-    imageGetter.preloadFromHtml(scope, this) {
+    imageGetter.preloadFromHtml(scope, this, {
         scope.launch(Dispatchers.Main) { setHtml() }
-    }
+    }, drawableCallback)
 }

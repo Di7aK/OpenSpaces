@@ -19,6 +19,7 @@ import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.HtmlImageGetter
+import com.di7ak.openspaces.utils.createDrawableCallback
 import com.di7ak.openspaces.utils.fromHtml
 import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.TimeUnit
@@ -96,12 +97,12 @@ class LentaViewHolder(
         this.event = item
 
         itemBinding.name.text = item.author?.name ?: ""
-        item.title.fromHtml(scope, imageGetter) {
+        item.title.fromHtml(scope, imageGetter, {
             itemBinding.title.text =it
-        }
-        item.body.fromHtml(scope, imageGetter) {
+        }, itemBinding.title.createDrawableCallback())
+        item.body.fromHtml(scope, imageGetter, {
             itemBinding.content.text = it
-        }
+        }, itemBinding.content.createDrawableCallback())
         itemBinding.likes.text = item.likes.toString()
         itemBinding.dislikes.text = item.dislikes.toString()
         itemBinding.comments.text = item.commentsCount.toString()

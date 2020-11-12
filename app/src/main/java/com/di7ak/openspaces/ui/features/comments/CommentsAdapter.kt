@@ -21,6 +21,7 @@ import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.ItemCommentBinding
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.HtmlImageGetter
+import com.di7ak.openspaces.utils.createDrawableCallback
 import com.di7ak.openspaces.utils.fromHtml
 import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.TimeUnit
@@ -105,9 +106,9 @@ class CommentViewHolder(
         this.comment = item
 
         itemBinding.name.text = item.author?.name ?: ""
-         item.body.fromHtml(scope, imageGetter) {
+        item.body.fromHtml(scope, imageGetter, {
             itemBinding.content.text = it
-        }
+        }, itemBinding.content.createDrawableCallback())
         itemBinding.reply.text = item.replyUserName
         itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
 
