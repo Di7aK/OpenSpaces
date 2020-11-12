@@ -5,64 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="5dp"
-    android:layout_marginTop="6dp"
-    android:layout_marginBottom="6dp">
+    app:cardElevation="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="?attr/selectableItemBackground"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            tools:src="@drawable/account_plus_outline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/date"
-            app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="TextView" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            tools:text="TextView" />
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/mainAttach"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/mask"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/image_post_mask"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/maskBottom"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/image_post_mask_bottom"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -78,6 +62,47 @@
             app:layout_constraintBottom_toBottomOf="@+id/mainAttach"
             tools:ignore="ContentDescription" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            tools:src="@drawable/account_plus_outline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:textSize="16sp"
+            android:textColor="#fff"
+            android:maxLines="1"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/date"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:textColor="#fff"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:text="TextView" />
+
         <TextView
             android:id="@+id/content"
             android:layout_width="0dp"
@@ -87,7 +112,7 @@
             android:layout_marginStart="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mainAttach"
+            app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="Content" />
 
         <ImageView
@@ -95,11 +120,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/content"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="15dp"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             android:src="@drawable/thumb_up_outline"
             android:contentDescription="@string/like"
             tools:ignore="UnusedAttribute" />
@@ -110,6 +135,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/btnLike"
             app:layout_constraintTop_toTopOf="@+id/btnLike"
+            android:textColor="#fff"
             app:layout_constraintBottom_toBottomOf="@+id/btnLike"
             android:layout_marginStart="5dp"
             tools:text="66" />
@@ -119,11 +145,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/likes"
-            app:layout_constraintTop_toBottomOf="@+id/content"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             android:src="@drawable/thumb_down_outline"
             android:contentDescription="@string/like" />
 
@@ -133,6 +159,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/btnDislike"
             app:layout_constraintTop_toTopOf="@+id/btnDislike"
+            android:textColor="#fff"
             app:layout_constraintBottom_toBottomOf="@+id/btnDislike"
             android:layout_marginStart="5dp"
             tools:text="45" />
@@ -142,11 +169,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/dislikes"
-            app:layout_constraintTop_toBottomOf="@+id/content"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="10dp"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
             app:tint="@color/post_button_tint"
             android:src="@drawable/comment_text_outline"
             android:contentDescription="@string/like" />
@@ -159,6 +186,7 @@
             app:layout_constraintTop_toTopOf="@+id/btnComments"
             app:layout_constraintBottom_toBottomOf="@+id/btnComments"
             android:layout_marginStart="5dp"
+            android:textColor="#fff"
             tools:text="45" />
 
         <TextView
@@ -170,6 +198,7 @@
             app:layout_constraintStart_toEndOf="@id/name"
             app:layout_constraintBottom_toBottomOf="@+id/name"
             android:layout_marginStart="5dp"
+            android:textColor="#fff"
             android:layout_marginEnd="10dp"
             tools:text="45" />
 
