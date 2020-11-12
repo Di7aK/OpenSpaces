@@ -69,7 +69,7 @@ class LentaAdapter(
     override fun getItemViewType(position: Int): Int {
         val item = items[position]
         return when {
-            item.body.isNotEmpty() -> {
+            item.attachments.isNotEmpty() -> {
                 VIEW_TYPE_POST_WITH_IMAGE
             }
             item.attachments.isEmpty() -> {
