@@ -13,6 +13,7 @@ interface LentaService {
     @FormUrlEncoded
     @POST("lenta/")
     suspend fun fetch(
-        @Field("sid") sid: String = ""
+        @Field("sid") sid: String = "",
+        @Field("P") page: Int = 0
     ) : Response<LentaEntity>
 }

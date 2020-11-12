@@ -14,7 +14,7 @@ class LentaRepository @Inject constructor(
     private val session: Session
 ) {
 
-    fun fetch() = performGetOperation(
+    fun fetch(page: Int) = performGetOperation(
         databaseQuery = {
             lentaDao.getEvents(session.current?.userId ?: 0).apply {
                 forEach {
@@ -23,7 +23,22 @@ class LentaRepository @Inject constructor(
             }
         },
         networkCall = {
-            remoteDataSource.fetch(session.current?.sid ?: "")
+            remoteDataSource.fetch(session.current?.sid ?: "", page)
+        },
+        saveCallResult = {
+            val signed = it.items.map { item ->
+                item.apply {
+                    userId = session.current?.userId ?: 0
+                    if (attachments.isNotEmpty()) attachmentsDao.insertAll(attachments)
+                }
+            }
+            lentaDao.insertAll(signed)
+        }
+    )
+
+    fun fetchNoStory(page: Int) = performGetOperation(
+        networkCall = {
+            remoteDataSource.fetch(session.current?.sid ?: "", page)
         },
         saveCallResult = {
             val signed = it.items.map { item ->

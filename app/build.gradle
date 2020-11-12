@@ -96,7 +96,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     //recyclerview and cardview
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha06'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //firebase

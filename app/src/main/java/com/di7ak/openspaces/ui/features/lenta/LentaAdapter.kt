@@ -79,6 +79,8 @@ class LentaAdapter(
         } else return super.getItemViewType(position)
     }
 
+    fun isEmpty() = itemCount == 0
+
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: LentaViewHolder, position: Int) =

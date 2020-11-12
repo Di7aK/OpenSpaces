@@ -1,6 +1,5 @@
 package com.di7ak.openspaces.utils
 
-import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.ParameterizedType
@@ -26,7 +25,6 @@ fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                         break
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        Log.d("lol", e.toString())
                     }
                 }
             } else if (type == "object") {
@@ -62,7 +60,6 @@ fun <T> JSONObject.mapJsonTo(clazz: Class<T>, mapperData: JSONObject): T {
                     field.set(result, target)
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Log.d("lol", "parse", e)
                 }
             }
         }
@@ -96,7 +93,6 @@ fun <Type> JSONObject.getValue(type: Class<Type>, path: String): Type? {
                 else value as Type
             }
             else -> {
-                Log.d("lol", value)
                 null
             }
         }

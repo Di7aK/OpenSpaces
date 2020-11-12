@@ -24,6 +24,7 @@ class LentaViewModel @ViewModelInject constructor(
     val events: LiveData<Resource<List<LentaItemEntity>>> = _events
     private val _updatedEvent = MutableLiveData<LentaItemEntity>()
     val updatedEvent: LiveData<LentaItemEntity> = _updatedEvent
+    private var currentPage = 0
 
     private val filter = arrayOf(
         EVENT_TYPE_DIARY,
@@ -84,14 +85,39 @@ class LentaViewModel @ViewModelInject constructor(
     }
 
     fun fetch() {
+        currentPage = 1
         viewModelScope.launch {
-            lentaRepository.fetch().collect {
+            lentaRepository.fetch(currentPage).collect {
                 when (it.status) {
                     Resource.Status.SUCCESS -> {
                         val events = it.data?.filter { event ->
                             event.eventType in filter
                         } ?: listOf()
+                        currentPage = 2
                         _events.postValue(Resource.success(events))
+                    }
+                    Resource.Status.ERROR -> {
+                        _events.postValue(Resource.error(it.message ?: ""))
+                    }
+                    Resource.Status.LOADING -> {
+                        _events.postValue(Resource.loading())
+                    }
+                }
+            }
+        }
+    }
+
+    fun fetchNext() {
+        val old = _events.value?.data ?: listOf()
+        viewModelScope.launch {
+            lentaRepository.fetchNoStory(currentPage).collect {
+                when (it.status) {
+                    Resource.Status.SUCCESS -> {
+                        val events = it.data?.items?.filter { event ->
+                            event.eventType in filter
+                        } ?: listOf()
+                        currentPage ++
+                        _events.postValue(Resource.success(old + events))
                     }
                     Resource.Status.ERROR -> {
                         _events.postValue(Resource.error(it.message ?: ""))

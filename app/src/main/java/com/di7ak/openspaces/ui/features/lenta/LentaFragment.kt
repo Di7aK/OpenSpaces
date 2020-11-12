@@ -4,16 +4,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
@@ -21,12 +20,13 @@ import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.Resource
+import com.di7ak.openspaces.utils.addOnScrollToBottomListener
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
@@ -35,6 +35,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     @Inject
     lateinit var imageGetter: HtmlImageGetter
     private lateinit var adapter: LentaAdapter
+    private val progressAdapter: ProgressAdapter = ProgressAdapter(::retry)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,15 +59,25 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         viewModel.fetch()
     }
 
+    private fun retry() {
+        if(adapter.isEmpty()) viewModel.fetch()
+        else viewModel.fetchNext()
+    }
+
     private fun setupRecyclerView() {
         adapter = LentaAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        binding.items.layoutManager = LinearLayoutManager(requireContext())
-        binding.items.adapter = adapter
+        binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
+
+        binding.items.addOnScrollToBottomListener(2) {
+            if(viewModel.events.value?.status != Resource.Status.LOADING) {
+                viewModel.fetchNext()
+            }
+        }
     }
 
     private fun setProgress(progress: Boolean) {
-        binding.progress.isGone = !progress
+        progressAdapter.isProgress = progress
     }
 
     private fun setupObservers() {
@@ -79,7 +90,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
 
                 Resource.Status.ERROR -> {
                     setProgress(false)
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+                    progressAdapter.isError = true
                 }
 
                 Resource.Status.LOADING -> {
