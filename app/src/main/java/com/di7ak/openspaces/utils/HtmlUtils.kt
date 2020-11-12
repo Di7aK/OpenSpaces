@@ -3,12 +3,29 @@ package com.di7ak.openspaces.utils
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-@Suppress("deprecation")
-fun String?.fromHtml() : Spanned {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(this ?: "", Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(this ?: "")
+fun String?.fromHtml(
+    scope: CoroutineScope,
+    imageGetter: HtmlImageGetter,
+    callback: (Spanned) -> Unit
+) {
+    fun setHtml() {
+        val html = this ?: ""
+        val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY, imageGetter, null)
+        } else {
+            @Suppress("deprecation")
+            Html.fromHtml(html, imageGetter, null)
+        }
+        callback(result)
+    }
+    setHtml()
+    if (this == null) return
+
+    imageGetter.preloadFromHtml(scope, this) {
+        scope.launch(Dispatchers.Main) { setHtml() }
     }
 }

@@ -18,10 +18,16 @@ import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.ItemLentaBinding
 import com.di7ak.openspaces.utils.DateUtils
+import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.fromHtml
+import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.TimeUnit
 
-class LentaAdapter(private val listener: LentaItemListener) :
+class LentaAdapter(
+    private val imageGetter: HtmlImageGetter,
+    private val scope: CoroutineScope,
+    private val listener: LentaItemListener
+) :
     RecyclerView.Adapter<LentaViewHolder>() {
 
     interface LentaItemListener {
@@ -40,13 +46,13 @@ class LentaAdapter(private val listener: LentaItemListener) :
     }
 
     fun updateItem(item: LentaItemEntity) = items.indexOf(item).apply {
-        if(this != -1) notifyItemChanged(this)
+        if (this != -1) notifyItemChanged(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LentaViewHolder {
         val binding: ItemLentaBinding =
             ItemLentaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return LentaViewHolder(binding, listener)
+        return LentaViewHolder(binding, imageGetter, scope, listener)
     }
 
     override fun getItemCount(): Int = items.size
@@ -57,6 +63,8 @@ class LentaAdapter(private val listener: LentaItemListener) :
 
 class LentaViewHolder(
     private val itemBinding: ItemLentaBinding,
+    private val imageGetter: HtmlImageGetter,
+    private val scope: CoroutineScope,
     private val listener: LentaAdapter.LentaItemListener
 ) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener {
@@ -88,27 +96,32 @@ class LentaViewHolder(
         this.event = item
 
         itemBinding.name.text = item.author?.name ?: ""
-        itemBinding.title.text = item.title.fromHtml()
-        itemBinding.content.text = item.body.fromHtml()
+        item.title.fromHtml(scope, imageGetter) {
+            itemBinding.title.text =it
+        }
+        item.body.fromHtml(scope, imageGetter) {
+            itemBinding.content.text = it
+        }
         itemBinding.likes.text = item.likes.toString()
         itemBinding.dislikes.text = item.dislikes.toString()
         itemBinding.comments.text = item.commentsCount.toString()
-        itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
+        itemBinding.date.text =
+            DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
 
         itemBinding.content.isGone = item.body.isEmpty()
 
-        if(event.liked) {
+        if (event.liked) {
             itemBinding.btnLike.setImageDrawable(drawableLikeColored)
         } else {
             itemBinding.btnLike.setImageDrawable(drawableLike)
         }
-        if(event.disliked) {
+        if (event.disliked) {
             itemBinding.btnDislike.setImageDrawable(drawableDislikeColored)
         } else {
             itemBinding.btnDislike.setImageDrawable(drawableDislike)
         }
 
-        if(item.attachments.isEmpty()) {
+        if (item.attachments.isEmpty()) {
             itemBinding.mainAttach.isGone = true
             itemBinding.play.isGone = true
         } else {

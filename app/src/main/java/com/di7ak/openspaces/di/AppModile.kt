@@ -5,6 +5,7 @@ import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.repository.AssetsRepository
 import com.di7ak.openspaces.data.converters.ConfigMapperConverterFactory
+import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -75,6 +76,10 @@ object AppModule {
     @Singleton
     @Provides
     fun provideConfig() = Firebase.remoteConfig
+
+    @Singleton
+    @Provides
+    fun provideImageGetter(@ApplicationContext context: Context) = HtmlImageGetter(context)
 
     @Singleton
     @Provides

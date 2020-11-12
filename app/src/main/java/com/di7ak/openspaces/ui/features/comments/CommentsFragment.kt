@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,15 +21,19 @@ import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.CommentsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     private var binding: CommentsFragmentBinding by autoCleared()
     private val viewModel: CommentViewModel by viewModels()
     private lateinit var adapter: CommentsAdapter
+    @Inject
+    lateinit var imageGetter: HtmlImageGetter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +55,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = CommentsAdapter(this)
+        adapter = CommentsAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         val dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)

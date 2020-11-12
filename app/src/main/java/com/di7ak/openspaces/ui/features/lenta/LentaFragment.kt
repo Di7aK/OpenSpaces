@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -20,15 +21,19 @@ import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private var binding: LentaFragmentBinding by autoCleared()
     private val viewModel: LentaViewModel by viewModels()
+    @Inject
+    lateinit var imageGetter: HtmlImageGetter
     private lateinit var adapter: LentaAdapter
 
     override fun onCreateView(
@@ -54,7 +59,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = LentaAdapter(this)
+        adapter = LentaAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.items.layoutManager = LinearLayoutManager(requireContext())
         binding.items.adapter = adapter

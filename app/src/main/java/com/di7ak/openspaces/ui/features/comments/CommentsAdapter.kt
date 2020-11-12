@@ -20,10 +20,16 @@ import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.ItemCommentBinding
 import com.di7ak.openspaces.utils.DateUtils
+import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.fromHtml
+import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.TimeUnit
 
-class CommentsAdapter(private val listener: CommentsItemListener) :
+class CommentsAdapter(
+    private val imageGetter: HtmlImageGetter,
+    private val scope: CoroutineScope,
+    private val listener: CommentsItemListener
+) :
     RecyclerView.Adapter<CommentViewHolder>() {
 
     interface CommentsItemListener {
@@ -48,7 +54,7 @@ class CommentsAdapter(private val listener: CommentsItemListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         val binding: ItemCommentBinding =
             ItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CommentViewHolder(binding, listener)
+        return CommentViewHolder(binding, imageGetter,scope, listener)
     }
 
     override fun getItemCount(): Int = items.size
@@ -59,6 +65,8 @@ class CommentsAdapter(private val listener: CommentsItemListener) :
 
 class CommentViewHolder(
     private val itemBinding: ItemCommentBinding,
+    private val imageGetter: HtmlImageGetter,
+    private val scope: CoroutineScope,
     private val listener: CommentsAdapter.CommentsItemListener
 ) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener {
@@ -97,7 +105,9 @@ class CommentViewHolder(
         this.comment = item
 
         itemBinding.name.text = item.author?.name ?: ""
-        itemBinding.content.text = item.body.fromHtml()
+         item.body.fromHtml(scope, imageGetter) {
+            itemBinding.content.text = it
+        }
         itemBinding.reply.text = item.replyUserName
         itemBinding.date.text = DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS)
 
