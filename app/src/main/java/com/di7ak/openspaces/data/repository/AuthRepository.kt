@@ -1,5 +1,6 @@
 package com.di7ak.openspaces.data.repository
 
+import com.di7ak.openspaces.data.CODE_SUCCESS
 import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.data.local.AuthDao
 import com.di7ak.openspaces.data.remote.AuthDataSource
@@ -15,14 +16,14 @@ class AuthRepository @Inject constructor(
     fun login(login: String, password: String, code: String) = performGetOperation(
         networkCall = { remoteDataSource.login(login = login, password = password, code = code) },
         saveCallResult = {
-            if(it.attributes != null) localDataSource.insert(it.attributes!!)
+            if(it.code == CODE_SUCCESS) localDataSource.insert(it.attributes!!)
         }
     )
 
     fun check(sid: String) = performGetOperation(
         networkCall = { remoteDataSource.check(sid = sid) },
         saveCallResult = {
-            if(it.attributes != null) localDataSource.insert(it.attributes!!)
+            if(it.code == CODE_SUCCESS) localDataSource.insert(it.attributes!!)
         }
     )
 
