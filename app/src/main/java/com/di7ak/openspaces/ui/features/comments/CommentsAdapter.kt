@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_IMAGE
@@ -135,12 +136,14 @@ class CommentViewHolder(
             itemBinding.mainAttach.isGone = false
             Glide.with(itemBinding.root)
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(itemBinding.mainAttach)
         }
 
         item.author?.profileImage?.let { url ->
             Glide.with(itemBinding.root)
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .transform(CircleCrop())
                 .into(itemBinding.image)
         }

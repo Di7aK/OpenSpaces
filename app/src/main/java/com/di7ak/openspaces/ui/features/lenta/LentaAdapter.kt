@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.entities.Attach
@@ -119,12 +120,15 @@ class LentaViewHolder(
             itemBinding.mainAttach.isGone = false
             Glide.with(itemBinding.root)
                 .load(attach.previewUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .onlyRetrieveFromCache(true)
                 .into(itemBinding.mainAttach)
         }
 
         item.author?.profileImage?.let { url ->
             Glide.with(itemBinding.root)
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .transform(CircleCrop())
                 .into(itemBinding.image)
         }
