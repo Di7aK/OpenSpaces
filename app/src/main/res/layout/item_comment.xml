@@ -59,7 +59,7 @@
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/name"
-        app:layout_constraintTop_toBottomOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/reply"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -144,9 +144,24 @@
         android:layout_marginEnd="10dp"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/name"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/menu"
         app:layout_constraintStart_toEndOf="@id/name"
         app:layout_constraintTop_toTopOf="@+id/name"
         tools:text="45" />
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/dots_vertical"
+        android:background="?selectableItemBackground"
+        app:tint="@color/post_button_tint"
+        app:layout_constraintBottom_toBottomOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/name"
+        tools:text="45" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
