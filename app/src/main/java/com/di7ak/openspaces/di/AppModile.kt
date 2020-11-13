@@ -5,6 +5,7 @@ import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.repository.AssetsRepository
 import com.di7ak.openspaces.data.converters.ConfigMapperConverterFactory
+import com.di7ak.openspaces.utils.AttachmentParser
 import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -84,4 +85,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideAssets(@ApplicationContext context: Context) = AssetsRepository(context)
+
+    @Singleton
+    @Provides
+    fun provideAttachmentParser(remoteConfig: FirebaseRemoteConfig) = AttachmentParser(remoteConfig)
 }

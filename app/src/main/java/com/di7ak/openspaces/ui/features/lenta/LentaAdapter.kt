@@ -16,17 +16,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.ATTACH_TYPE_EXTERNAL_VIDEO
+import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
-import com.di7ak.openspaces.utils.DateUtils
-import com.di7ak.openspaces.utils.HtmlImageGetter
-import com.di7ak.openspaces.utils.createDrawableCallback
-import com.di7ak.openspaces.utils.fromHtml
+import com.di7ak.openspaces.utils.*
 import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.TimeUnit
 
 class LentaAdapter(
     private val imageGetter: HtmlImageGetter,
+    private val attachmentParser: AttachmentParser,
     private val scope: CoroutineScope,
     private val listener: LentaItemListener
 ) :
@@ -63,7 +63,7 @@ class LentaAdapter(
         }
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(layoutRes, parent, false)
-        return LentaViewHolder(view, imageGetter, scope, listener)
+        return LentaViewHolder(view, imageGetter, attachmentParser, scope, listener)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -90,6 +90,7 @@ class LentaAdapter(
 class LentaViewHolder(
     private val view: View,
     private val imageGetter: HtmlImageGetter,
+    private val attachmentParser: AttachmentParser,
     private val scope: CoroutineScope,
     private val listener: LentaAdapter.LentaItemListener
 ) : RecyclerView.ViewHolder(view),
@@ -143,7 +144,9 @@ class LentaViewHolder(
         item.title.fromHtml(scope, imageGetter, {
             title.text = it
         }, title.createDrawableCallback())
-        item.body.fromHtml(scope, imageGetter, {
+
+        val parsed = attachmentParser.parse(item.body)
+        parsed.clearText.fromHtml(scope, imageGetter, {
             content.text = it
         }, content.createDrawableCallback())
         likes.text = item.likes.toString()
@@ -171,15 +174,16 @@ class LentaViewHolder(
             btnDislike.setImageDrawable(drawableDislike)
         }
 
-        if (item.attachments.isEmpty()) {
+        val attachments = item.attachments + parsed.attachments
+        if (attachments.isEmpty()) {
             mainAttach.isGone = true
             play.isGone = true
         } else {
-            val attach = item.attachments.first()
+            val attach = attachments.first()
             mainAttach.setOnClickListener {
                 listener.onClickedAttach(it, attach)
             }
-            play.isGone = attach.type != 25
+            play.isGone = attach.type != ATTACH_TYPE_INTERNAL_VIDEO && attach.type != ATTACH_TYPE_EXTERNAL_VIDEO
             mainAttach.isGone = false
             Glide.with(view)
                 .load(attach.previewUrl)

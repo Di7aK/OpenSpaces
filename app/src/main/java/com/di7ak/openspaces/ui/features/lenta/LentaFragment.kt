@@ -14,16 +14,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.ATTACH_TYPE_EXTERNAL_VIDEO
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
+import com.di7ak.openspaces.data.SOURCE_TYPE_YOUTUBE
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
-import com.di7ak.openspaces.utils.HtmlImageGetter
-import com.di7ak.openspaces.utils.Resource
-import com.di7ak.openspaces.utils.addOnScrollToBottomListener
-import com.di7ak.openspaces.utils.autoCleared
+import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,6 +32,10 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private val viewModel: LentaViewModel by viewModels()
     @Inject
     lateinit var imageGetter: HtmlImageGetter
+
+    @Inject
+    lateinit var attachmentParser: AttachmentParser
+
     private lateinit var adapter: LentaAdapter
     private val progressAdapter: ProgressAdapter = ProgressAdapter(::retry)
 
@@ -64,7 +67,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = LentaAdapter(imageGetter, lifecycleScope, this)
+        adapter = LentaAdapter(imageGetter, attachmentParser, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
 
@@ -119,6 +122,13 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         if(item.type == ATTACH_TYPE_INTERNAL_VIDEO) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(Uri.parse(item.url), "video/mp4")
+            startActivity(intent)
+        } else if(item.type == ATTACH_TYPE_EXTERNAL_VIDEO) {
+            val url = if(item.sourceType == SOURCE_TYPE_YOUTUBE) {
+                "https://www.youtube.com/watch?v=${item.videoId}"
+            } else ""
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
             startActivity(intent)
         }
     }

@@ -108,6 +108,24 @@
               "nid"
             ]
           },
+          "external": {
+            "type": "value",
+            "paths": [
+              "attach.external_video"
+            ]
+          },
+          "videoId": {
+            "type": "value",
+            "paths": [
+              "attach.video_id"
+            ]
+          },
+          "sourceType": {
+            "type": "value",
+            "paths": [
+              "attach.preview.player.externalVideo.source_type"
+            ]
+          },
           "url": {
             "type": "value",
             "paths": [

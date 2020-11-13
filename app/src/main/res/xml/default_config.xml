@@ -139,6 +139,24 @@
             "attach.preview.downloadLinkSSL"
             ]
             },
+            "external": {
+            "type": "value",
+            "paths": [
+            "attach.external_video"
+            ]
+            },
+            "videoId": {
+            "type": "value",
+            "paths": [
+            "attach.video_id"
+            ]
+            },
+            "sourceType": {
+            "type": "value",
+            "paths": [
+            "attach.preview.player.externalVideo.source_type"
+            ]
+            },
             "previewUrl": {
             "type": "value",
             "paths": [
@@ -355,6 +373,24 @@
             "nid"
             ]
             },
+            "external": {
+            "type": "value",
+            "paths": [
+            "attach.external_video"
+            ]
+            },
+            "videoId": {
+            "type": "value",
+            "paths": [
+            "attach.video_id"
+            ]
+            },
+            "sourceType": {
+            "type": "value",
+            "paths": [
+            "attach.preview.player.externalVideo.source_type"
+            ]
+            },
             "url": {
             "type": "value",
             "paths": [
@@ -414,6 +450,68 @@
             "type": "value",
             "paths": [
             "captcha_url"
+            ]
+            }
+            }
+        </value>
+    </entry>
+    <entry>
+        <key>attach_mapper</key>
+        <value>
+            {
+            "id": {
+            "type": "value",
+            "paths": [
+            "attach.nid"
+            ]
+            },
+            "url": {
+            "type": "value",
+            "paths": [
+            "attach.downloadLinkSSL",
+            "attach.preview.downloadLinkSSL"
+            ]
+            },
+            "external": {
+            "type": "value",
+            "paths": [
+            "attach.external_video"
+            ]
+            },
+            "videoId": {
+            "type": "value",
+            "paths": [
+            "attach.video_id"
+            ]
+            },
+            "sourceType": {
+            "type": "value",
+            "paths": [
+            "attach.preview.player.externalVideo.source_type"
+            ]
+            },
+            "previewUrl": {
+            "type": "value",
+            "paths": [
+            "attach.preview.previewURL"
+            ]
+            },
+            "height": {
+            "type": "value",
+            "paths": [
+            "attach.preview.size.height"
+            ]
+            },
+            "type": {
+            "type": "value",
+            "paths": [
+            "attach.preview.type"
+            ]
+            },
+            "parent": {
+            "type": "value",
+            "paths": [
+            "attach.preview.parent.id"
             ]
             }
             }

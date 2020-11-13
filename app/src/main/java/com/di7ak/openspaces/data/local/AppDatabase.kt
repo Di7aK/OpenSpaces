@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.di7ak.openspaces.data.entities.*
 
-@Database(entities = [AuthAttributes::class, LentaItemEntity::class, AuthorEntity::class, Attach::class, CommentItemEntity::class], version = 11, exportSchema = false)
+@Database(entities = [AuthAttributes::class, LentaItemEntity::class, AuthorEntity::class, Attach::class, CommentItemEntity::class], version = 12, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun authDao(): AuthDao

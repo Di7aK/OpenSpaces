@@ -30,6 +30,9 @@ data class Attach(
     var url: String = "",
     var previewUrl: String = "",
     var height: Int = 0,
+    var external: Int = 0,
+    var sourceType: Int = 0,
+    var videoId: String = "",
     var type: Int = 0,
     var parent: Int = 0
 )
