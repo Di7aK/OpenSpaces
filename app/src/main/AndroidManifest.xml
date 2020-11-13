@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.MainActivity">
+            android:name=".ui.MainActivity"
+            android:configChanges="uiMode" >
 
         </activity>
     </application>

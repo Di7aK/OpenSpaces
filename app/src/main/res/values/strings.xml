@@ -60,4 +60,5 @@
     <string name="retry">Retry</string>
     <string name="error_while_loading_data">Error while loading data</string>
     <string name="change_theme">Change theme</string>
+    <string name="restart_to_apply_changes">Restart to apply theme</string>
 </resources>

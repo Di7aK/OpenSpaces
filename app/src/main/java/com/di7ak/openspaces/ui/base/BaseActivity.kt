@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.di7ak.openspaces.R
@@ -44,5 +45,6 @@ open class BaseActivity : AppCompatActivity() {
         prefs.edit().putBoolean(DARK_THEME, dark).apply()
         val mode = if (dark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         AppCompatDelegate.setDefaultNightMode(mode)
+        Toast.makeText(this, R.string.restart_to_apply_changes, Toast.LENGTH_SHORT).show()
     }
 }
