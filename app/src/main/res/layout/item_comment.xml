@@ -52,13 +52,13 @@
 
     <ImageView
         android:id="@+id/mainAttach"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/name"
         app:layout_constraintTop_toBottomOf="@+id/image"
         tools:ignore="ContentDescription" />
 
@@ -83,7 +83,7 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/name"
-        app:layout_constraintTop_toBottomOf="@+id/reply"
+        app:layout_constraintTop_toBottomOf="@+id/mainAttach"
         tools:text="Content" />
 
     <ImageView
