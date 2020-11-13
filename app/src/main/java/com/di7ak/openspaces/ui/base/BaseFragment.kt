@@ -1,9 +1,10 @@
 package com.di7ak.openspaces.ui.base
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.di7ak.openspaces.R
 import com.di7ak.openspaces.ui.utils.CaptchaDialog
+import com.di7ak.openspaces.utils.getColorFromAttr
 import com.google.android.material.transition.MaterialContainerTransform
 
 open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
@@ -13,7 +14,8 @@ open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 400L
             isElevationShadowEnabled = true
-            setAllContainerColors(Color.WHITE)
+
+            setAllContainerColors(requireContext().getColorFromAttr(R.attr.colorContainer))
         }
         super.onCreate(savedInstanceState)
     }

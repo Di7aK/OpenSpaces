@@ -59,4 +59,5 @@
     <string name="reply">Reply</string>
     <string name="retry">Retry</string>
     <string name="error_while_loading_data">Error while loading data</string>
+    <string name="change_theme">Change theme</string>
 </resources>

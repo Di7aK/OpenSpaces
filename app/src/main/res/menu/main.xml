@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/changeTheme"
+        android:title="@string/change_theme"
+        app:showAsAction="always"
+        app:icon="@drawable/theme_light_dark"
+        android:icon="@drawable/theme_light_dark" />
+</menu>

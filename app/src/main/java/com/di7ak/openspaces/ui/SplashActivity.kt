@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.ui.base.BaseActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -32,7 +33,7 @@ class SplashActivity : AppCompatActivity() {
                     Toast.makeText(this, R.string.error_loading_configuration_file, Toast.LENGTH_SHORT).show()
                 }
                 finish()
-                overridePendingTransition(0, 0);
+                overridePendingTransition(0, 0)
             }
     }
 }

@@ -7,7 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorError">@color/colorError</item>
 
-        <item name="colorContainer">#fff</item>
+        <item name="colorContainer">#191919</item>
     </style>
 
     <style name="AppTheme.Launcher">
