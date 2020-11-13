@@ -5,21 +5,48 @@ plugins {
     id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
 }
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
 
-    defaultConfig {
-        applicationId "com.di7ak.openspaces"
-        minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-        multiDexEnabled true
+        versionProps.load(new FileInputStream(versionPropsFile))
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        def value = 0
+
+        def runTasks = gradle.startParameter.taskNames
+        if ('assemble' in runTasks || 'assembleRelease' in runTasks || 'aR' in runTasks) {
+            value = 1
+        }
+
+        def versionMajor = 1
+        def versionMinor = 0
+        def versionPatch = (versionProps['VERSION_PATCH'] ?: "0").toInteger() + value
+        def versionBuild = (versionProps['VERSION_BUILD'] ?: "0").toInteger() + 1
+        def versionNumber = (versionProps['VERSION_NUMBER'] ?: "1").toInteger() + value
+
+        versionProps['VERSION_PATCH'] = versionPatch.toString()
+        versionProps['VERSION_BUILD'] = versionBuild.toString()
+        versionProps['VERSION_NUMBER'] = versionNumber.toString()
+
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+        defaultConfig {
+            versionCode versionNumber
+            versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild}) Release"
+            applicationId "com.di7ak.openspaces"
+            minSdkVersion 19
+            targetSdkVersion 30
+            multiDexEnabled true
+        }
+
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
 
     viewBinding {
@@ -104,5 +131,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
 }
 apply plugin: 'com.google.gms.google-services'
