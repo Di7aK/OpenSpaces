@@ -185,8 +185,9 @@ class LentaViewHolder(
             }
             play.isGone = attach.type != ATTACH_TYPE_INTERNAL_VIDEO && attach.type != ATTACH_TYPE_EXTERNAL_VIDEO
             mainAttach.isGone = false
+            val url = if(attachments.size == 1) attach.previewUrl else attach.url
             Glide.with(view)
-                .load(attach.previewUrl)
+                .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mainAttach)
         }
