@@ -39,7 +39,8 @@ class AccountsViewModel @ViewModelInject constructor(
     
     fun fetchTopCount() = viewModelScope.launch {
         topCountRepository.fetch().collect {
-            _topCount.postValue(it)
+            _topCount.value = it
+            _topCount.postValue(Resource.ready())
         }
     }
 }

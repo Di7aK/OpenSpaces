@@ -133,7 +133,7 @@
         app:layout_constraintTop_toTopOf="@+id/btnLike"
         android:padding="0dp"
         android:background="?selectableItemBackground"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?colorPrimary"
         android:text="@string/reply"/>
 
     <TextView
