@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.di7ak.openspaces.data.ObjectConst
 import com.di7ak.openspaces.data.entities.CommentItemEntity
+import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.data.local.CommentsDao
 import com.di7ak.openspaces.data.repository.CommentsRepository
 import com.di7ak.openspaces.data.repository.VoteRepository
@@ -21,8 +23,12 @@ class CommentViewModel @ViewModelInject constructor(
 ) : ViewModel() {
     private val _comments = MutableLiveData<Resource<List<CommentItemEntity>>>()
     val comments: LiveData<Resource<List<CommentItemEntity>>> = _comments
+    private val _comment = MutableLiveData<Resource<CommentItemEntity>>()
+    val comment: LiveData<Resource<CommentItemEntity>> = _comment
     private val _updatedComment = MutableLiveData<CommentItemEntity>()
     val updatedComment: LiveData<CommentItemEntity> = _updatedComment
+    var post: LentaItemEntity? = null
+    var replyTo: Int? = null
 
     fun like(commentModel: CommentItemEntity, up: Boolean) {
         viewModelScope.launch {
@@ -72,9 +78,11 @@ class CommentViewModel @ViewModelInject constructor(
         }
     }
 
-    fun fetch(postId: Int, url: String) {
+    fun fetch() {
+        val id = post?.id ?: 0
+        val url = post?.commentUrl ?: ""
         viewModelScope.launch {
-            commentsRepository.fetch(postId, url).collect {
+            commentsRepository.fetch(id, url).collect {
                 when (it.status) {
                     Resource.Status.SUCCESS -> {
                         _comments.postValue(Resource.success(it.data!!))
@@ -85,8 +93,17 @@ class CommentViewModel @ViewModelInject constructor(
                     Resource.Status.LOADING -> {
                         _comments.postValue(Resource.loading())
                     }
+                    else -> {}
                 }
             }
+        }
+    }
+    fun add(comment: String) = viewModelScope.launch {
+        val id = post?.id ?: 0
+        val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
+
+        commentsRepository.add(id, type, comment, replyTo ?: 0).collect {
+            _comment.postValue(it)
         }
     }
 }

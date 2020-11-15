@@ -8,6 +8,8 @@
         <item name="colorError">@color/colorError</item>
 
         <item name="colorContainer">#fff</item>
+        <item name="colorDivider">@color/colorDividerDay</item>
+        <item name="dividerDrawable">@drawable/divider_drawable_day</item>
     </style>
 
     <style name="AppTheme.Launcher">

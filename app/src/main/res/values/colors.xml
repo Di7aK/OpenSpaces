@@ -12,7 +12,9 @@
     <color name="colorTextButtonDisabled">#9E9E9E</color>
     <color name="colorButtonOutlinedTextEnabled">#555</color>
     <color name="colorButtonOutlinedTextDisabled">#999</color>
-    <color name="post_button_tint">#ccc</color>
+    <color name="buttonNormal">#999</color>
+    <color name="colorDividerDay">#EAEAEA</color>
+    <color name="colorDividerNight">#515151</color>
 
     <color name="colorLike">#438726</color>
     <color name="colorDislike">#A64F39</color>

@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:left="72dp">
+        <shape
+            android:shape="rectangle">
+            <size android:height="1dp" />
+            <solid android:color="@color/colorDividerDay" />
+        </shape>
+    </item>
+</layer-list>

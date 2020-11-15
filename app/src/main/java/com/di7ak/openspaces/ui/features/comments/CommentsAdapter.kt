@@ -38,6 +38,7 @@ class CommentsAdapter(
         fun onClickedLike(view: View, item: CommentItemEntity)
         fun onClickedDislike(view: View, item: CommentItemEntity)
         fun onClickedAttach(view: View, item: Attach)
+        fun onClickedReply(view: View?, item: CommentItemEntity)
     }
 
     private val items = mutableListOf<CommentItemEntity>()
@@ -50,6 +51,11 @@ class CommentsAdapter(
 
     fun updateItem(item: CommentItemEntity) = items.indexOf(item).apply {
         if(this != -1) notifyItemChanged(this)
+    }
+
+    fun addItem(item: CommentItemEntity) = items.size.apply {
+        items.add(item)
+        notifyItemInserted(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -82,11 +88,13 @@ class CommentViewHolder(
     private var colorLike: Int
     private var colorNormal: Int
     private var timePlaceholder: String
+    private var replyPlaceholder: String
 
     init {
         itemBinding.itemContainer.setOnClickListener(this)
         itemBinding.btnLike.setOnClickListener(this)
         itemBinding.btnDislike.setOnClickListener(this)
+        itemBinding.btnReply.setOnClickListener(this)
 
         val context = itemBinding.root.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
@@ -99,9 +107,10 @@ class CommentViewHolder(
 
         colorDislike = ContextCompat.getColor(context, R.color.colorDislike)
         colorLike = ContextCompat.getColor(context, R.color.colorLike)
-        colorNormal = ContextCompat.getColor(context, R.color.post_button_tint)
+        colorNormal = ContextCompat.getColor(context, R.color.buttonNormal)
 
         timePlaceholder = context.getString(R.string.time_holder)
+        replyPlaceholder = context.getString(R.string.reply_to_placeholder)
     }
 
     @SuppressLint("SetTextI18n")
@@ -112,7 +121,7 @@ class CommentViewHolder(
         item.body.fromHtml(scope, imageGetter, {
             itemBinding.content.text = it
         }, itemBinding.content.createDrawableCallback())
-        itemBinding.reply.text = item.replyUserName
+        itemBinding.reply.text = replyPlaceholder.format(item.replyUserName)
         itemBinding.date.text = timePlaceholder.format(DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS))
 
         val likes = (item.likes - item.dislikes)
@@ -178,6 +187,9 @@ class CommentViewHolder(
                 animationVoteDown.reset()
                 v.startAnimation(animationVoteDown)
                 listener.onClickedDislike(v, comment)
+            }
+            R.id.btnReply -> {
+                listener.onClickedReply(v, comment)
             }
         }
     }

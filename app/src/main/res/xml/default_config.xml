@@ -556,4 +556,35 @@
             }
         </value>
     </entry>
+    <entry>
+        <key>comment_mapper</key>
+        <value>
+            {
+            "code": {
+            "type": "value",
+            "paths": [
+            "code"
+            ]
+            },
+            "captchaUrl": {
+            "type": "value",
+            "paths": [
+            "captcha_url"
+            ]
+            },
+            "id": {
+            "type": "value",
+            "paths": [
+            "id"
+            ]
+            },
+            "body": {
+            "type": "value",
+            "paths": [
+            "widget"
+            ]
+            }
+            }
+        </value>
+    </entry>
 </defaultsMap>

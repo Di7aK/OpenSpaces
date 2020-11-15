@@ -1,6 +1,7 @@
 package com.di7ak.openspaces
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
@@ -12,5 +13,6 @@ class App : MultiDexApplication() {
         super.attachBaseContext(base)
 
         MultiDex.install(this)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 }

@@ -43,6 +43,10 @@ android {
             minSdkVersion 19
             targetSdkVersion 30
             multiDexEnabled true
+
+            vectorDrawables {
+                useSupportLibrary = true
+            }
         }
 
     } else {

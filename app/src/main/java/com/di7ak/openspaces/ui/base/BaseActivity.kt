@@ -3,6 +3,8 @@ package com.di7ak.openspaces.ui.base
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -24,9 +26,12 @@ open class BaseActivity : AppCompatActivity() {
         val config = baseContext.resources.configuration
         val isDark = config.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
-        if(enabled != isDark) changeTheme(enabled)
+        Handler(Looper.getMainLooper()).postDelayed({
+            if(enabled != isDark) changeTheme(enabled)
 
-        ThemeColors(this)
+            ThemeColors(this)
+        }, 1000)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

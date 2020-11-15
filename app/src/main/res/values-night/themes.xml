@@ -8,6 +8,8 @@
         <item name="colorError">@color/colorError</item>
 
         <item name="colorContainer">#191919</item>
+        <item name="colorDivider">@color/colorDividerNight</item>
+        <item name="dividerDrawable">@drawable/divider_drawable_night</item>
     </style>
 
     <style name="AppTheme.Launcher">

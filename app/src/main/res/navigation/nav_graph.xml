@@ -78,7 +78,8 @@
         android:label="Comments"
         tools:layout="@layout/comments_fragment">
 
-        <argument android:name="postId" app:argType="integer" />
-        <argument android:name="postUrl" app:argType="string" />
+        <argument
+            android:name="post"
+            app:argType="com.di7ak.openspaces.data.entities.LentaItemEntity" />
     </fragment>
 </navigation>

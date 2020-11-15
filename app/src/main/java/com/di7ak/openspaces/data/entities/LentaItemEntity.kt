@@ -1,7 +1,10 @@
 package com.di7ak.openspaces.data.entities
 
+import android.os.Parcelable
 import androidx.room.*
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "lenta")
 data class LentaItemEntity(
     @PrimaryKey var id: Int = 0,
@@ -21,8 +24,9 @@ data class LentaItemEntity(
     @Ignore
     var attachments: List<Attach> = listOf(),
     var userId: Int = 0
-)
+): Parcelable
 
+@Parcelize
 @Entity(tableName = "attachments")
 data class Attach(
     @ColumnInfo(name = "attach_id")
@@ -35,4 +39,4 @@ data class Attach(
     var videoId: String = "",
     var type: Int = 0,
     var parent: Int = 0
-)
+): Parcelable

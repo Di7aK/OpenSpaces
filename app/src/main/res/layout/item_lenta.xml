@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:src="@drawable/play_circle_outline"
+            app:srcCompat="@drawable/play_circle_outline"
             android:layout_marginStart="10dp"
             app:layout_constraintEnd_toEndOf="@id/mainAttach"
             app:layout_constraintStart_toStartOf="@id/mainAttach"
@@ -102,7 +102,8 @@
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
             android:layout_marginTop="6dp"
-            android:src="@drawable/thumb_up_outline"
+            app:tint="@color/buttonNormal"
+            app:srcCompat="@drawable/thumb_up_outline"
             android:contentDescription="@string/like"
             tools:ignore="UnusedAttribute" />
 
@@ -126,7 +127,8 @@
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
             android:layout_marginTop="6dp"
-            android:src="@drawable/thumb_down_outline"
+            app:tint="@color/buttonNormal"
+            app:srcCompat="@drawable/thumb_down_outline"
             android:contentDescription="@string/like" />
 
         <TextView
@@ -149,8 +151,8 @@
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
             android:layout_marginTop="6dp"
-            app:tint="@color/post_button_tint"
-            android:src="@drawable/comment_text_outline"
+            app:tint="@color/buttonNormal"
+            app:srcCompat="@drawable/comment_text_outline"
             android:contentDescription="@string/like" />
 
         <TextView

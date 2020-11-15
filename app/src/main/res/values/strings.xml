@@ -61,4 +61,8 @@
     <string name="error_while_loading_data">Error while loading data</string>
     <string name="change_theme">Change theme</string>
     <string name="restart_to_apply_changes">Restart to apply theme</string>
+    <string name="menu">Menu</string>
+    <string name="type_a_comment">Type a comment</string>
+    <string name="reply_to_placeholder">Reply to %1$s</string>
+    <string name="close">close</string>
 </resources>

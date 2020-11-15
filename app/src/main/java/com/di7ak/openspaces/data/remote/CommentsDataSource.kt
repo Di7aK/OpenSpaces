@@ -9,4 +9,13 @@ class CommentsDataSource @Inject constructor(
     suspend fun fetch(url: String, sid: String) = getResult {
         commentsService.fetch(url = url, sid = sid)
     }
+
+    suspend fun add(sid: String = "",
+                    type: Int = 0,
+                    id: Int = 0,
+                    comment: String = "",
+                    cr: Int = 0,
+                    ck: String = "") = getResult {
+        commentsService.add(sid = sid, type = type, id = id, cr = cr, comment = comment, ck = ck)
+    }
 }

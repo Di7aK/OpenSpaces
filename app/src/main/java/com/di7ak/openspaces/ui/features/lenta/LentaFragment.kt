@@ -106,7 +106,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     override fun onClickedItem(view: View, item: LentaItemEntity) {
-        val args = bundleOf("postId" to item.id, "postUrl" to item.commentUrl)
+        val args = bundleOf("post" to item)
         findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
     }
 
