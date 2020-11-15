@@ -1,0 +1,34 @@
+{
+  "code": {
+    "type": "value",
+    "paths": ["code"]
+  },
+  "captchaUrl": {
+    "type": "value",
+    "paths": ["captcha_url"]
+  },
+  "lentaCnt": {
+    "type": "value",
+    "paths": ["1"]
+  },
+  "journalCnt": {
+    "type": "value",
+    "paths": ["2"]
+  },
+  "mailCnt": {
+    "type": "value",
+    "paths": ["3"]
+  },
+  "color": {
+    "type": "value",
+    "paths": ["color"]
+  },
+  "avatarUrl": {
+    "type": "value",
+    "paths": ["color"]
+  },
+  "focusColor": {
+    "type": "value",
+    "paths": ["color"]
+  }
+}

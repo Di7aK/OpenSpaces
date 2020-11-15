@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.utils.ThemeColors
 
 open class BaseActivity : AppCompatActivity() {
     companion object {
@@ -24,6 +25,8 @@ open class BaseActivity : AppCompatActivity() {
         val config = baseContext.resources.configuration
         val isDark = config.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         if(enabled != isDark) changeTheme(enabled)
+
+        ThemeColors(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

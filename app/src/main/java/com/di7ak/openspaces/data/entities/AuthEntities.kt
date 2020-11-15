@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.data.entities
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 data class AuthEntity (
@@ -16,5 +17,7 @@ data class AuthAttributes(
     var sid: String = "",
     var ck: String = "",
     @PrimaryKey var userId: Int = 0,
-    var channelId: String = ""
+    var channelId: String = "",
+    @Ignore
+    var progress: Boolean = false
 )
