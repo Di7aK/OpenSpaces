@@ -65,4 +65,6 @@
     <string name="type_a_comment">Type a comment</string>
     <string name="reply_to_placeholder">Reply to %1$s</string>
     <string name="close">close</string>
+    <string name="copy">Copy</string>
+    <string name="delete">Delete</string>
 </resources>

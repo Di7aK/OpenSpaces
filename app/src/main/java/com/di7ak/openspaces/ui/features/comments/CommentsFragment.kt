@@ -1,6 +1,6 @@
 package com.di7ak.openspaces.ui.features.comments
 
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -164,6 +164,19 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
 
     override fun onClickedLike(view: View, item: CommentItemEntity) {
         viewModel.like(item, true)
+    }
+
+    override fun onClickedMenuItemClick(view: View?, action: Int, item: CommentItemEntity) {
+        when(action) {
+            R.id.copyText -> {
+                val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("open spaces", item.body))
+                Toast.makeText(requireContext(), "Text copied", Toast.LENGTH_SHORT).show()
+            }
+            R.id.delete -> {
+                viewModel.delete(item)
+            }
+        }
     }
 
     override fun onClickedAttach(view: View, item: Attach) {

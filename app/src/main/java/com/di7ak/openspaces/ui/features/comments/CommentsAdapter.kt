@@ -19,6 +19,7 @@ import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_IMAGE
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.ItemCommentBinding
+import com.di7ak.openspaces.ui.utils.MenuDialog
 import com.di7ak.openspaces.utils.DateUtils
 import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.di7ak.openspaces.utils.createDrawableCallback
@@ -39,6 +40,7 @@ class CommentsAdapter(
         fun onClickedDislike(view: View, item: CommentItemEntity)
         fun onClickedAttach(view: View, item: Attach)
         fun onClickedReply(view: View?, item: CommentItemEntity)
+        fun onClickedMenuItemClick(view: View?, action: Int, item: CommentItemEntity)
     }
 
     private val items = mutableListOf<CommentItemEntity>()
@@ -89,6 +91,7 @@ class CommentViewHolder(
     private var colorNormal: Int
     private var timePlaceholder: String
     private var replyPlaceholder: String
+    private var menu: MenuDialog
 
     init {
         itemBinding.itemContainer.setOnClickListener(this)
@@ -96,6 +99,7 @@ class CommentViewHolder(
         itemBinding.btnDislike.setOnClickListener(this)
         itemBinding.btnReply.setOnClickListener(this)
         itemBinding.reply.setOnClickListener(this)
+        itemBinding.menu.setOnClickListener(this)
 
         val context = itemBinding.root.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
@@ -112,6 +116,12 @@ class CommentViewHolder(
 
         timePlaceholder = context.getString(R.string.time_holder)
         replyPlaceholder = context.getString(R.string.reply_to_placeholder)
+
+        menu = MenuDialog(context, object : MenuDialog.MenuDialogListener{
+            override fun onMenuItemClick(itemId: Int) {
+                listener.onClickedMenuItemClick(itemBinding.menu, itemId, comment)
+            }
+        })
     }
 
     @SuppressLint("SetTextI18n")
@@ -176,6 +186,8 @@ class CommentViewHolder(
                 .transform(CircleCrop())
                 .into(itemBinding.image)
         }
+
+        menu.menuRes = if(item.deleteLink.isEmpty()) R.menu.comment_short else R.menu.comment
         ViewCompat.setTransitionName(itemBinding.itemContainer, item.id.toString())
     }
 
@@ -199,6 +211,9 @@ class CommentViewHolder(
             }
             R.id.reply -> {
                 itemBinding.replyBody.isGone = !itemBinding.replyBody.isGone
+            }
+            R.id.menu -> {
+                menu.show()
             }
         }
     }

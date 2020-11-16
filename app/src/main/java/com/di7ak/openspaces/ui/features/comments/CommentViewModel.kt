@@ -27,6 +27,8 @@ class CommentViewModel @ViewModelInject constructor(
     val comment: LiveData<Resource<CommentItemEntity>> = _comment
     private val _updatedComment = MutableLiveData<CommentItemEntity>()
     val updatedComment: LiveData<CommentItemEntity> = _updatedComment
+    private val _deletedComment = MutableLiveData<CommentItemEntity>()
+    val deletedComment: LiveData<CommentItemEntity> = _deletedComment
     var post: LentaItemEntity? = null
     var replyTo: Int? = null
 
@@ -112,5 +114,12 @@ class CommentViewModel @ViewModelInject constructor(
             }
             _comment.postValue(it)
         }
+    }
+
+    fun delete(comment: CommentItemEntity) = viewModelScope.launch {
+        val comments = _comments.value?.data?.toMutableList()?.apply {
+            removeAll { it.id == comment.id }
+        }?.toList() ?: listOf()
+        _comments.postValue(Resource.success(comments))
     }
 }

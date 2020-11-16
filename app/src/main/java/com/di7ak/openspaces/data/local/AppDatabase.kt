@@ -8,7 +8,7 @@ import com.di7ak.openspaces.data.entities.*
 
 @Database(
     entities = [AuthAttributes::class, TopCountEntity::class, LentaItemEntity::class, AuthorEntity::class, Attach::class, CommentItemEntity::class],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

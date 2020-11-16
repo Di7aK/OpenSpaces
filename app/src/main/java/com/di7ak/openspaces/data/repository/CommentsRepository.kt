@@ -78,4 +78,20 @@ class CommentsRepository @Inject constructor(
             commentsDao.insert(it)
         }
     )
+
+    fun delete(type: Int, commentId: Int) = performGetOperation(
+        networkCall = {
+            val response = remoteDataSource.delete(
+                session.current?.sid ?: "",
+                type,
+                commentId,
+                session.current?.ck ?: ""
+            )
+            if (response.status == Resource.Status.SUCCESS) {
+                commentsDao.delete(commentId)
+            }
+            response
+        },
+        saveCallResult = {}
+    )
 }

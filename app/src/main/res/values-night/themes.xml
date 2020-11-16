@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -11,6 +11,11 @@
         <item name="dividerDrawable">@drawable/divider_drawable_night</item>
         <item name="replyBackground">@drawable/reply_body_night</item>
         <item name="android:windowBackground">@color/windowBackgroundNight</item>
+        <item name="android:progressBarStyle" tools:targetApi="lollipop">@style/ProgressBar</item>
+    </style>
+
+    <style name="ProgressBar" parent="@android:style/Widget.ProgressBar">
+        <item name="android:indeterminate">true</item>
     </style>
 
     <style name="AppTheme.Launcher">

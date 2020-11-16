@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.data.remote
 
 import com.di7ak.openspaces.data.converters.MapperName
+import com.di7ak.openspaces.data.entities.BaseEntity
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.data.entities.CommentsEntity
 import retrofit2.Response
@@ -30,4 +31,14 @@ interface CommentsService {
         @Field("Cr") cr: Int = 0,
         @Field("CK") ck: String = ""
     ) : Response<CommentItemEntity>
+
+    @MapperName("base_mapper")
+    @FormUrlEncoded
+    @POST("api/comments/delete")
+    suspend fun delete(
+        @Field("sid") sid: String = "",
+        @Field("Type") type: Int = 0,
+        @Field("Gcid") commentId: Int = 0,
+        @Field("Dck") ck: String = ""
+    ) : Response<BaseEntity>
 }

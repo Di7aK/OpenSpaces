@@ -300,6 +300,12 @@
             "reply_comment_text"
             ]
             },
+            "deleteLink": {
+            "type": "value",
+            "paths": [
+            "delete_link"
+            ]
+            },
             "replyUserName": {
             "type": "value",
             "paths": [

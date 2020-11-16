@@ -16,4 +16,7 @@ interface CommentsDao {
 
     @Delete
     fun delete(item: CommentItemEntity)
+
+    @Query("DELETE FROM comments WHERE id = :itemId")
+    fun delete(itemId: Int)
 }
