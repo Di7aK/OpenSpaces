@@ -9,6 +9,7 @@
         <item name="colorContainer">#191919</item>
         <item name="colorDivider">@color/colorDividerNight</item>
         <item name="dividerDrawable">@drawable/divider_drawable_night</item>
+        <item name="replyBackground">@drawable/reply_body_night</item>
         <item name="android:windowBackground">@color/windowBackgroundNight</item>
     </style>
 

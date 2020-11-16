@@ -103,6 +103,13 @@ class CommentViewModel @ViewModelInject constructor(
         val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
 
         commentsRepository.add(id, type, comment, replyTo ?: 0).collect {
+            replyTo?.let { replyId ->
+                it.data?.replyCommentId = replyId
+                _comments.value?.data?.find { it.id == replyId }?.let { replyComment ->
+                    it.data?.replyCommentText = replyComment.body
+                    it.data?.replyUserName = replyComment.author?.name ?: ""
+                }
+            }
             _comment.postValue(it)
         }
     }

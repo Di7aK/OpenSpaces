@@ -95,6 +95,7 @@ class CommentViewHolder(
         itemBinding.btnLike.setOnClickListener(this)
         itemBinding.btnDislike.setOnClickListener(this)
         itemBinding.btnReply.setOnClickListener(this)
+        itemBinding.reply.setOnClickListener(this)
 
         val context = itemBinding.root.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
@@ -117,10 +118,15 @@ class CommentViewHolder(
     fun bind(item: CommentItemEntity) {
         this.comment = item
 
+        itemBinding.replyBody.isGone = true
+
         itemBinding.name.text = item.author?.name ?: ""
         item.body.fromHtml(scope, imageGetter, {
             itemBinding.content.text = it
         }, itemBinding.content.createDrawableCallback())
+        item.replyCommentText.fromHtml(scope, imageGetter, {
+            itemBinding.replyBody.text = it
+        }, itemBinding.replyBody.createDrawableCallback())
         itemBinding.reply.text = replyPlaceholder.format(item.replyUserName)
         itemBinding.date.text = timePlaceholder.format(DateUtils.formatAdverts(itemBinding.root.context, item.date, TimeUnit.SECONDS))
 
@@ -190,6 +196,9 @@ class CommentViewHolder(
             }
             R.id.btnReply -> {
                 listener.onClickedReply(v, comment)
+            }
+            R.id.reply -> {
+                itemBinding.replyBody.isGone = !itemBinding.replyBody.isGone
             }
         }
     }

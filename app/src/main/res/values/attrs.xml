@@ -3,4 +3,5 @@
     <attr name="colorContainer" format="color" />
     <attr name="dividerDrawable" format="reference" />
     <attr name="colorDivider" format="reference" />
+    <attr name="replyBackground" format="reference" />
 </resources>
