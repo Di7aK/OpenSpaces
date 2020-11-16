@@ -3,6 +3,7 @@ package com.di7ak.openspaces.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 
 import androidx.annotation.ColorInt;
@@ -18,8 +19,11 @@ public class ThemeColors {
     public int color;
 
     public ThemeColors(Context context) {
+        Configuration config = context.getResources().getConfiguration();
+        boolean isDark = (config.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        boolean enableNight = sharedPreferences.getBoolean(NIGHT, false);
+        boolean enableNight = sharedPreferences.getBoolean(NIGHT, isDark);
         int mode = enableNight ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
         AppCompatDelegate.setDefaultNightMode(mode);
 
