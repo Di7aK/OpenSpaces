@@ -17,6 +17,7 @@ import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.databinding.AccountsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.features.lenta.LentaFragment
 import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.ThemeColors
@@ -44,8 +45,8 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
         setupObservers()
         setupListeners()
 
-        postponeEnterTransition ()
-        view.doOnPreDraw {startPostponedEnterTransition ()}
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
 
         viewModel.fetchSessions()
     }
@@ -54,7 +55,12 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
         ViewCompat.setTransitionName(binding.btnAddAccount, "add_account")
         binding.btnAddAccount.setOnClickListener {
             val extras = FragmentNavigatorExtras(binding.btnAddAccount to "add_account")
-            findNavController().navigate(R.id.action_accountsFragment_to_authFragment, null, null, extras)
+            findNavController().navigate(
+                R.id.action_accountsFragment_to_authFragment,
+                null,
+                null,
+                extras
+            )
         }
     }
 
@@ -74,7 +80,7 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
                 Resource.Status.SUCCESS -> {
                     val session = viewModel.currentSession
                     session?.progress = false
-                    if(session != null) {
+                    if (session != null) {
                         adapter.updateItem(session)
                         when (it.data?.code) {
                             CODE_SUCCESS -> {
@@ -88,15 +94,16 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
                 Resource.Status.ERROR -> {
                     val session = viewModel.currentSession
                     session?.progress = false
-                    if(session != null) adapter.updateItem(session)
+                    if (session != null) adapter.updateItem(session)
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
                 }
 
                 Resource.Status.LOADING -> {
                     val session = viewModel.currentSession
                     session?.progress = true
-                    if(session != null) adapter.updateItem(session)
+                    if (session != null) adapter.updateItem(session)
                 }
+                else -> {}
             }
         })
     }
@@ -109,8 +116,14 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
     }
 
     private fun openAccount(session: AuthAttributes) {
-        val extras = if(sharedView != null) FragmentNavigatorExtras(sharedView!! to session.userId.toString()) else null
-        findNavController().navigate(R.id.action_accountsFragment_to_lentaFragment, bundleOf("userId" to session.userId), null, extras)
+        val extras =
+            if (sharedView != null) FragmentNavigatorExtras(sharedView!! to session.userId.toString()) else null
+        findNavController().navigate(
+            R.id.action_accountsFragment_to_lentaFragment,
+            bundleOf(LentaFragment.EXTRA_USER_ID to session.userId),
+            null,
+            extras
+        )
     }
 
     override fun onClickedDelete(session: AuthAttributes) {

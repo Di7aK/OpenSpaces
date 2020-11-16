@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -28,6 +27,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
+    companion object {
+        const val EXTRA_POST = "post"
+    }
     private var binding: CommentsFragmentBinding by autoCleared()
     private val viewModel: CommentViewModel by viewModels()
     private lateinit var adapter: CommentsAdapter
@@ -49,7 +51,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         setupListeners()
         showReplyForm(false)
 
-        viewModel.post = requireArguments().getParcelable("post")
+        viewModel.post = requireArguments().getParcelable(EXTRA_POST)
 
         viewModel.fetch()
     }
@@ -68,6 +70,12 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
 
     private fun setProgress(progress: Boolean) {
         binding.progress.isGone = !progress
+    }
+
+    private fun setCommentProgress(progress: Boolean) {
+        binding.commentForm.btnSend.isInvisible = progress
+        binding.commentForm.progress.isGone = !progress
+        binding.commentForm.input.isEnabled = !progress
     }
 
     private fun setupListeners() {
@@ -110,24 +118,18 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     showReplyForm(false)
-                    binding.commentForm.btnSend.isVisible = true
-                    binding.commentForm.progress.isGone = true
-                    binding.commentForm.input.isEnabled = true
+                    setCommentProgress(false)
                     binding.commentForm.input.setText("")
                     adapter.addItem(it.data!!)
                 }
 
                 Resource.Status.ERROR -> {
-                    binding.commentForm.btnSend.isVisible = true
-                    binding.commentForm.progress.isGone = true
-                    binding.commentForm.input.isEnabled = true
+                    setCommentProgress(false)
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
                 }
 
                 Resource.Status.LOADING -> {
-                    binding.commentForm.btnSend.isVisible = false
-                    binding.commentForm.progress.isGone = false
-                    binding.commentForm.input.isEnabled = false
+                    setCommentProgress(true)
                 }
                 else -> {}
             }

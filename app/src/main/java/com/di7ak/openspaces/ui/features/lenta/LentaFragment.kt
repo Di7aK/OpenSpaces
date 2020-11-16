@@ -21,6 +21,7 @@ import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.features.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
+    companion object {
+        const val EXTRA_USER_ID = "userId"
+    }
     private var binding: LentaFragmentBinding by autoCleared()
     private val viewModel: LentaViewModel by viewModels()
     @Inject
@@ -52,7 +56,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         setupRecyclerView()
         setupObservers()
 
-        val userId = requireArguments().getInt("userId")
+        val userId = requireArguments().getInt(EXTRA_USER_ID)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             binding.detailContainer.transitionName = userId.toString()
@@ -98,6 +102,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
                 Resource.Status.LOADING -> {
                     setProgress(true)
                 }
+                else -> {}
             }
         })
         viewModel.updatedEvent.observe(viewLifecycleOwner, {
@@ -106,7 +111,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     override fun onClickedItem(view: View, item: LentaItemEntity) {
-        val args = bundleOf("post" to item)
+        val args = bundleOf(CommentsFragment.EXTRA_POST to item)
         findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
     }
 
