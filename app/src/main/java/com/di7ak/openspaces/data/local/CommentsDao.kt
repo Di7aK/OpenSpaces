@@ -19,4 +19,7 @@ interface CommentsDao {
 
     @Query("DELETE FROM comments WHERE id = :itemId")
     fun delete(itemId: Int)
+
+    @Query("UPDATE comments SET body = :body WHERE id = :itemId")
+    suspend fun update(itemId: Int, body: String)
 }

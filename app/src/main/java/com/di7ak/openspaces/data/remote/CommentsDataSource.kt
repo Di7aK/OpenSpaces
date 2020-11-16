@@ -25,4 +25,12 @@ class CommentsDataSource @Inject constructor(
                     ck: String = "") = getResult {
         commentsService.delete(sid = sid, type = type, commentId = commentId, ck = ck)
     }
+
+    suspend fun edit(sid: String = "",
+                       type: Int = 0,
+                       commentId: Int = 0,
+                       text: String,
+                       ck: String = "") = getResult {
+        commentsService.edit(sid = sid, type = type, commentId = commentId, ck = ck, text = text)
+    }
 }

@@ -29,8 +29,11 @@ class CommentViewModel @ViewModelInject constructor(
     val updatedComment: LiveData<CommentItemEntity> = _updatedComment
     private val _deletedComment = MutableLiveData<CommentItemEntity>()
     val deletedComment: LiveData<CommentItemEntity> = _deletedComment
+    private val _editComment = MutableLiveData<CommentItemEntity>()
+    val editComment: LiveData<CommentItemEntity> = _editComment
     var post: LentaItemEntity? = null
     var replyTo: Int? = null
+    var editId: Int? = null
 
     fun like(commentModel: CommentItemEntity, up: Boolean) {
         viewModelScope.launch {
@@ -100,7 +103,12 @@ class CommentViewModel @ViewModelInject constructor(
             }
         }
     }
+
     fun add(comment: String) = viewModelScope.launch {
+        if(editId != null) {
+            edit(comment)
+            return@launch
+        }
         val id = post?.id ?: 0
         val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
 
@@ -117,9 +125,25 @@ class CommentViewModel @ViewModelInject constructor(
     }
 
     fun delete(comment: CommentItemEntity) = viewModelScope.launch {
-        val comments = _comments.value?.data?.toMutableList()?.apply {
-            removeAll { it.id == comment.id }
-        }?.toList() ?: listOf()
-        _comments.postValue(Resource.success(comments))
+        commentsRepository.delete(comment.type, comment.id).collect {
+            if (it.status == Resource.Status.SUCCESS) {
+                _comments.value?.data?.toMutableList()?.apply {
+                    removeAll { item -> item.id == comment.id }
+                }?.toList() ?: listOf()
+                _deletedComment.postValue(comment)
+            }
+        }
+    }
+
+    private fun edit(comment: String) = viewModelScope.launch {
+        val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
+
+        commentsRepository.edit(type, editId ?: 0, comment).collect {
+            if(it.status == Resource.Status.SUCCESS) {
+                val result = _comments.value?.data?.find { comment -> comment.id == editId }
+                result?.body = comment
+                _editComment.postValue(result)
+            }
+        }
     }
 }

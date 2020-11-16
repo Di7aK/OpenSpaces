@@ -303,7 +303,13 @@
             "deleteLink": {
             "type": "value",
             "paths": [
-            "delete_link"
+            "links.delete_link"
+            ]
+            },
+            "editLink": {
+            "type": "value",
+            "paths": [
+            "links.edit_link"
             ]
             },
             "replyUserName": {

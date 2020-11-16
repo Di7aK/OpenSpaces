@@ -67,4 +67,5 @@
     <string name="close">close</string>
     <string name="copy">Copy</string>
     <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

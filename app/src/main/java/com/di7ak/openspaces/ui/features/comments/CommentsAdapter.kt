@@ -55,6 +55,11 @@ class CommentsAdapter(
         if(this != -1) notifyItemChanged(this)
     }
 
+    fun deleteItem(item: CommentItemEntity) = items.indexOf(item).apply {
+        items.removeAt(this)
+        if(this != -1) notifyItemRemoved(this)
+    }
+
     fun addItem(item: CommentItemEntity) = items.size.apply {
         items.add(item)
         notifyItemInserted(this)
@@ -117,7 +122,7 @@ class CommentViewHolder(
         timePlaceholder = context.getString(R.string.time_holder)
         replyPlaceholder = context.getString(R.string.reply_to_placeholder)
 
-        menu = MenuDialog(context, object : MenuDialog.MenuDialogListener{
+        menu = MenuDialog(context, R.menu.comment, object : MenuDialog.MenuDialogListener{
             override fun onMenuItemClick(itemId: Int) {
                 listener.onClickedMenuItemClick(itemBinding.menu, itemId, comment)
             }
@@ -186,8 +191,11 @@ class CommentViewHolder(
                 .transform(CircleCrop())
                 .into(itemBinding.image)
         }
+        val hide = mutableListOf<Int>()
+        if(item.deleteLink.isEmpty()) hide.add(R.id.delete)
+        if(item.editLink.isEmpty()) hide.add(R.id.edit)
+        menu.hideItems(hide)
 
-        menu.menuRes = if(item.deleteLink.isEmpty()) R.menu.comment_short else R.menu.comment
         ViewCompat.setTransitionName(itemBinding.itemContainer, item.id.toString())
     }
 

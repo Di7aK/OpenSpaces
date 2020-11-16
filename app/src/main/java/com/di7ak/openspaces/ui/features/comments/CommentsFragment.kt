@@ -134,6 +134,12 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
                 else -> {}
             }
         })
+        viewModel.editComment.observe(viewLifecycleOwner, {
+            adapter.updateItem(it)
+        })
+        viewModel.deletedComment.observe(viewLifecycleOwner, {
+            adapter.deleteItem(it)
+        })
     }
 
     override fun onClickedItem(view: View, item: CommentItemEntity) {
@@ -175,6 +181,10 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
             }
             R.id.delete -> {
                 viewModel.delete(item)
+            }
+            R.id.edit -> {
+                viewModel.editId = item.id
+                binding.commentForm.input.setText(item.body.fromHtml())
             }
         }
     }

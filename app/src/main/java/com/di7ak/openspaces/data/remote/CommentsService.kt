@@ -5,10 +5,7 @@ import com.di7ak.openspaces.data.entities.BaseEntity
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.data.entities.CommentsEntity
 import retrofit2.Response
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.Url
+import retrofit2.http.*
 
 interface CommentsService {
 
@@ -41,4 +38,16 @@ interface CommentsService {
         @Field("Gcid") commentId: Int = 0,
         @Field("Dck") ck: String = ""
     ) : Response<BaseEntity>
+
+    @MapperName("base_mapper")
+    @FormUrlEncoded
+    @POST("ajax/comment/edit/")
+    suspend fun edit(
+        @Field("sid") sid: String = "",
+        @Query("Type") type: Int = 0,
+        @Query("Id") commentId: Int = 0,
+        @Field("CK") ck: String = "",
+        @Field("text") text: String = "",
+        @Field("cfms") cfms: String = "Отправить"
+    ) : Response<CommentItemEntity>
 }

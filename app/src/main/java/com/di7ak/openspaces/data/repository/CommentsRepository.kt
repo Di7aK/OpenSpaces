@@ -58,18 +58,19 @@ class CommentsRepository @Inject constructor(
                 )
                 Resource.success(
                     CommentItemEntity(
-                        response.data?.id ?: 0,
-                        author,
-                        CommentParser.parse(response.data?.body ?: ""),
-                        System.currentTimeMillis() / 1000,
-                        0,
-                        0,
-                        0,
-                        0,
-                        postId,
-                        type,
-                        listOf(),
-                        author.id?.toInt() ?: 0
+                        id = response.data?.id ?: 0,
+                        author = author,
+                        body = CommentParser.parse(response.data?.body ?: ""),
+                        date = System.currentTimeMillis() / 1000,
+                        likes = 0,
+                        vote = 0,
+                        dislikes = 0,
+                        commentsCount = 0,
+                        editLink = "kek",
+                        parent = postId,
+                        type = type,
+                        attachments = listOf(),
+                        userId = author.id?.toInt() ?: 0
                     )
                 )
             } else response
@@ -82,10 +83,10 @@ class CommentsRepository @Inject constructor(
     fun delete(type: Int, commentId: Int) = performGetOperation(
         networkCall = {
             val response = remoteDataSource.delete(
-                session.current?.sid ?: "",
-                type,
-                commentId,
-                session.current?.ck ?: ""
+                sid = session.current?.sid ?: "",
+                type = type,
+                commentId = commentId,
+                ck = session.current?.ck ?: ""
             )
             if (response.status == Resource.Status.SUCCESS) {
                 commentsDao.delete(commentId)
@@ -93,5 +94,20 @@ class CommentsRepository @Inject constructor(
             response
         },
         saveCallResult = {}
+    )
+
+    fun edit(type: Int, commentId: Int, text: String) = performGetOperation(
+        networkCall = {
+            remoteDataSource.edit(
+                sid = session.current?.sid ?: "",
+                type = type,
+                commentId = commentId,
+                ck = session.current?.ck ?: "",
+                text = text
+            )
+        },
+        saveCallResult = {
+            commentsDao.update(commentId, text)
+        }
     )
 }

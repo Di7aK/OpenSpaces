@@ -25,5 +25,6 @@ data class CommentItemEntity(
     var replyCommentId: Int = 0,
     var replyCommentText: String = "",
     var replyUserName: String = "",
-    var deleteLink: String = ""
+    var deleteLink: String = "",
+    var editLink: String = ""
 )
