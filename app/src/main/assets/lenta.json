@@ -57,6 +57,12 @@
           "items[0].comment_read_href"
         ]
       },
+      "bookmarkLink": {
+        "type": "value",
+        "paths": [
+          "items[0].links.bookmark_link"
+        ]
+      },
       "dislikes": {
         "type": "value",
         "paths": [

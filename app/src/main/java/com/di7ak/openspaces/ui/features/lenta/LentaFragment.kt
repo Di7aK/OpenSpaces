@@ -137,7 +137,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
             ATTACH_TYPE_EXTERNAL_VIDEO -> {
                 val url = if(attach.sourceType == SOURCE_TYPE_YOUTUBE) {
                     "https://www.youtube.com/watch?v=${attach.videoId}"
-                } else ""
+                } else attach.externalUrl
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(url)
                 startActivity(intent)

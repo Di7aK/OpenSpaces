@@ -21,6 +21,7 @@ data class LentaItemEntity(
     var eventType: Int = 0,
     var type: Int = 0,
     var commentUrl: String = "",
+    var bookmarkLink: String = "",
     @Ignore
     var attachments: List<Attach> = listOf(),
     var userId: Int = 0
@@ -33,6 +34,7 @@ data class Attach(
     @PrimaryKey var id: Long? = 0,
     var url: String = "",
     var previewUrl: String = "",
+    var externalUrl: String = "",
     var height: Int = 0,
     var external: Int = 0,
     var sourceType: Int = 0,

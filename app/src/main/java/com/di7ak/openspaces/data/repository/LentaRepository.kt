@@ -1,11 +1,13 @@
 package com.di7ak.openspaces.data.repository
 
+import android.net.Uri
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.entities.LentaEntity
 import com.di7ak.openspaces.data.local.AttachmentsDao
 import com.di7ak.openspaces.data.local.LentaDao
 import com.di7ak.openspaces.data.remote.LentaDataSource
 import com.di7ak.openspaces.utils.Resource
+import com.di7ak.openspaces.utils.fromHtml
 import com.di7ak.openspaces.utils.performGetOperation
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -31,6 +33,11 @@ class LentaRepository @Inject constructor(
             networkCall = {
                 remoteDataSource.fetch(session.current?.sid ?: "", page).apply {
                     nextPageCrutch = data?.nextLinkUrl ?: ""
+                    data?.items?.forEach {
+                        if(it.type == 0) {
+                            it.type = Uri.parse(it.bookmarkLink.fromHtml().toString()).getQueryParameter("object_type")?.toInt() ?: 0
+                        }
+                    }
                 }
             },
             saveCallResult = {

@@ -24,6 +24,12 @@
       "attach.video_id"
     ]
   },
+  "externalUrl": {
+    "type": "value",
+    "paths": [
+      "attach.preview.URL"
+    ]
+  },
   "sourceType": {
     "type": "value",
     "paths": [

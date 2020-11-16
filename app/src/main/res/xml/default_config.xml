@@ -66,6 +66,12 @@
             "items[0].comment_read_href"
             ]
             },
+            "bookmarkLink": {
+            "type": "value",
+            "paths": [
+            "items[0].links.bookmark_link"
+            ]
+            },
             "dislikes": {
             "type": "value",
             "paths": [
@@ -500,6 +506,12 @@
             "type": "value",
             "paths": [
             "attach.video_id"
+            ]
+            },
+            "externalUrl": {
+            "type": "value",
+            "paths": [
+            "attach.preview.URL"
             ]
             },
             "sourceType": {
