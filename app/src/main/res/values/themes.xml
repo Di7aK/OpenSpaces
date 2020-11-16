@@ -1,7 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
+
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -10,6 +9,7 @@
         <item name="colorContainer">#fff</item>
         <item name="colorDivider">@color/colorDividerDay</item>
         <item name="dividerDrawable">@drawable/divider_drawable_day</item>
+        <item name="android:windowBackground">@color/windowBackgroundDay</item>
     </style>
 
     <style name="AppTheme.Launcher">
