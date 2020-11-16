@@ -37,7 +37,7 @@
         android:layout_margin="16dp"
         android:gravity="center"
         android:text="@string/title_sign_in"
-        android:textColor="?colorPrimary"
+        android:textColor="@color/colorTitle"
         android:textSize="@dimen/titleTextSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

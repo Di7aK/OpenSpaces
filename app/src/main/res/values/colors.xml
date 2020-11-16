@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#2D82C6</color>
     <color name="colorAccent">#19719A</color>
     <color name="colorError">#F83A01</color>
-    <color name="colorTitle">#50504F</color>
+    <color name="colorTitle">#707070</color>
     <color name="colorButtonEnabled">#19719A</color>
     <color name="colorImageButton">#555</color>
     <color name="colorButtonDisabled">#BABABA</color>
