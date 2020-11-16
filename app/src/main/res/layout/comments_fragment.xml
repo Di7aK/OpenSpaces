@@ -13,7 +13,7 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:paddingTop="10dp"
-        android:paddingBottom="72dp"
+        android:paddingBottom="80dp"
         tools:listitem="@layout/item_comment" />
 
     <ProgressBar
