@@ -8,6 +8,12 @@
         <key>lenta_mapper</key>
         <value>
             {
+            "nextLinkUrl": {
+            "type": "value",
+            "paths": [
+            "pagination.next_link_url"
+            ]
+            },
             "items": {
             "type": "array",
             "paths": [

@@ -1,11 +1,13 @@
 package com.di7ak.openspaces.ui.features.lenta
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.di7ak.openspaces.data.*
+import com.di7ak.openspaces.data.entities.LentaEntity
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.data.local.LentaDao
 import com.di7ak.openspaces.data.repository.LentaRepository
@@ -20,8 +22,8 @@ class LentaViewModel @ViewModelInject constructor(
     private val voteRepository: VoteRepository,
     private val lentaDao: LentaDao
 ) : ViewModel() {
-    private val _events = MutableLiveData<Resource<List<LentaItemEntity>>>()
-    val events: LiveData<Resource<List<LentaItemEntity>>> = _events
+    private val _events = MutableLiveData<Resource<LentaEntity>>()
+    val events: LiveData<Resource<LentaEntity>> = _events
     private val _updatedEvent = MutableLiveData<LentaItemEntity>()
     val updatedEvent: LiveData<LentaItemEntity> = _updatedEvent
     private var currentPage = 0
@@ -88,13 +90,14 @@ class LentaViewModel @ViewModelInject constructor(
         currentPage = 1
         viewModelScope.launch {
             lentaRepository.fetch(currentPage).collect {
+                Log.d("lol", "res: ${it.data?.nextLinkUrl}")
                 when (it.status) {
                     Resource.Status.SUCCESS -> {
-                        val events = it.data?.filter { event ->
+                        val events = it.data?.items?.filter { event ->
                             event.eventType in filter
                         } ?: listOf()
                         currentPage = 2
-                        _events.postValue(Resource.success(events))
+                        _events.postValue(Resource.success(LentaEntity(items = events, nextLinkUrl = it.data?.nextLinkUrl ?: "")))
                     }
                     Resource.Status.ERROR -> {
                         _events.postValue(Resource.error(it.message ?: ""))
@@ -102,13 +105,16 @@ class LentaViewModel @ViewModelInject constructor(
                     Resource.Status.LOADING -> {
                         _events.postValue(Resource.loading())
                     }
+                    else -> {}
                 }
             }
         }
     }
 
     fun fetchNext() {
-        val old = _events.value?.data ?: listOf()
+        if(events.value?.data?.nextLinkUrl.isNullOrEmpty()) return
+
+        val old = _events.value?.data?.items ?: listOf()
         viewModelScope.launch {
             lentaRepository.fetchNoStory(currentPage).collect {
                 when (it.status) {
@@ -117,7 +123,7 @@ class LentaViewModel @ViewModelInject constructor(
                             event.eventType in filter
                         } ?: listOf()
                         currentPage ++
-                        _events.postValue(Resource.success(old + events))
+                        _events.postValue(Resource.success(LentaEntity(items = old + events, nextLinkUrl = it.data?.nextLinkUrl ?: "")))
                     }
                     Resource.Status.ERROR -> {
                         _events.postValue(Resource.error(it.message ?: ""))
@@ -125,6 +131,7 @@ class LentaViewModel @ViewModelInject constructor(
                     Resource.Status.LOADING -> {
                         _events.postValue(Resource.loading())
                     }
+                    else -> {}
                 }
             }
         }

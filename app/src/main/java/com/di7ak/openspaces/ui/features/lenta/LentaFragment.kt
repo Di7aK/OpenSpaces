@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun retry() {
+        Log.d("lol", "retry: ")
         if(adapter.isEmpty()) viewModel.fetch()
         else viewModel.fetchNext()
     }
@@ -91,7 +93,8 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
-                    adapter.setItems(ArrayList(it.data!!))
+                    Log.d("lol", "next: ${it.data?.nextLinkUrl}")
+                    adapter.setItems(ArrayList(it.data?.items ?: listOf()))
                 }
 
                 Resource.Status.ERROR -> {

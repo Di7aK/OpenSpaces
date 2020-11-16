@@ -2,7 +2,6 @@ package com.di7ak.openspaces.data.local
 
 import androidx.room.*
 import com.di7ak.openspaces.data.entities.LentaItemEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface LentaDao {
