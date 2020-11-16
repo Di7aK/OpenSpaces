@@ -32,6 +32,7 @@ class CommentViewModel @ViewModelInject constructor(
     private val _editComment = MutableLiveData<CommentItemEntity>()
     val editComment: LiveData<CommentItemEntity> = _editComment
     var post: LentaItemEntity? = null
+    var url: String? = null
     var replyTo: Int? = null
     var editId: Int? = null
 
@@ -85,7 +86,7 @@ class CommentViewModel @ViewModelInject constructor(
 
     fun fetch() {
         val id = post?.id ?: 0
-        val url = post?.commentUrl ?: ""
+        val url = post?.commentUrl ?: url ?: ""
         viewModelScope.launch {
             commentsRepository.fetch(id, url).collect {
                 when (it.status) {

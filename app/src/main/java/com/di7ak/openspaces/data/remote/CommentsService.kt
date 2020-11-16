@@ -35,8 +35,10 @@ interface CommentsService {
     suspend fun delete(
         @Field("sid") sid: String = "",
         @Field("Type") type: Int = 0,
+        @Field("type") type2: Int = 0,
         @Field("Gcid") commentId: Int = 0,
-        @Field("Dck") ck: String = ""
+        @Field("Dck") ck: String = "",
+        @Field("CK") ck2: String = ""
     ) : Response<BaseEntity>
 
     @MapperName("base_mapper")

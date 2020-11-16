@@ -81,5 +81,8 @@
         <argument
             android:name="post"
             app:argType="com.di7ak.openspaces.data.entities.LentaItemEntity" />
+        <argument
+            android:name="url"
+            app:argType="string" />
     </fragment>
 </navigation>

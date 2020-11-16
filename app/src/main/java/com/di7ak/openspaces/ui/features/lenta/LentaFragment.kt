@@ -4,9 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -16,10 +14,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.bumptech.glide.Glide
 import com.di7ak.openspaces.R
-import com.di7ak.openspaces.data.ATTACH_TYPE_EXTERNAL_VIDEO
-import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_IMAGE
-import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
-import com.di7ak.openspaces.data.SOURCE_TYPE_YOUTUBE
+import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
@@ -43,6 +38,9 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
 
     @Inject
     lateinit var attachmentParser: AttachmentParser
+
+    @Inject
+    lateinit var session: Session
 
     private lateinit var adapter: LentaAdapter
     private val progressAdapter: ProgressAdapter = ProgressAdapter(::retry)
@@ -84,6 +82,26 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
                 viewModel.fetchNext()
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.guestbook, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.guestbook) {
+            val url = "https://spaces.im/guestbook/index/${session.current?.name}/"
+            val args = bundleOf(CommentsFragment.EXTRA_URL to url)
+            findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setProgress(progress: Boolean) {

@@ -68,4 +68,5 @@
     <string name="copy">Copy</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="guestbook">guestbook</string>
 </resources>
