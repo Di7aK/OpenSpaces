@@ -15,7 +15,7 @@
     <color name="buttonNormal">#999</color>
     <color name="colorDividerDay">#EAEAEA</color>
     <color name="colorDividerNight">#515151</color>
-    <color name="windowBackgroundDay">#EAEAEA</color>
+    <color name="windowBackgroundDay">#F7F7F7</color>
     <color name="windowBackgroundNight">#222222</color>
 
     <color name="colorLike">#438726</color>

@@ -62,6 +62,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -90,11 +94,14 @@ dependencies {
     kapt 'com.google.dagger:hilt-android-compiler:2.28.1-alpha'
     kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
 
-    //retrofit
+    //retrofit устаревшее для поддержки китикета
+    //noinspection GradleDependency
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
 
-    //okhttp
+    //okhttp устаревшее для поддержки китикета
+    //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:3.12.1"
+    //noinspection GradleDependency
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
     //Room
