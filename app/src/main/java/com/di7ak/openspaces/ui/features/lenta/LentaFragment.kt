@@ -67,7 +67,6 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun retry() {
-        Log.d("lol", "retry: ")
         if(adapter.isEmpty()) viewModel.fetch()
         else viewModel.fetchNext()
     }
@@ -93,7 +92,6 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
-                    Log.d("lol", "next: ${it.data?.nextLinkUrl}")
                     adapter.setItems(ArrayList(it.data?.items ?: listOf()))
                 }
 
