@@ -30,9 +30,9 @@ class LentaRepository @Inject constructor(
                 LentaEntity(items = items, nextLinkUrl = nextPageCrutch)
             },
             networkCall = {
-                val res = remoteDataSource.fetch(session.current?.sid ?: "", page)
-                nextPageCrutch = res.data?.nextLinkUrl ?: ""
-                res
+                remoteDataSource.fetch(session.current?.sid ?: "", page).apply {
+                    nextPageCrutch = data?.nextLinkUrl ?: ""
+                }
             },
             saveCallResult = {
                 val signed = it.items.map { item ->
