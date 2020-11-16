@@ -140,9 +140,10 @@ class CommentViewModel @ViewModelInject constructor(
 
         commentsRepository.edit(type, editId ?: 0, comment).collect {
             if(it.status == Resource.Status.SUCCESS) {
-                val result = _comments.value?.data?.find { comment -> comment.id == editId }
-                result?.body = comment
-                _editComment.postValue(result)
+                 _comments.value?.data?.find { comment -> comment.id == editId }?.let { item ->
+                     item.body = comment
+                     _editComment.postValue(item)
+                 }
             }
         }
     }

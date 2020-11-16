@@ -41,7 +41,7 @@ class LentaAdapter(
         fun onClickedItem(view: View, item: LentaItemEntity)
         fun onClickedLike(view: View, item: LentaItemEntity)
         fun onClickedDislike(view: View, item: LentaItemEntity)
-        fun onClickedAttach(view: View, item: Attach)
+        fun onClickedAttach(view: View, attach: Attach, item: LentaItemEntity)
     }
 
     private val items = mutableListOf<LentaItemEntity>()
@@ -116,6 +116,7 @@ class LentaViewHolder(
     private val mainAttach = view.findViewById<ImageView>(R.id.mainAttach)!!
     private val play = view.findViewById<ImageView>(R.id.play)!!
     private val image = view.findViewById<ImageView>(R.id.image)!!
+    private val multiple = view.findViewById<ImageView>(R.id.multiple)
     private val itemContainer = view.findViewById<View>(R.id.item_container)!!
 
     init {
@@ -176,18 +177,23 @@ class LentaViewHolder(
 
         val attachments = item.attachments + parsed.attachments
         if (attachments.isEmpty()) {
+            multiple?.isGone = true
             mainAttach.isGone = true
             play.isGone = true
         } else {
             val attach = attachments.first()
             mainAttach.setOnClickListener {
-                listener.onClickedAttach(it, attach)
+                listener.onClickedAttach(it, attach, item)
             }
+            multiple?.isGone = attachments.size == 1
             play.isGone = attach.type != ATTACH_TYPE_INTERNAL_VIDEO && attach.type != ATTACH_TYPE_EXTERNAL_VIDEO
             mainAttach.isGone = false
             val url = if(attachments.size == 1) attach.previewUrl else attach.url
+            mainAttach.layoutParams.height = (attach.height * mainAttach.context.resources.displayMetrics.density).toInt()
+            mainAttach.requestLayout()
             Glide.with(view)
                 .load(url)
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mainAttach)
         }

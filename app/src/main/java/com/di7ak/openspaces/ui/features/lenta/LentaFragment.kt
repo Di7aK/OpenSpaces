@@ -7,14 +7,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_EXTERNAL_VIDEO
+import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_IMAGE
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.SOURCE_TYPE_YOUTUBE
 import com.di7ak.openspaces.data.entities.Attach
@@ -24,6 +27,7 @@ import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.ui.features.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
+import com.stfalcon.imageviewer.StfalconImageViewer
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -123,18 +127,29 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         viewModel.like(item, true)
     }
 
-    override fun onClickedAttach(view: View, item: Attach) {
-        if(item.type == ATTACH_TYPE_INTERNAL_VIDEO) {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(Uri.parse(item.url), "video/mp4")
-            startActivity(intent)
-        } else if(item.type == ATTACH_TYPE_EXTERNAL_VIDEO) {
-            val url = if(item.sourceType == SOURCE_TYPE_YOUTUBE) {
-                "https://www.youtube.com/watch?v=${item.videoId}"
-            } else ""
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            startActivity(intent)
+    override fun onClickedAttach(view: View, attach: Attach, item: LentaItemEntity) {
+        when (attach.type) {
+            ATTACH_TYPE_INTERNAL_VIDEO -> {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(Uri.parse(attach.url), "video/mp4")
+                startActivity(intent)
+            }
+            ATTACH_TYPE_EXTERNAL_VIDEO -> {
+                val url = if(attach.sourceType == SOURCE_TYPE_YOUTUBE) {
+                    "https://www.youtube.com/watch?v=${attach.videoId}"
+                } else ""
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(url)
+                startActivity(intent)
+            }
+            ATTACH_TYPE_INTERNAL_IMAGE -> {
+                val items = item.attachments.filter { it.type == ATTACH_TYPE_INTERNAL_IMAGE }
+                StfalconImageViewer.Builder(context, items) { target, image ->
+                    Glide.with(target).load(image.url).placeholder((view as ImageView).drawable).into(target)
+                }.withTransitionFrom(view as ImageView)
+                    .allowZooming(true)
+                    .show()
+            }
         }
     }
 }

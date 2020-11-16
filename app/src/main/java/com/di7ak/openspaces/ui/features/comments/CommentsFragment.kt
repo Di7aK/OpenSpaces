@@ -135,6 +135,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
             }
         })
         viewModel.editComment.observe(viewLifecycleOwner, {
+            binding.commentForm.input.setText("")
             adapter.updateItem(it)
         })
         viewModel.deletedComment.observe(viewLifecycleOwner, {

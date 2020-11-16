@@ -40,6 +40,19 @@
             tools:ignore="ContentDescription" />
 
         <ImageView
+            android:id="@+id/multiple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="@id/mainAttach"
+            app:layout_constraintBottom_toBottomOf="@id/mainAttach"
+            android:layout_margin="16dp"
+            app:tint="?colorPrimary"
+            app:srcCompat="@drawable/image_multiple_outline"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
             android:id="@+id/play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

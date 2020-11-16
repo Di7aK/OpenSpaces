@@ -143,5 +143,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-perf-ktx'
+
+    //image viewer
+    implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

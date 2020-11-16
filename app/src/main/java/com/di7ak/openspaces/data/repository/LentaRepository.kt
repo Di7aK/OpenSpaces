@@ -1,6 +1,5 @@
 package com.di7ak.openspaces.data.repository
 
-import android.util.Log
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.entities.LentaEntity
 import com.di7ak.openspaces.data.local.AttachmentsDao
