@@ -170,7 +170,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         when(action) {
             R.id.copyText -> {
                 val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("open spaces", item.body))
+                clipboardManager.setPrimaryClip(ClipData.newPlainText("open spaces", item.body.fromHtml()))
                 Toast.makeText(requireContext(), "Text copied", Toast.LENGTH_SHORT).show()
             }
             R.id.delete -> {
