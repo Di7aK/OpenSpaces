@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/navigation_lenta">
+
+    <fragment
+        android:id="@+id/navigation_lenta"
+        android:name="com.di7ak.openspaces.ui.features.lenta.LentaFragment"
+        android:label="Lenta"
+        tools:layout="@layout/lenta_fragment">
+
+        <action
+            android:id="@+id/action_lentaFragment_to_commentsFragment"
+            app:destination="@id/navigation_comments" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_comments"
+        android:name="com.di7ak.openspaces.ui.features.comments.CommentsFragment"
+        android:label="Comments"
+        tools:layout="@layout/comments_fragment">
+
+        <argument
+            android:name="post"
+            app:argType="com.di7ak.openspaces.data.entities.LentaItemEntity" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+
+        <argument
+            android:name="guest_book_user"
+            app:argType="integer" />
+    </fragment>
+</navigation>

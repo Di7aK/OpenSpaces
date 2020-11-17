@@ -17,7 +17,7 @@ import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.databinding.AccountsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
-import com.di7ak.openspaces.ui.features.lenta.LentaFragment
+import com.di7ak.openspaces.ui.features.home.HomeFragment
 import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.ThemeColors
@@ -119,8 +119,8 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
         val extras =
             if (sharedView != null) FragmentNavigatorExtras(sharedView!! to session.userId.toString()) else null
         findNavController().navigate(
-            R.id.action_accountsFragment_to_lentaFragment,
-            bundleOf(LentaFragment.EXTRA_USER_ID to session.userId),
+            R.id.action_accountsFragment_to_homeFragment,
+            bundleOf(HomeFragment.EXTRA_USER_ID to session.userId),
             null,
             extras
         )

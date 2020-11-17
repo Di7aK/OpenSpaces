@@ -2,7 +2,6 @@ package com.di7ak.openspaces.ui.features.lenta
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -18,7 +17,7 @@ import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
-import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.base.BaseSubFragment
 import com.di7ak.openspaces.ui.features.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
@@ -27,10 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
-    companion object {
-        const val EXTRA_USER_ID = "userId"
-    }
+class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
     private var binding: LentaFragmentBinding by autoCleared()
     private val viewModel: LentaViewModel by viewModels()
     @Inject
@@ -58,12 +54,6 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         setupRecyclerView()
         setupObservers()
 
-        val userId = requireArguments().getInt(EXTRA_USER_ID)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            binding.detailContainer.transitionName = userId.toString()
-        }
-
         viewModel.fetch()
     }
 
@@ -88,6 +78,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
+        setHasNavigationMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

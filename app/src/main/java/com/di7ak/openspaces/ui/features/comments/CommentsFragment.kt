@@ -21,13 +21,13 @@ import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.CommentsFragmentBinding
-import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.base.BaseSubFragment
 import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
+class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener {
     companion object {
         const val EXTRA_POST = "post"
         const val EXTRA_URL = "url"
@@ -38,6 +38,12 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     private lateinit var adapter: CommentsAdapter
     @Inject
     lateinit var imageGetter: HtmlImageGetter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasNavigationMenu(false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
