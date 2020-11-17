@@ -19,10 +19,12 @@ import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseSubFragment
 import com.di7ak.openspaces.ui.features.comments.CommentsFragment
+import com.di7ak.openspaces.ui.features.player.PlayerFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
 import com.stfalcon.imageviewer.StfalconImageViewer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.lenta_fragment.view.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -138,9 +140,12 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
     override fun onClickedAttach(view: View, attach: Attach, item: LentaItemEntity) {
         when (attach.type) {
             ATTACH_TYPE_INTERNAL_VIDEO -> {
-                val intent = Intent(Intent.ACTION_VIEW)
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, PlayerFragment.newInstance(item, attach))
+                    .commit()
+                /*val intent = Intent(Intent.ACTION_VIEW)
                 intent.setDataAndType(Uri.parse(attach.url), "video/mp4")
-                startActivity(intent)
+                startActivity(intent)*/
             }
             ATTACH_TYPE_EXTERNAL_VIDEO -> {
                 val url = if(attach.sourceType == SOURCE_TYPE_YOUTUBE) {
@@ -160,4 +165,5 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
             }
         }
     }
+
 }

@@ -146,5 +146,8 @@ dependencies {
 
     //image viewer
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
+
+    //video player
+    implementation 'com.github.HamidrezaAmz:MagicalExoPlayer:1.0.16'
 }
 apply plugin: 'com.google.gms.google-services'

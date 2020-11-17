@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.di7ak.openspaces.R
 import com.di7ak.openspaces.databinding.HomeFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.autoCleared
@@ -21,6 +23,12 @@ class HomeFragment : BaseFragment() {
     }
     private var binding: HomeFragmentBinding by autoCleared()
     private val viewModel: HomeViewModel by viewModels()
+
+    var progress: Float = 0f
+        set(value) {
+            field = value
+            binding.detailContainer.progress = value
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +50,12 @@ class HomeFragment : BaseFragment() {
         val controller = binding.fragment.findNavController()
 
         binding.navigation.setupWithNavController(controller)
+
+        binding.navigation.getOrCreateBadge(R.id.navigation_mail).apply {
+            number = 2
+            badgeTextColor = ContextCompat.getColor(requireContext(), R.color.colorBadgeText)
+            backgroundColor = ContextCompat.getColor(requireContext(), R.color.colorBadge)
+        }
     }
 
     fun hideNavigation() {

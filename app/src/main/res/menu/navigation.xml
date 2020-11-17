@@ -6,6 +6,11 @@
     <item android:id="@+id/navigation_journal"
         android:title="@string/journal"
         android:icon="@drawable/bell_outline"/>
+
+    <item android:id="@+id/navigation_mail"
+        android:title="@string/mail"
+        android:icon="@drawable/chat_outline"/>
+
     <item android:id="@+id/navigation_account"
         android:title="@string/profile"
         android:icon="@drawable/account_circle_outline"/>

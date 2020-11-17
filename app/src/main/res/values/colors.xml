@@ -20,4 +20,7 @@
 
     <color name="colorLike">#438726</color>
     <color name="colorDislike">#A64F39</color>
+
+    <color name="colorBadgeText">#BABABA</color>
+    <color name="colorBadge">#BC2D09</color>
 </resources>
