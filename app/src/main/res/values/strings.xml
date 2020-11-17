@@ -69,4 +69,5 @@
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="guestbook">guestbook</string>
+    <string name="editing_comment">Editing</string>
 </resources>

@@ -42,7 +42,7 @@ class CommentViewModel @ViewModelInject constructor(
         url = "$base/guestbook/index/$value"
     }
     var replyTo: Int? = null
-    var editId: Int? = null
+    var edit: CommentItemEntity? = null
 
     fun like(commentModel: CommentItemEntity, up: Boolean) {
         viewModelScope.launch {
@@ -114,7 +114,7 @@ class CommentViewModel @ViewModelInject constructor(
     }
 
     fun add(comment: String) = viewModelScope.launch {
-        if(editId != null) {
+        if(edit != null) {
             edit(comment)
             return@launch
         }
@@ -146,14 +146,13 @@ class CommentViewModel @ViewModelInject constructor(
     }
 
     private fun edit(comment: String) = viewModelScope.launch {
-        val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
-
-        commentsRepository.edit(type, editId ?: 0, comment).collect {
+        commentsRepository.edit(edit!!.type, edit!!.id, comment).collect {
             if(it.status == Resource.Status.SUCCESS) {
-                 _comments.value?.data?.find { comment -> comment.id == editId }?.let { item ->
-                     item.body = comment
-                     _editComment.postValue(item)
-                 }
+                edit?.apply {
+                    body = comment
+                    _editComment.postValue(this)
+                    edit = null
+                }
             }
         }
     }

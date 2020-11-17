@@ -91,6 +91,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
 
         binding.commentForm.btnClose.setOnClickListener {
             showReplyForm(false)
+            showEditForm(false)
         }
         binding.commentForm.input.addTextChangedListener {
             binding.commentForm.btnSend.isEnabled = !it.isNullOrBlank()
@@ -142,6 +143,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         viewModel.editComment.observe(viewLifecycleOwner, {
             binding.commentForm.input.setText("")
             adapter.updateItem(it)
+            showEditForm(false)
         })
         viewModel.deletedComment.observe(viewLifecycleOwner, {
             adapter.deleteItem(it)
@@ -170,6 +172,18 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         if(!show) viewModel.replyTo = 0
     }
 
+    private fun showEditForm(show: Boolean) {
+        binding.commentForm.btnClose.isGone = !show
+        binding.commentForm.name.isGone = !show
+        binding.commentForm.replyBody.isGone = true
+        binding.commentForm.divider.isGone = !show
+        if(viewModel.edit != null) binding.commentForm.input.setText("")
+        if(!show) viewModel.edit = null
+        else {
+            binding.commentForm.name.text = getString(R.string.editing_comment)
+        }
+    }
+
     override fun onClickedDislike(view: View, item: CommentItemEntity) {
         viewModel.like(item, false)
     }
@@ -189,7 +203,8 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
                 viewModel.delete(item)
             }
             R.id.edit -> {
-                viewModel.editId = item.id
+                viewModel.edit = item
+                showEditForm(true)
                 binding.commentForm.input.setText(item.body.fromHtml())
             }
         }
