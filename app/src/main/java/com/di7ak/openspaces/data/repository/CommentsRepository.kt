@@ -43,12 +43,12 @@ class CommentsRepository @Inject constructor(
     fun add(postId: Int, type: Int, comment: String, cr: Int) = performGetOperation(
         networkCall = {
             val response = remoteDataSource.add(
-                session.current?.sid ?: "",
-                type,
-                postId,
-                comment,
-                cr,
-                session.current?.ck ?: ""
+                sid = session.current?.sid ?: "",
+                type = type,
+                id = postId,
+                comment = comment,
+                cr = cr,
+                ck = session.current?.ck ?: ""
             )
             if (response.status == Resource.Status.SUCCESS) {
                 val author = AuthorEntity(

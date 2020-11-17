@@ -12,6 +12,7 @@ import com.di7ak.openspaces.data.local.CommentsDao
 import com.di7ak.openspaces.data.repository.CommentsRepository
 import com.di7ak.openspaces.data.repository.VoteRepository
 import com.di7ak.openspaces.utils.Resource
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 class CommentViewModel @ViewModelInject constructor(
     private val commentsRepository: CommentsRepository,
     private val voteRepository: VoteRepository,
-    private val commentsDao: CommentsDao
+    private val commentsDao: CommentsDao,
+    private val remoteConfig: FirebaseRemoteConfig
 ) : ViewModel() {
     private val _comments = MutableLiveData<Resource<List<CommentItemEntity>>>()
     val comments: LiveData<Resource<List<CommentItemEntity>>> = _comments
@@ -33,6 +35,12 @@ class CommentViewModel @ViewModelInject constructor(
     val editComment: LiveData<CommentItemEntity> = _editComment
     var post: LentaItemEntity? = null
     var url: String? = null
+    var guestBookUser: Int = 0
+    set(value) {
+        field = value
+        val base = remoteConfig.getString("base_url")
+        url = "$base/guestbook/index/$value"
+    }
     var replyTo: Int? = null
     var editId: Int? = null
 
@@ -110,10 +118,11 @@ class CommentViewModel @ViewModelInject constructor(
             edit(comment)
             return@launch
         }
-        val id = post?.id ?: 0
-        val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
+        val id = post?.id ?: if(guestBookUser != 0) guestBookUser else 0
+        val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: if(guestBookUser != 0) 14 else 0
 
-        commentsRepository.add(id, type, comment, replyTo ?: 0).collect {
+        commentsRepository.add(
+            postId = id, type=  type, comment = comment, cr = replyTo ?: 0).collect {
             replyTo?.let { replyId ->
                 it.data?.replyCommentId = replyId
                 _comments.value?.data?.find { it.id == replyId }?.let { replyComment ->

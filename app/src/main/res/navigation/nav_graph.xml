@@ -84,5 +84,9 @@
         <argument
             android:name="url"
             app:argType="string" />
+
+        <argument
+            android:name="guest_book_user"
+            app:argType="integer" />
     </fragment>
 </navigation>

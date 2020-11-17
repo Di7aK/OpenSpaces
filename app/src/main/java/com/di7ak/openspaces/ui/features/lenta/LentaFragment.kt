@@ -97,8 +97,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.guestbook) {
-            val url = "https://spaces.im/guestbook/index/${session.current?.name}/"
-            val args = bundleOf(CommentsFragment.EXTRA_URL to url)
+            val args = bundleOf(CommentsFragment.EXTRA_GUEST_BOOK_USER to session.current?.userId)
             findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
         }
         return super.onOptionsItemSelected(item)

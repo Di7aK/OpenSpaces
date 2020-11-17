@@ -30,6 +30,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     companion object {
         const val EXTRA_POST = "post"
         const val EXTRA_URL = "url"
+        const val EXTRA_GUEST_BOOK_USER = "guest_book_user"
     }
     private var binding: CommentsFragmentBinding by autoCleared()
     private val viewModel: CommentViewModel by viewModels()
@@ -54,6 +55,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
 
         viewModel.post = requireArguments().getParcelable(EXTRA_POST)
         viewModel.url = requireArguments().getString(EXTRA_URL)
+        viewModel.guestBookUser = requireArguments().getInt(EXTRA_GUEST_BOOK_USER)
 
         viewModel.fetch()
     }

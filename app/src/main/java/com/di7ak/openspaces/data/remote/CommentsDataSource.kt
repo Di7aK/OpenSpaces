@@ -4,33 +4,53 @@ import javax.inject.Inject
 
 class CommentsDataSource @Inject constructor(
     private val commentsService: CommentsService
-): BaseDataSource() {
+) : BaseDataSource() {
 
     suspend fun fetch(url: String, sid: String) = getResult {
         commentsService.fetch(url = url, sid = sid)
     }
 
-    suspend fun add(sid: String = "",
-                    type: Int = 0,
-                    id: Int = 0,
-                    comment: String = "",
-                    cr: Int = 0,
-                    ck: String = "") = getResult {
-        commentsService.add(sid = sid, type = type, id = id, cr = cr, comment = comment, ck = ck)
+    suspend fun add(
+        sid: String = "",
+        type: Int = 0,
+        id: Int = 0,
+        comment: String = "",
+        cr: Int = 0,
+        ck: String = ""
+    ) = getResult {
+        commentsService.add(
+            sid = sid,
+            type = type,
+            id = id,
+            cr = cr,
+            comment = comment,
+            ck = ck
+        )
     }
 
-    suspend fun delete(sid: String = "",
-                    type: Int = 0,
-                    commentId: Int = 0,
-                    ck: String = "") = getResult {
-        commentsService.delete(sid = sid, type = type, type2 = type, commentId = commentId, ck = ck, ck2 = ck)
+    suspend fun delete(
+        sid: String = "",
+        type: Int = 0,
+        commentId: Int = 0,
+        ck: String = ""
+    ) = getResult {
+        commentsService.delete(
+            sid = sid,
+            type = type,
+            type2 = type,
+            commentId = commentId,
+            ck = ck,
+            ck2 = ck
+        )
     }
 
-    suspend fun edit(sid: String = "",
-                       type: Int = 0,
-                       commentId: Int = 0,
-                       text: String,
-                       ck: String = "") = getResult {
+    suspend fun edit(
+        sid: String = "",
+        type: Int = 0,
+        commentId: Int = 0,
+        text: String,
+        ck: String = ""
+    ) = getResult {
         commentsService.edit(sid = sid, type = type, commentId = commentId, ck = ck, text = text)
     }
 }
