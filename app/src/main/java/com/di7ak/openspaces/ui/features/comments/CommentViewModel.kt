@@ -125,7 +125,7 @@ class CommentViewModel @ViewModelInject constructor(
             postId = id, type=  type, comment = comment, cr = replyTo ?: 0).collect {
             replyTo?.let { replyId ->
                 it.data?.replyCommentId = replyId
-                _comments.value?.data?.find { it.id == replyId }?.let { replyComment ->
+                _comments.value?.data?.find { it.id != 0 && it.id == replyId }?.let { replyComment ->
                     it.data?.replyCommentText = replyComment.body
                     it.data?.replyUserName = replyComment.author?.name ?: ""
                 }

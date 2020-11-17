@@ -98,9 +98,6 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
-                    it.data?.find { it.id == viewModel.replyTo }?.apply {
-                        onClickedReply(null, this)
-                    }
                     adapter.setItems(ArrayList(it.data!!))
                 }
 
