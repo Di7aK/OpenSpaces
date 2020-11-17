@@ -107,6 +107,7 @@
         android:clickable="true"
         android:contentDescription="@string/send"
         android:focusable="true"
+        android:enabled="false"
         app:backgroundTint="?colorPrimary"
         app:borderWidth="1dp"
         app:elevation="3dp"

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -90,6 +91,9 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
 
         binding.commentForm.btnClose.setOnClickListener {
             showReplyForm(false)
+        }
+        binding.commentForm.input.addTextChangedListener {
+            binding.commentForm.btnSend.isEnabled = !it.isNullOrBlank()
         }
     }
 
