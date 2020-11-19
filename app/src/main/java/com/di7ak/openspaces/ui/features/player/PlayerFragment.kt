@@ -48,8 +48,8 @@ class PlayerFragment: Fragment() {
 
         if (arguments?.containsKey(ATTACH) == true) {
             val attach = requireArguments().getParcelable<Attach>(ATTACH)
-            binding.videoView.setSource(attach!!.url)
-            binding.videoView.setPlayWhenReady(true)
+            //binding.videoView.setSource(attach!!.url)
+            //binding.videoView.setPlayWhenReady(true)
         }
 
         if (arguments?.containsKey(ITEM) == true) {
@@ -72,6 +72,7 @@ class PlayerFragment: Fragment() {
             }
 
             override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+
             }
 
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {

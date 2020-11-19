@@ -1,11 +1,19 @@
 package com.di7ak.openspaces.ui.features.comments
 
-import android.content.*
+import android.animation.AnimatorInflater
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.AnticipateInterpolator
+import android.view.animation.LayoutAnimationController
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
@@ -16,15 +24,21 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import androidx.transition.TransitionInflater
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
+import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.CommentsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseSubFragment
+import com.di7ak.openspaces.ui.features.lenta.LentaAdapter
+import com.di7ak.openspaces.ui.features.lenta.LentaViewHolder
 import com.di7ak.openspaces.utils.*
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener {
@@ -33,15 +47,27 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
         const val EXTRA_URL = "url"
         const val EXTRA_GUEST_BOOK_USER = "guest_book_user"
     }
+
     private var binding: CommentsFragmentBinding by autoCleared()
     private val viewModel: CommentViewModel by viewModels()
     private lateinit var adapter: CommentsAdapter
+
     @Inject
     lateinit var imageGetter: HtmlImageGetter
+    @Inject
+    lateinit var attachmentParser: AttachmentParser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /*sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = 1000L
+            isElevationShadowEnabled = true
+            interpolator = OvershootInterpolator()
+            setAllContainerColors(requireContext().getColorFromAttr(R.attr.colorContainer))
+        }*/
+
+        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.shared_element_transition)
         setHasNavigationMenu(false)
     }
 
@@ -55,16 +81,49 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupRecyclerView()
         setupObservers()
         setupListeners()
         showReplyForm(false)
 
-        viewModel.post = requireArguments().getParcelable(EXTRA_POST)
+        viewModel.post = requireArguments().getParcelable<LentaItemEntity>(EXTRA_POST)?.apply {
+            supportsLollipop {
+                binding.detailsCard.card.transitionName = "post$id"
+            }
+            onCreateViewHolder().bind(this)
+        }
         viewModel.url = requireArguments().getString(EXTRA_URL)
         viewModel.guestBookUser = requireArguments().getInt(EXTRA_GUEST_BOOK_USER)
 
         viewModel.fetch()
+
+
+
+        if (savedInstanceState == null) {
+
+        }
+    }
+
+    override fun onBackPressed() {
+        animateViewsOut()
+    }
+
+    private fun animateViewsOut() {
+        val translateTo = binding.commentForm.commentFormContainer.height * 2f
+        AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
+            setTarget(binding.items)
+            start()
+        }
+
+        binding.commentForm.commentFormContainer.animate()
+            .translationY(translateTo)
+            .setDuration(350)
+            .setInterpolator(AnticipateInterpolator(2f))
+            .withEndAction {
+                super.onBackPressed()
+            }
+            .start()
     }
 
     private fun setupRecyclerView() {
@@ -104,12 +163,26 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
         }
     }
 
+    private fun setItems(items: List<CommentItemEntity>) {
+        val replace = adapter.itemCount != 0
+        adapter.setItems(ArrayList(items))
+        if(!replace && adapter.itemCount == items.size) {
+            binding.items.startLayoutAnimation()
+            binding.commentForm.commentFormContainer.animate()
+                .translationY(0f)
+                .setStartDelay(100)
+                .setDuration(450)
+                .setInterpolator(OvershootInterpolator(2f))
+                .start()
+        }
+    }
+
     private fun setupObservers() {
         viewModel.comments.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)
-                    adapter.setItems(ArrayList(it.data!!))
+                    setItems(it.data!!)
                 }
 
                 Resource.Status.ERROR -> {
@@ -120,7 +193,8 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
                 Resource.Status.LOADING -> {
                     setProgress(true)
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
         viewModel.updatedComment.observe(viewLifecycleOwner, {
@@ -143,7 +217,8 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
                 Resource.Status.LOADING -> {
                     setCommentProgress(true)
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
         viewModel.editComment.observe(viewLifecycleOwner, {
@@ -175,7 +250,7 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
         binding.commentForm.name.isGone = !show
         binding.commentForm.replyBody.isGone = !show
         binding.commentForm.divider.isGone = !show
-        if(!show) viewModel.replyTo = 0
+        if (!show) viewModel.replyTo = 0
     }
 
     private fun showEditForm(show: Boolean) {
@@ -183,8 +258,8 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
         binding.commentForm.name.isGone = !show
         binding.commentForm.replyBody.isGone = true
         binding.commentForm.divider.isGone = !show
-        if(viewModel.edit != null) binding.commentForm.input.setText("")
-        if(!show) viewModel.edit = null
+        if (viewModel.edit != null) binding.commentForm.input.setText("")
+        if (!show) viewModel.edit = null
         else {
             binding.commentForm.name.text = getString(R.string.editing_comment)
         }
@@ -199,10 +274,16 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
     }
 
     override fun onClickedMenuItemClick(view: View?, action: Int, item: CommentItemEntity) {
-        when(action) {
+        when (action) {
             R.id.copyText -> {
-                val clipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("open spaces", item.body.fromHtml()))
+                val clipboardManager =
+                    requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboardManager.setPrimaryClip(
+                    ClipData.newPlainText(
+                        "open spaces",
+                        item.body.fromHtml()
+                    )
+                )
                 Toast.makeText(requireContext(), "Text copied", Toast.LENGTH_SHORT).show()
             }
             R.id.delete -> {
@@ -217,10 +298,50 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
     }
 
     override fun onClickedAttach(view: View, item: Attach) {
-        if(item.type == ATTACH_TYPE_INTERNAL_VIDEO) {
+        if (item.type == ATTACH_TYPE_INTERNAL_VIDEO) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(Uri.parse(item.url), "video/mp4")
             startActivity(intent)
+        }
+    }
+
+
+
+
+
+
+
+     fun onCreateViewHolder(): LentaViewHolder {
+        return LentaViewHolder(binding.detailsCard.card, imageGetter, attachmentParser, lifecycleScope, object : LentaAdapter.LentaItemListener {
+            override fun onClickedItem(view: View, item: LentaItemEntity) {
+
+            }
+
+            override fun onClickedLike(view: View, item: LentaItemEntity) {
+
+            }
+
+            override fun onClickedDislike(view: View, item: LentaItemEntity) {
+
+            }
+
+            override fun onClickedAttach(view: View, attach: Attach, item: LentaItemEntity) {
+
+            }
+
+        })
+    }
+
+     fun getItemViewType(item: LentaItemEntity): Int {
+
+        return when {
+            item.attachments.isNotEmpty() -> {
+                LentaAdapter.VIEW_TYPE_POST_WITH_IMAGE
+            }
+            item.attachments.isEmpty() -> {
+                LentaAdapter.VIEW_TYPE_POST
+            }
+            else -> return 0
         }
     }
 }

@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="logo_size">128dp</dimen>
     <dimen name="titleTextSize">34sp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_corner_radius">5dp</dimen>
 </resources>

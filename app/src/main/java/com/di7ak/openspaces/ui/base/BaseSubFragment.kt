@@ -15,9 +15,13 @@ open class BaseSubFragment() : BaseFragment() {
 
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if(!findNavController().popBackStack()) {
-                (activity as MainActivity?)?.navController?.popBackStack()
-            }
+            onBackPressed()
+        }
+    }
+
+    open fun onBackPressed() {
+        if(!findNavController().popBackStack()) {
+            (activity as MainActivity?)?.navController?.popBackStack()
         }
     }
 
@@ -45,7 +49,7 @@ open class BaseSubFragment() : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(!showNavigation) hideNavigation()
+        //if(!showNavigation) hideNavigation()
     }
 
     override fun onPause() {
@@ -53,15 +57,15 @@ open class BaseSubFragment() : BaseFragment() {
 
         if(!showNavigation) showNavigation()
     }
-    private fun hideNavigation() {
+    fun hideNavigation(callback: () -> Unit = {}) {
         if(navHostFragment?.parentFragment is HomeFragment) {
-            (navHostFragment?.parentFragment as HomeFragment?)?.hideNavigation()
+            (navHostFragment?.parentFragment as HomeFragment?)?.hideNavigation(callback)
         }
     }
 
-    private fun showNavigation() {
+    fun showNavigation(callback: () -> Unit = {}) {
         if(navHostFragment?.parentFragment is HomeFragment) {
-            (navHostFragment?.parentFragment as HomeFragment?)?.showNavigation()
+            (navHostFragment?.parentFragment as HomeFragment?)?.showNavigation(callback)
         }
     }
 }

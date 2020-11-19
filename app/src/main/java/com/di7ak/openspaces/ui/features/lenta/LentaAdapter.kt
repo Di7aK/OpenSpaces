@@ -33,8 +33,8 @@ class LentaAdapter(
     RecyclerView.Adapter<LentaViewHolder>() {
 
     companion object {
-        private const val VIEW_TYPE_POST = 0
-        private const val VIEW_TYPE_POST_WITH_IMAGE = 1
+         const val VIEW_TYPE_POST = 0
+         const val VIEW_TYPE_POST_WITH_IMAGE = 1
     }
 
     interface LentaItemListener {
@@ -123,7 +123,6 @@ class LentaViewHolder(
         view.findViewById<View>(R.id.item_container).setOnClickListener(this)
         view.findViewById<View>(R.id.btnLike).setOnClickListener(this)
         view.findViewById<View>(R.id.btnDislike).setOnClickListener(this)
-        view.findViewById<View>(R.id.btnComments).setOnClickListener(this)
 
         val context = view.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
@@ -210,7 +209,7 @@ class LentaViewHolder(
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.item_container, R.id.btnComments -> {
+            R.id.item_container -> {
                 listener.onClickedItem(v, event)
             }
             R.id.btnLike -> {

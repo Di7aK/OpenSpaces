@@ -9,7 +9,7 @@
         <KeyFrameSet>
             <KeyAttribute
                 app:framePosition="0"
-                app:motionTarget="@id/navigation">
+                app:motionTarget="@id/navigationCard">
                 <CustomAttribute
                     app:attributeName="translationY"
                     app:customDimension="0dp" />
@@ -17,10 +17,10 @@
 
             <KeyAttribute
                 app:framePosition="75"
-                app:motionTarget="@id/navigation">
+                app:motionTarget="@id/navigationCard">
                 <CustomAttribute
                     app:attributeName="translationY"
-                    app:customDimension="55dp" />
+                    app:customDimension="80dp" />
             </KeyAttribute>
 
             <KeyAttribute

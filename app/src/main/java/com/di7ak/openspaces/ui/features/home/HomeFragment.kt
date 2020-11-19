@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnticipateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -58,11 +60,22 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    fun hideNavigation() {
-        binding.navigation.isGone = true
+    fun hideNavigation(callback: () -> Unit = {}) {
+        val translateTo = binding.navigationCard.height * 2f
+        binding.navigationCard.animate()
+            .translationY(translateTo)
+            .setDuration(350)
+            .setInterpolator(AnticipateInterpolator(2f))
+            .withEndAction { callback() }
+            .start()
     }
 
-    fun showNavigation() {
-        binding.navigation.isGone = false
+    fun showNavigation(callback: () -> Unit = {}) {
+        binding.navigationCard.animate()
+            .translationY(0f)
+            .setDuration(450)
+            .setInterpolator(OvershootInterpolator(2f))
+            .withEndAction { callback() }
+            .start()
     }
 }
