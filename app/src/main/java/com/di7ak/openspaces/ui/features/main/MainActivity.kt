@@ -65,7 +65,8 @@ class MainActivity : BaseActivity() {
             AppBarConfiguration(setOf(
                 R.id.navigation_lenta,
                 R.id.navigation_journal,
-                R.id.navigation_mail
+                R.id.navigation_mail,
+                R.id.navigation_profile
             ))
 
         setupActionBarWithNavController(

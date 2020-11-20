@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.ui.features.auth
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,7 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AuthActivity : BaseActivity() {
-    lateinit var navController: NavController
+    private val viewModel: AuthViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,5 +29,16 @@ class AuthActivity : BaseActivity() {
 
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+
+        setupObservers()
+        viewModel.fetchSessions()
+    }
+
+    private fun setupObservers() {
+        viewModel.sessions.observe(this) {
+            if(it.isNotEmpty()) {
+                navController.navigate(R.id.action_authFragment_to_accountsFragment)
+            }
+        }
     }
 }

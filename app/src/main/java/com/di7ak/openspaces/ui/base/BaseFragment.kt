@@ -28,6 +28,7 @@ open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
 
             setAllContainerColors(requireContext().getColorFromAttr(R.attr.colorContainer))
         }
+
         super.onCreate(savedInstanceState)
     }
 

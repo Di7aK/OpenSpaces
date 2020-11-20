@@ -87,21 +87,7 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasOptionsMenu(true)
         setHasNavigationMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.guestbook, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.guestbook) {
-            val args = bundleOf(CommentsFragment.EXTRA_GUEST_BOOK_USER to session.current?.userId)
-            findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setProgress(progress: Boolean) {

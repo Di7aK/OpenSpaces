@@ -67,11 +67,15 @@
     <string name="copy">Copy</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="guestbook">guestbook</string>
+    <string name="guestbook">Guest book</string>
     <string name="editing_comment">Editing</string>
     <string name="lenta">Lenta</string>
     <string name="profile">Profile</string>
     <string name="journal">Journal</string>
     <string name="mail">Mail</string>
     <string name="auth_required">Auth required</string>
+    <string name="image">Image</string>
+    <string name="change_account">Change account</string>
+    <string name="switch_theme">Switch theme</string>
+    <string name="logout">Logout</string>
 </resources>

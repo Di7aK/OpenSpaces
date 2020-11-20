@@ -617,4 +617,35 @@
             }
         </value>
     </entry>
+    <entry>
+        <key>profile_mapper</key>
+        <value>
+            {
+            "code": {
+            "type": "value",
+            "paths": ["code"]
+            },
+            "avatarPreview": {
+            "type": "value",
+            "paths": ["owner_widget.photo_widget.previewURL"]
+            },
+            "avatarUrl": {
+            "type": "value",
+            "paths": ["owner_widget.photo_widget.downloadLinkSSL"]
+            },
+            "fullName": {
+            "type": "value",
+            "paths": ["owner_widget.real_name"]
+            },
+            "status": {
+            "type": "value",
+            "paths": ["owner_widget.status.text"]
+            },
+            "name": {
+            "type": "value",
+            "paths": ["owner_widget.name"]
+            }
+            }
+        </value>
+    </entry>
 </defaultsMap>

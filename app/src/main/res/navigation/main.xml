@@ -44,4 +44,16 @@
         <argument android:name="path" app:argType="string"
             android:defaultValue="mail/"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.di7ak.openspaces.ui.features.main.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_profileFragment_to_commentsFragment"
+            app:destination="@id/navigation_comments" />
+
+    </fragment>
 </navigation>
