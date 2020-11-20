@@ -1,6 +1,5 @@
 package com.di7ak.openspaces.utils
 
-import android.util.Log
 import com.di7ak.openspaces.data.entities.Attach
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import org.json.JSONObject
@@ -8,7 +7,6 @@ import java.util.regex.Pattern
 
 class AttachmentParser(val remoteConfig: FirebaseRemoteConfig) {
     private val pattern = Pattern.compile("<script type=\"spaces/file\">(.+?)</script>", Pattern.DOTALL)
-
 
     fun parse(source: String) : Parsed {
         var temp = source
@@ -21,14 +19,14 @@ class AttachmentParser(val remoteConfig: FirebaseRemoteConfig) {
 
                         temp = temp.replace(m0!!, "")
 
-                        val json = JSONObject(m1)
+                        val json = JSONObject(m1!!)
                         val mapData = remoteConfig.getString("attach_mapper")
                         val map = JSONObject(mapData)
                         val attach = json.mapJsonTo(Attach::class.java, map)
                         attachments.add(attach)
                     }
             } catch (e: Exception) {
-                Log.d("lol", "", e)
+                e.printStackTrace()
             }
         return Parsed(attachments, temp)
     }

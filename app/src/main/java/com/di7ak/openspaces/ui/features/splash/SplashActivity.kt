@@ -1,9 +1,10 @@
-package com.di7ak.openspaces.ui
+package com.di7ak.openspaces.ui.features.splash
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.ui.features.main.MainActivity
 import com.di7ak.openspaces.ui.base.BaseActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig

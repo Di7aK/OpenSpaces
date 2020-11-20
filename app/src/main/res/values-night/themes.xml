@@ -12,6 +12,7 @@
         <item name="replyBackground">@drawable/reply_body_night</item>
         <item name="android:windowBackground">@color/windowBackgroundNight</item>
         <item name="android:progressBarStyle" tools:targetApi="lollipop">@style/ProgressBar</item>
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
     <style name="ProgressBar" parent="@android:style/Widget.ProgressBar">

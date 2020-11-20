@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.lenta
+package com.di7ak.openspaces.ui.features.main.lenta
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject

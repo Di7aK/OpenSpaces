@@ -11,7 +11,8 @@
         <item name="dividerDrawable">@drawable/divider_drawable_day</item>
         <item name="replyBackground">@drawable/reply_body_day</item>
         <item name="android:windowBackground">@color/windowBackgroundDay</item>
-        <item name="android:progressBarStyle">@style/ProgressBar</item>
+        <item name="android:progressBarStyle" tools:targetApi="lollipop">@style/ProgressBar</item>
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
     <style name="ProgressBar" parent="@android:style/Widget.ProgressBar">

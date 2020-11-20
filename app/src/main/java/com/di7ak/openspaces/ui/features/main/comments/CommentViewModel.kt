@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.comments
+package com.di7ak.openspaces.ui.features.main.comments
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData

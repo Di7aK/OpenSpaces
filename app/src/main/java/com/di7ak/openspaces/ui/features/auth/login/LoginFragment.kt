@@ -1,39 +1,34 @@
-package com.di7ak.openspaces.ui.features.auth
+package com.di7ak.openspaces.ui.features.auth.login
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.*
-import com.di7ak.openspaces.data.entities.AuthAttributes
-import com.di7ak.openspaces.databinding.AuthFragmentBinding
+import com.di7ak.openspaces.databinding.FragmentLoginBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
-import com.di7ak.openspaces.ui.features.home.HomeFragment
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
-import com.di7ak.openspaces.utils.supportsLollipop
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AuthFragment : BaseFragment() {
+class LoginFragment : BaseFragment() {
     companion object {
         const val EXTRA_USERNAME = "username"
     }
-    private var binding: AuthFragmentBinding by autoCleared()
-    private val viewModel: AuthViewModel by viewModels()
+    private var binding: FragmentLoginBinding by autoCleared()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = AuthFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,7 +38,7 @@ class AuthFragment : BaseFragment() {
         setupObservers()
         setupListeners()
 
-        arguments?.getInt(EXTRA_USERNAME)?.let { username ->
+        arguments?.getString(EXTRA_USERNAME)?.let { username ->
             binding.loginInput.setText(username)
             Toast.makeText(requireContext(), getString(R.string.auth_required), Toast.LENGTH_SHORT).show()
         }
@@ -78,7 +73,7 @@ class AuthFragment : BaseFragment() {
                     when (it.data?.code) {
                         CODE_SUCCESS -> {
                             viewModel.currentSession = it.data.attributes
-                            openAccount(it.data.attributes!!)
+                            openAccount()
                         }
                         CODE_NEED_CAPTCHA, CODE_WRONG_CAPTCHA -> {
                             showCaptcha(it.data.captchaUrl)
@@ -98,22 +93,14 @@ class AuthFragment : BaseFragment() {
                 Resource.Status.LOADING -> {
                     setProgress(true)
                 }
-                else -> {}
+                else -> {
+                }
             }
         })
     }
 
-    private fun openAccount(session: AuthAttributes) {
-        supportsLollipop {
-            binding.btnLogin.transitionName = session.userId.toString()
-        }
-        val extras =FragmentNavigatorExtras(binding.btnLogin to session.userId.toString())
-        findNavController().navigate(
-            R.id.action_authFragment_to_homeFragment,
-            bundleOf(HomeFragment.EXTRA_USER_ID to session.userId),
-            null,
-            extras
-        )
+    private fun openAccount() {
+        setResult(Activity.RESULT_OK)
     }
 
     override fun onCaptchaEntered(code: String) {

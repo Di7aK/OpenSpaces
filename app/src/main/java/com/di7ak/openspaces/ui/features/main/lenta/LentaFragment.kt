@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.lenta
+package com.di7ak.openspaces.ui.features.main.lenta
 
 import android.content.Intent
 import android.net.Uri
@@ -19,8 +19,8 @@ import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
-import com.di7ak.openspaces.ui.base.BaseSubFragment
-import com.di7ak.openspaces.ui.features.comments.CommentsFragment
+import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.features.main.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
+class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private var binding: LentaFragmentBinding by autoCleared()
     private val viewModel: LentaViewModel by viewModels()
     @Inject
@@ -173,7 +173,8 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
     private fun openPost(item: LentaItemEntity) {
         val args = bundleOf(CommentsFragment.EXTRA_POST to item)
 
-        hideNavigation { findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args) }
-
+        hideNavigation {
+            findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
+        }
     }
 }

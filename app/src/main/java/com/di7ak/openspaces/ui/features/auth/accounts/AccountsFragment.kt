@@ -1,10 +1,10 @@
-package com.di7ak.openspaces.ui.features.accounts
+package com.di7ak.openspaces.ui.features.auth.accounts
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
@@ -15,10 +15,8 @@ import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.databinding.AccountsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
-import com.di7ak.openspaces.ui.features.home.HomeFragment
 import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.autoCleared
-import com.di7ak.openspaces.utils.supportsLollipop
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -77,20 +75,11 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
         sharedView = view
         viewModel.currentSession = session
 
-        openAccount(view, session)
+        openAccount()
     }
 
-    private fun openAccount(view: View, session: AuthAttributes) {
-        supportsLollipop {
-            view.transitionName = session.userId.toString()
-        }
-        val extras = FragmentNavigatorExtras(view to session.userId.toString())
-        findNavController().navigate(
-            R.id.action_accountsFragment_to_homeFragment,
-            bundleOf(HomeFragment.EXTRA_USER_ID to session.userId),
-            null,
-            extras
-        )
+    private fun openAccount() {
+        setResult(Activity.RESULT_OK)
     }
 
     override fun onClickedDelete(session: AuthAttributes) {

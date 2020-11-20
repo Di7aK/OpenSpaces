@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.accounts
+package com.di7ak.openspaces.ui.features.auth.accounts
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData

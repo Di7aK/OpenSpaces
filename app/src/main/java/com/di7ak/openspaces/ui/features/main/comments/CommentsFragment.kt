@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.comments
+package com.di7ak.openspaces.ui.features.main.comments
 
 import android.animation.AnimatorInflater
 import android.content.ClipData
@@ -27,14 +27,13 @@ import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.CommentsFragmentBinding
-import com.di7ak.openspaces.ui.base.BaseSubFragment
+import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener {
+class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     companion object {
         const val EXTRA_POST = "post"
         const val EXTRA_URL = "url"

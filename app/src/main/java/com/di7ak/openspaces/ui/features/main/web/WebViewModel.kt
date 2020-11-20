@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.web
+package com.di7ak.openspaces.ui.features.main.web
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*

@@ -1,4 +1,4 @@
-package com.di7ak.openspaces.ui.features.auth
+package com.di7ak.openspaces.ui.features.auth.login
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -10,7 +10,7 @@ import com.di7ak.openspaces.utils.Resource
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class AuthViewModel @ViewModelInject constructor(
+class LoginViewModel @ViewModelInject constructor(
     private val repository: AuthRepository,
     private val session: Session
 ) : ViewModel() {

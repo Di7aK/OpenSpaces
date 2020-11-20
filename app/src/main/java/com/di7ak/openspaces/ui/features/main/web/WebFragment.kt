@@ -1,19 +1,18 @@
-package com.di7ak.openspaces.ui.features.web
+package com.di7ak.openspaces.ui.features.main.web
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.CookieManager
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebViewClient
-import androidx.fragment.app.Fragment
+import android.webkit.*
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.di7ak.openspaces.databinding.WebFragmentBinding
+import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.autoCleared
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -21,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class WebFragment : Fragment() {
+class WebFragment : BaseFragment() {
     companion object {
         const val EXTRA_PATH = "path"
     }
@@ -73,7 +72,19 @@ class WebFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     fun setupWebView() {
         binding.webView.apply {
-            webViewClient = WebViewClient()
+            webViewClient = object: WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+
+                    binding.progress.isGone = true
+                }
+
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+
+                    binding.progress.isGone = false
+                }
+            }
             webChromeClient = WebChromeClient()
             settings.javaScriptEnabled = true
             settings.allowFileAccess = true
