@@ -170,7 +170,7 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
         ConfirmDialog(requireContext(),
             icon = R.drawable.logout_variant,
             title = R.string.remove_account,
-            subtitle = R.string.remove_account_description,
+            subtitle = R.string.logout_confirm,
             listener = object : ConfirmDialog.ConfirmDialogListener {
                 override fun onAccept() {
                     viewModel.logout()
