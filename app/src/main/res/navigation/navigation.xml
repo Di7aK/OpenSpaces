@@ -34,4 +34,14 @@
             android:name="guest_book_user"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_mail"
+        android:name="com.di7ak.openspaces.ui.features.web.WebFragment"
+        android:label="Web"
+        tools:layout="@layout/web_fragment">
+
+        <argument android:name="path" app:argType="string"
+            android:defaultValue="mail/"/>
+    </fragment>
 </navigation>

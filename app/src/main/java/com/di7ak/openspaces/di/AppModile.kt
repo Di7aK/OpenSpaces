@@ -5,6 +5,7 @@ import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.repository.AssetsRepository
 import com.di7ak.openspaces.data.converters.ConfigMapperConverterFactory
+import com.di7ak.openspaces.data.local.AuthDao
 import com.di7ak.openspaces.utils.AttachmentParser
 import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.google.firebase.ktx.Firebase
@@ -30,11 +31,12 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(remoteConfig: FirebaseRemoteConfig, client: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl(remoteConfig.getString("base_url"))
-        .client(client)
-        .addConverterFactory(ConfigMapperConverterFactory.create(remoteConfig))
-        .build()
+    fun provideRetrofit(remoteConfig: FirebaseRemoteConfig, client: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(remoteConfig.getString("base_url"))
+            .client(client)
+            .addConverterFactory(ConfigMapperConverterFactory.create(remoteConfig))
+            .build()
 
     @Singleton
     @Provides
@@ -72,7 +74,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSession() = Session()
+    fun provideSession(authDao: AuthDao, @ApplicationContext context: Context) =
+        Session(authDao, context)
 
     @Singleton
     @Provides

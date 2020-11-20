@@ -3,6 +3,7 @@ package com.di7ak.openspaces.ui.features.lenta
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.core.os.bundleOf
@@ -60,7 +61,9 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
             startPostponedEnterTransition()
         }
 
-        viewModel.fetch()
+        if(savedInstanceState == null) {
+            viewModel.fetch()
+        }
     }
 
     private fun retry() {
@@ -106,6 +109,7 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
 
     private fun setupObservers() {
         viewModel.events.observe(viewLifecycleOwner, {
+            Log.d("lol", "upd")
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     setProgress(false)

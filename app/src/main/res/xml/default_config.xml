@@ -561,11 +561,11 @@
             },
             "lentaCnt": {
             "type": "value",
-            "paths": ["1"]
+            "paths": ["2"]
             },
             "journalCnt": {
             "type": "value",
-            "paths": ["2"]
+            "paths": ["1"]
             },
             "mailCnt": {
             "type": "value",

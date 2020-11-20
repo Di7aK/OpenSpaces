@@ -11,24 +11,27 @@ import android.webkit.CookieManager
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
-import android.widget.Toast
-import androidx.core.view.doOnPreDraw
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.databinding.WebFragmentBinding
-import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WebFragment : Fragment() {
+    companion object {
+        const val EXTRA_PATH = "path"
+    }
+
     private var binding: WebFragmentBinding by autoCleared()
     private val viewModel: WebViewModel by viewModels()
+
+    @Inject
+    lateinit var remoteConfig: FirebaseRemoteConfig
+    private var path = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -51,55 +54,20 @@ class WebFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        path = arguments?.getString(EXTRA_PATH) ?: ""
+
         setupWebView()
-
-        setObservers()
-        val userId = requireArguments().getInt("userId")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            binding.detailContainer.transitionName = userId.toString()
-        }
-
-        viewModel.setUserId(userId)
+        setSession()
     }
 
-    private fun setObservers() {
-        var checked = false
-        viewModel.session.observe(viewLifecycleOwner, Observer {
-            if(checked) return@Observer
-            checked = true
-            val cookieString = "sid=${it.sid}; path=/"
-            CookieManager.getInstance().setCookie("https://spaces.im", cookieString)
-            viewModel.check(it.sid)
-        })
+    private fun setSession() {
+        val session = viewModel.session
 
-        viewModel.auth.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    binding.progress.isGone = true
-                    binding.webView.isGone = false
-                    when(it.data?.code) {
-                        CODE_SUCCESS -> {
-                            binding.webView.loadUrl(it.data.attributes!!.mysiteLink)
-                        }
-                        else -> {
-                            findNavController().popBackStack()
-                        }
-                    }
-                }
+        val baseUrl = remoteConfig.getString("base_url")
+        val cookieString = "sid=${session.current?.sid}; path=/"
+        CookieManager.getInstance().setCookie(baseUrl, cookieString)
 
-                Resource.Status.ERROR -> {
-                    binding.progress.isGone = true
-                    binding.webView.isGone = false
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                }
-
-                Resource.Status.LOADING -> {
-                    binding.progress.isGone = false
-                    binding.webView.isGone = true
-                }
-            }
-        })
+        binding.webView.loadUrl("$baseUrl/$path")
     }
 
     @SuppressLint("SetJavaScriptEnabled")
