@@ -5,8 +5,8 @@
     android:id="@+id/commentFormContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:translationY="130dp">
+    android:translationY="140dp"
+    android:layout_alignParentBottom="true">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/inputCard"

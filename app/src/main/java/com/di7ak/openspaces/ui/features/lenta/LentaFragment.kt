@@ -1,22 +1,14 @@
 package com.di7ak.openspaces.ui.features.lenta
 
-import android.animation.AnimatorInflater
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
-import androidx.core.animation.addListener
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -28,12 +20,10 @@ import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.LentaFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseSubFragment
 import com.di7ak.openspaces.ui.features.comments.CommentsFragment
-import com.di7ak.openspaces.ui.features.player.PlayerFragment
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
 import com.stfalcon.imageviewer.StfalconImageViewer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.lenta_fragment.view.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -66,7 +56,9 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
         setupObservers()
 
         postponeEnterTransition()
-        view.doOnPreDraw { startPostponedEnterTransition() }
+        view.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
 
         viewModel.fetch()
     }
@@ -137,7 +129,7 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
     }
 
     override fun onClickedItem(view: View, item: LentaItemEntity) {
-        openPost(view, item)
+        openPost(item)
     }
 
     override fun onClickedDislike(view: View, item: LentaItemEntity) {
@@ -151,12 +143,9 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
     override fun onClickedAttach(view: View, attach: Attach, item: LentaItemEntity) {
         when (attach.type) {
             ATTACH_TYPE_INTERNAL_VIDEO -> {
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, PlayerFragment.newInstance(item, attach))
-                    .commit()
-                /*val intent = Intent(Intent.ACTION_VIEW)
+                val intent = Intent(Intent.ACTION_VIEW)
                 intent.setDataAndType(Uri.parse(attach.url), "video/mp4")
-                startActivity(intent)*/
+                startActivity(intent)
             }
             ATTACH_TYPE_EXTERNAL_VIDEO -> {
                 val url = if(attach.sourceType == SOURCE_TYPE_YOUTUBE) {
@@ -177,28 +166,10 @@ class LentaFragment : BaseSubFragment(), LentaAdapter.LentaItemListener {
         }
     }
 
-    private fun openPost(view: View, item: LentaItemEntity) {
+    private fun openPost(item: LentaItemEntity) {
         val args = bundleOf(CommentsFragment.EXTRA_POST to item)
-        supportsLollipop {
-            view.transitionName = "post"
-        }
-        val extras = FragmentNavigatorExtras(view to "post${item.id}")
 
-        hideNavigation {  }
-        findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args, null, extras)
+        hideNavigation { findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args) }
 
-        /*AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
-            setTarget(binding.items)
-            withEndAction {
-                //binding.items.visibility = View.INVISIBLE
-                view.visibility = View.VISIBLE
-
-                hideNavigation {
-                    findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args, null, extras)
-                }
-                //view.animate().setDuration(400).y(0f).setInterpolator(OvershootInterpolator()).start()
-            }
-            start()
-        }*/
     }
 }

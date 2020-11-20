@@ -10,9 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.animation.AnticipateInterpolator
-import android.view.animation.LayoutAnimationController
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.view.isGone
@@ -24,18 +22,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.transition.TransitionInflater
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
-import com.di7ak.openspaces.data.entities.LentaItemEntity
 import com.di7ak.openspaces.databinding.CommentsFragmentBinding
 import com.di7ak.openspaces.ui.base.BaseSubFragment
-import com.di7ak.openspaces.ui.features.lenta.LentaAdapter
-import com.di7ak.openspaces.ui.features.lenta.LentaViewHolder
 import com.di7ak.openspaces.utils.*
-import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -54,20 +47,13 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
 
     @Inject
     lateinit var imageGetter: HtmlImageGetter
+
     @Inject
     lateinit var attachmentParser: AttachmentParser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 1000L
-            isElevationShadowEnabled = true
-            interpolator = OvershootInterpolator()
-            setAllContainerColors(requireContext().getColorFromAttr(R.attr.colorContainer))
-        }*/
-
-        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.shared_element_transition)
         setHasNavigationMenu(false)
     }
 
@@ -87,22 +73,11 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
         setupListeners()
         showReplyForm(false)
 
-        viewModel.post = requireArguments().getParcelable<LentaItemEntity>(EXTRA_POST)?.apply {
-            supportsLollipop {
-                binding.detailsCard.card.transitionName = "post$id"
-            }
-            onCreateViewHolder().bind(this)
-        }
+        viewModel.post = requireArguments().getParcelable(EXTRA_POST)
         viewModel.url = requireArguments().getString(EXTRA_URL)
         viewModel.guestBookUser = requireArguments().getInt(EXTRA_GUEST_BOOK_USER)
 
         viewModel.fetch()
-
-
-
-        if (savedInstanceState == null) {
-
-        }
     }
 
     override fun onBackPressed() {
@@ -166,7 +141,7 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
     private fun setItems(items: List<CommentItemEntity>) {
         val replace = adapter.itemCount != 0
         adapter.setItems(ArrayList(items))
-        if(!replace && adapter.itemCount == items.size) {
+        if (!replace && adapter.itemCount == items.size) {
             binding.items.startLayoutAnimation()
             binding.commentForm.commentFormContainer.animate()
                 .translationY(0f)
@@ -302,46 +277,6 @@ class CommentsFragment : BaseSubFragment(), CommentsAdapter.CommentsItemListener
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setDataAndType(Uri.parse(item.url), "video/mp4")
             startActivity(intent)
-        }
-    }
-
-
-
-
-
-
-
-     fun onCreateViewHolder(): LentaViewHolder {
-        return LentaViewHolder(binding.detailsCard.card, imageGetter, attachmentParser, lifecycleScope, object : LentaAdapter.LentaItemListener {
-            override fun onClickedItem(view: View, item: LentaItemEntity) {
-
-            }
-
-            override fun onClickedLike(view: View, item: LentaItemEntity) {
-
-            }
-
-            override fun onClickedDislike(view: View, item: LentaItemEntity) {
-
-            }
-
-            override fun onClickedAttach(view: View, attach: Attach, item: LentaItemEntity) {
-
-            }
-
-        })
-    }
-
-     fun getItemViewType(item: LentaItemEntity): Int {
-
-        return when {
-            item.attachments.isNotEmpty() -> {
-                LentaAdapter.VIEW_TYPE_POST_WITH_IMAGE
-            }
-            item.attachments.isEmpty() -> {
-                LentaAdapter.VIEW_TYPE_POST
-            }
-            else -> return 0
         }
     }
 }

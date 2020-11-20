@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -26,12 +26,6 @@ class HomeFragment : BaseFragment() {
     private var binding: HomeFragmentBinding by autoCleared()
     private val viewModel: HomeViewModel by viewModels()
 
-    var progress: Float = 0f
-        set(value) {
-            field = value
-            binding.detailContainer.progress = value
-        }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +41,10 @@ class HomeFragment : BaseFragment() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             binding.detailContainer.transitionName = userId.toString()
+            postponeEnterTransition()
+            view.doOnPreDraw {
+                startPostponedEnterTransition()
+            }
         }
 
         val controller = binding.fragment.findNavController()
