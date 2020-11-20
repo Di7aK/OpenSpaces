@@ -15,6 +15,11 @@ import com.google.android.material.transition.MaterialContainerTransform
 open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
     private val captchaDialog: CaptchaDialog by lazy { CaptchaDialog(requireContext(), this) }
     private var showNavigation: Boolean = false
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
@@ -40,9 +45,7 @@ open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
         captchaDialog.captchaUrl = url
     }
 
-    override fun onCaptchaEntered(code: String) {
-
-    }
+    override fun onCaptchaEntered(code: String) {}
 
     fun setResult(resultCode: Int, intent: Intent? = null) {
         activity?.apply {
@@ -51,14 +54,8 @@ open class BaseFragment : Fragment(), CaptchaDialog.CaptchaListener {
         }
     }
 
-    private val backPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            onBackPressed()
-        }
-    }
-
     open fun onBackPressed() {
-        findNavController().popBackStack()
+        if(!findNavController().popBackStack()) activity?.finish()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

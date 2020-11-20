@@ -7,9 +7,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import com.di7ak.openspaces.R
-import com.di7ak.openspaces.databinding.ConfirmDialogBinding
+import com.di7ak.openspaces.databinding.DialogConfirmBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-
 
 class ConfirmDialog(context: Context,
                     @DrawableRes private val icon: Int? = null,
@@ -17,9 +16,9 @@ class ConfirmDialog(context: Context,
                     @StringRes private val subtitle: Int? = null,
                     @StringRes private val confirmText: Int? = null,
                     @StringRes private val cancelText: Int? = null,
-                    private val listener: ConfirmDialogListener? = null) :
-    BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme), View.OnClickListener {
-    private val binding: ConfirmDialogBinding = ConfirmDialogBinding.inflate(LayoutInflater.from(context))
+                    private val listener: ConfirmDialogListener? = null
+) : BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme), View.OnClickListener {
+    private val binding = DialogConfirmBinding.inflate(LayoutInflater.from(context))
 
     init {
         setContentView(binding.root)

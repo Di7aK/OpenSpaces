@@ -6,12 +6,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.bumptech.glide.Glide
 import com.di7ak.openspaces.R
-import com.di7ak.openspaces.databinding.CaptchaDialogBinding
+import com.di7ak.openspaces.databinding.DialogCaptchaBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class CaptchaDialog(context: Context, private val listener: CaptchaListener) :
-    BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme), View.OnClickListener {
-    private val binding: CaptchaDialogBinding = CaptchaDialogBinding.inflate(LayoutInflater.from(context))
+class CaptchaDialog(
+    context: Context, private val listener: CaptchaListener
+) : BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme), View.OnClickListener {
+    private val binding = DialogCaptchaBinding.inflate(LayoutInflater.from(context))
 
     var captchaUrl: String = ""
         set(value) {

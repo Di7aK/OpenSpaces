@@ -19,7 +19,7 @@
         android:id="@+id/navigationAccounts"
         android:name="com.di7ak.openspaces.ui.features.auth.accounts.AccountsFragment"
         android:label="Accounts"
-        tools:layout="@layout/accounts_fragment">
+        tools:layout="@layout/fragment_accounts">
         <action
             android:id="@+id/action_accountsFragment_to_authFragment"
             app:destination="@id/navigationLogin" />

@@ -9,7 +9,7 @@
         android:id="@+id/navigation_lenta"
         android:name="com.di7ak.openspaces.ui.features.main.lenta.LentaFragment"
         android:label="Lenta"
-        tools:layout="@layout/lenta_fragment">
+        tools:layout="@layout/fragment_lenta">
 
         <action
             android:id="@+id/action_lentaFragment_to_commentsFragment"
@@ -21,7 +21,7 @@
         android:id="@+id/navigation_comments"
         android:name="com.di7ak.openspaces.ui.features.main.comments.CommentsFragment"
         android:label="Comments"
-        tools:layout="@layout/comments_fragment">
+        tools:layout="@layout/fragment_comments">
 
         <argument
             android:name="post"
@@ -39,7 +39,7 @@
         android:id="@+id/navigation_mail"
         android:name="com.di7ak.openspaces.ui.features.main.web.WebFragment"
         android:label="Web"
-        tools:layout="@layout/web_fragment">
+        tools:layout="@layout/fragment_web">
 
         <argument android:name="path" app:argType="string"
             android:defaultValue="mail/"/>

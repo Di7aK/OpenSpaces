@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import androidx.annotation.MenuRes
 import androidx.core.view.forEach
 import com.di7ak.openspaces.R
-import com.di7ak.openspaces.databinding.MenuDialogBinding
+import com.di7ak.openspaces.databinding.DialogMenuBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MenuDialog(
@@ -13,9 +13,8 @@ class MenuDialog(
     @MenuRes
     private val menuRes: Int = 0,
     private val listener: MenuDialogListener? = null
-) :
-    BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme) {
-    private val binding: MenuDialogBinding = MenuDialogBinding.inflate(LayoutInflater.from(context))
+) : BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme) {
+    private val binding = DialogMenuBinding.inflate(LayoutInflater.from(context))
 
     fun hideItems(itemsId: List<Int>) {
         binding.menu.menu.forEach {

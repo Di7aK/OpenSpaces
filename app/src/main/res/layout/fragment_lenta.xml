@@ -14,6 +14,7 @@
         android:paddingStart="8dp"
         android:clipToPadding="false"
         android:paddingEnd="8dp"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

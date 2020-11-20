@@ -26,7 +26,7 @@ import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
-import com.di7ak.openspaces.databinding.CommentsFragmentBinding
+import com.di7ak.openspaces.databinding.FragmentCommentsBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +40,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         const val EXTRA_GUEST_BOOK_USER = "guest_book_user"
     }
 
-    private var binding: CommentsFragmentBinding by autoCleared()
+    private var binding: FragmentCommentsBinding by autoCleared()
     private val viewModel: CommentViewModel by viewModels()
     private lateinit var adapter: CommentsAdapter
 
@@ -60,7 +60,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CommentsFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentCommentsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -94,9 +94,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
             .translationY(translateTo)
             .setDuration(350)
             .setInterpolator(AnticipateInterpolator(2f))
-            .withEndAction {
-                super.onBackPressed()
-            }
+            .withEndAction { super.onBackPressed() }
             .start()
     }
 

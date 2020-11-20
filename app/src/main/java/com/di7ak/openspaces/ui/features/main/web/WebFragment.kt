@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.webkit.*
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
-import com.di7ak.openspaces.databinding.WebFragmentBinding
+import com.di7ak.openspaces.databinding.FragmentWebBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.utils.autoCleared
 import com.google.android.material.transition.MaterialContainerTransform
@@ -25,7 +25,7 @@ class WebFragment : BaseFragment() {
         const val EXTRA_PATH = "path"
     }
 
-    private var binding: WebFragmentBinding by autoCleared()
+    private var binding: FragmentWebBinding by autoCleared()
     private val viewModel: WebViewModel by viewModels()
 
     @Inject
@@ -46,7 +46,7 @@ class WebFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = WebFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentWebBinding.inflate(inflater, container, false)
         return binding.root
     }
 

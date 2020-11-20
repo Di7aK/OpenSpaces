@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.entities.AuthAttributes
-import com.di7ak.openspaces.databinding.AccountsFragmentBinding
+import com.di7ak.openspaces.databinding.FragmentAccountsBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.autoCleared
@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
-    private var binding: AccountsFragmentBinding by autoCleared()
+    private var binding: FragmentAccountsBinding by autoCleared()
     private val viewModel: AccountsViewModel by viewModels()
     private lateinit var adapter: AccountsAdapter
     private var sharedView: View? = null
@@ -30,7 +30,7 @@ class AccountsFragment : BaseFragment(), AccountsAdapter.AccountsItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = AccountsFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentAccountsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
