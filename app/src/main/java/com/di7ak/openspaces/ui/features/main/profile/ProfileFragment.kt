@@ -148,7 +148,7 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == REQUEST_CHANGE_ACCOUNT && resultCode == Activity.RESULT_OK) {
+        if(requestCode == REQUEST_CHANGE_ACCOUNT) {
             requireActivity().recreate()
         }
 
