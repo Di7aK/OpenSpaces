@@ -31,13 +31,10 @@ import javax.inject.Inject
 class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private var binding: FragmentLentaBinding by autoCleared()
     private val viewModel: LentaViewModel by viewModels()
-
     @Inject
     lateinit var imageGetter: HtmlImageGetter
-
     @Inject
     lateinit var attachmentParser: AttachmentParser
-
     @Inject
     lateinit var session: Session
 
@@ -73,7 +70,6 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = LentaAdapter(imageGetter, attachmentParser, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
 
@@ -88,6 +84,8 @@ class LentaFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         super.onCreate(savedInstanceState)
 
         setHasNavigationMenu(true)
+
+        adapter = LentaAdapter(imageGetter, attachmentParser, lifecycleScope, this)
     }
 
     private fun setProgress(progress: Boolean) {
