@@ -1,0 +1,90 @@
+{
+  "countNew": {
+    "type": "value",
+    "paths": [
+      "counts.new"
+    ]
+  },
+  "countMain": {
+    "type": "value",
+    "paths": [
+      "counts.main"
+    ]
+  },
+  "items": {
+    "type": "array",
+    "paths": [
+      "widgets"
+    ],
+    "map": {
+      "id": {
+        "type": "value",
+        "paths": [
+          "id"
+        ]
+      },
+      "text": {
+        "type": "value",
+        "paths": [
+          "text"
+        ]
+      },
+      "answer": {
+        "type": "value",
+        "paths": [
+          "answer"
+        ]
+      },
+      "colorType": {
+        "type": "value",
+        "paths": [
+          "color_type"
+        ]
+      },
+      "commentsCnt": {
+        "type": "value",
+        "paths": [
+          "comments_cnt"
+        ]
+      },
+      "commentUserName": {
+        "type": "value",
+        "paths": [
+          "comment_user_name"
+        ]
+      },
+      "message": {
+        "type": "value",
+        "paths": [
+          "message"
+        ]
+      },
+      "link": {
+        "type": "value",
+        "paths": [
+          "link"
+        ]
+      },
+      "header": {
+        "type": "value",
+        "paths": [
+          "header"
+        ]
+      },
+      "date": {
+        "type": "value",
+        "paths": [
+          "cool_date"
+        ]
+      }
+    }
+  },
+  "code": {
+    "type": "value",
+    "paths": ["code"]
+  },
+  "captchaUrl": {
+    "type": "value",
+    "paths": ["captcha_url"]
+  }
+}

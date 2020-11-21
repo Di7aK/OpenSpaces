@@ -74,4 +74,16 @@
         <argument android:name="user_id" app:argType="integer"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_journal"
+        android:name="com.di7ak.openspaces.ui.features.main.journal.JournalFragment"
+        android:label="@string/journal"
+        tools:layout="@layout/fragment_journal">
+
+        <action
+            android:id="@+id/action_journalFragment_to_commentsFragment"
+            app:destination="@id/navigation_comments" />
+
+    </fragment>
 </navigation>
