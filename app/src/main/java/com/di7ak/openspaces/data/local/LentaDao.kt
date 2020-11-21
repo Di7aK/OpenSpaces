@@ -5,7 +5,7 @@ import com.di7ak.openspaces.data.entities.LentaItemEntity
 
 @Dao
 interface LentaDao {
-    @Query("SELECT * FROM lenta WHERE userId = :userId ORDER BY id DESC")
+    @Query("SELECT * FROM lenta WHERE userId = :userId ORDER BY date DESC")
     fun getEvents(userId: Int) : List<LentaItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
