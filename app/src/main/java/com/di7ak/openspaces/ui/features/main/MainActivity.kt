@@ -14,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.CODE_AUTH_REQUIRED
 import com.di7ak.openspaces.data.CODE_SUCCESS
 import com.di7ak.openspaces.data.Session
 import com.di7ak.openspaces.databinding.ActivityMainBinding
@@ -106,7 +107,7 @@ class MainActivity : BaseActivity() {
                             setBadges(it.data.journalCnt, it.data.mailCnt)
                             //ThemeColors.setNewThemeColor(this, it.data.color)
                         }
-                        else -> {
+                        CODE_AUTH_REQUIRED -> {
                             openAuth(session.current?.name)
                         }
                     }
