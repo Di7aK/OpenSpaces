@@ -35,12 +35,25 @@
             android:layout_marginStart="15dp"
             android:textSize="16sp"
             android:maxLines="1"
+            android:maxLength="16"
             android:ellipsize="end"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/date"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/name"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
+            app:layout_constraintStart_toEndOf="@id/name"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="15dp"
+            tools:text="45" />
 
         <TextView
             android:id="@+id/title"
@@ -162,18 +175,6 @@
             app:layout_constraintTop_toTopOf="@+id/btnComments"
             app:layout_constraintBottom_toBottomOf="@+id/btnComments"
             android:layout_marginStart="5dp"
-            tools:text="45" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/name"
-            app:layout_constraintStart_toEndOf="@id/name"
-            app:layout_constraintBottom_toBottomOf="@+id/name"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="15dp"
             tools:text="45" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
