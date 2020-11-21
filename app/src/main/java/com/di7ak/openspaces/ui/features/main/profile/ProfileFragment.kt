@@ -192,6 +192,7 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     }
 
     private fun animateViewsOut(callback: () -> Unit) {
+        binding.menu.isEnabled = false
         AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
             setTarget(binding.menuCard)
             start()

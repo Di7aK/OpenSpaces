@@ -21,7 +21,6 @@ import com.di7ak.openspaces.ui.base.BaseActivity
 import com.di7ak.openspaces.ui.features.auth.AuthActivity
 import com.di7ak.openspaces.ui.features.auth.login.LoginFragment
 import com.di7ak.openspaces.utils.Resource
-import com.di7ak.openspaces.utils.ThemeColors
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -142,6 +141,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun hideNavigation(callback: () -> Unit = {}) {
+        binding.navigation.isEnabled = false
         val translateTo = binding.navigationCard.height * 2f
         binding.navigationCard.animate()
             .translationY(translateTo)
@@ -152,6 +152,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun showNavigation(callback: () -> Unit = {}) {
+        binding.navigation.isEnabled = true
         binding.navigationCard.animate()
             .translationY(0f)
             .setDuration(450)
