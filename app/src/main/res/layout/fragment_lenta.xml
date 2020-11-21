@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
         android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/bottom_size"
         android:paddingEnd="8dp"
         android:layoutAnimation="@anim/layout_animation_fall_down"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
