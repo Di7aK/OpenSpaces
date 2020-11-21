@@ -49,7 +49,6 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     lateinit var imageGetter: HtmlImageGetter
     @Inject
     lateinit var attachmentParser: AttachmentParser
-    private lateinit var dividerItemDecoration: DividerItemDecoration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,9 +108,6 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         adapter = CommentsAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
-        dividerItemDecoration.setDrawable(requireContext().getDrawableFromAttr(R.attr.dividerDrawable))
-
         binding.items.layoutManager = LinearLayoutManager(requireContext())
         binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
     }
@@ -149,11 +145,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
                 .setInterpolator(OvershootInterpolator(2f))
                 .start()
         }
-        if(adapter.itemCount == 0) {
-            progressAdapter.isEmpty = true
-        } else if(!replace) {
-            binding.items.addItemDecoration(dividerItemDecoration)
-        }
+        progressAdapter.isEmpty = adapter.itemCount == 0
     }
 
     private fun setupObservers() {

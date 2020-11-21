@@ -14,8 +14,9 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
         private const val VIEW_TYPE_ERROR = 0
         private const val VIEW_TYPE_PROGRESS = 1
         private const val VIEW_TYPE_EMPTY = 2
-        private const val VIEW_TYPE_NOTHING = 2
+        private const val VIEW_TYPE_NOTHING = 3
     }
+
     var isEmpty: Boolean = false
         set(value) {
             field = value
@@ -52,7 +53,12 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
     override fun onBindViewHolder(holder: LoadViewHolder, position: Int) {}
 
     override fun getItemViewType(position: Int): Int {
-        return if (isError) VIEW_TYPE_ERROR else if (isProgress) VIEW_TYPE_PROGRESS else VIEW_TYPE_NOTHING
+        return when {
+            isError -> VIEW_TYPE_ERROR
+            isProgress -> VIEW_TYPE_PROGRESS
+            isEmpty -> VIEW_TYPE_EMPTY
+            else -> VIEW_TYPE_NOTHING
+        }
     }
 
     override fun getItemCount() = 1
