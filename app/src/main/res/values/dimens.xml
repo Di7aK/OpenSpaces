@@ -6,4 +6,5 @@
     <dimen name="titleTextSize">34sp</dimen>
     <dimen name="card_elevation">5dp</dimen>
     <dimen name="card_corner_radius">5dp</dimen>
+    <dimen name="bottom_size">80dp</dimen>
 </resources>

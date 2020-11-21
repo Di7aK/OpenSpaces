@@ -16,4 +16,5 @@
         android:title="@string/switch_theme"
         app:actionLayout="@layout/layout_switch"
         android:icon="@drawable/theme_light_dark"/>
+
 </menu>
