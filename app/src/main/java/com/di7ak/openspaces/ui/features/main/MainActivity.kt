@@ -141,6 +141,8 @@ class MainActivity : BaseActivity() {
     }
 
     fun hideNavigation(callback: () -> Unit = {}) {
+        if(!binding.navigation.isEnabled) return
+
         binding.navigation.isEnabled = false
         val translateTo = binding.navigationCard.height * 2f
         binding.navigationCard.animate()

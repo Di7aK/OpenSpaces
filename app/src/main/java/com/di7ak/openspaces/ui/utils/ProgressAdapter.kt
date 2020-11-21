@@ -3,6 +3,7 @@ package com.di7ak.openspaces.ui.utils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.di7ak.openspaces.databinding.ItemLoadEmptyBinding
 import com.di7ak.openspaces.databinding.ItemLoadErrorBinding
@@ -32,6 +33,8 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
             field = value
             notifyItemChanged(0)
         }
+    var contentAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
+    var recyclerView: RecyclerView? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoadViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -50,7 +53,11 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
         }
     }
 
-    override fun onBindViewHolder(holder: LoadViewHolder, position: Int) {}
+    override fun onBindViewHolder(holder: LoadViewHolder, position: Int) {
+        val params = recyclerView?.layoutParams
+        params?.height = if(contentAdapter?.itemCount == 0) ConstraintLayout.LayoutParams.WRAP_CONTENT else 0
+        recyclerView?.requestLayout()
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when {

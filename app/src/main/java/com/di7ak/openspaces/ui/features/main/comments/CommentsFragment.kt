@@ -109,7 +109,10 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         binding.items.layoutManager = LinearLayoutManager(requireContext())
-        binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
+        binding.items.adapter = ConcatAdapter(adapter, progressAdapter.apply {
+            recyclerView = binding.items
+            contentAdapter = adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
+        })
     }
 
     private fun setCommentProgress(progress: Boolean) {
