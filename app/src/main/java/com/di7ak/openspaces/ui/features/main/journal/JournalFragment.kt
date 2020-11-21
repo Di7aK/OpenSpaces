@@ -2,9 +2,7 @@ package com.di7ak.openspaces.ui.features.main.journal
 
 import android.animation.AnimatorInflater
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,27 +10,53 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.di7ak.openspaces.R
+import com.di7ak.openspaces.data.JOURNAL_FILTER_ALL
+import com.di7ak.openspaces.data.JOURNAL_FILTER_NEW
 import com.di7ak.openspaces.data.entities.JournalItemEntity
 import com.di7ak.openspaces.databinding.FragmentJournalBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.utils.MenuDialog
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener {
+class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
+    MenuDialog.MenuDialogListener {
     private var binding: FragmentJournalBinding by autoCleared()
     private val viewModel: JournalViewModel by viewModels()
     private lateinit var adapter: JournalAdapter
     private val progressAdapter: ProgressAdapter = ProgressAdapter(::retry)
     @Inject
     lateinit var imageGetter: HtmlImageGetter
+    private lateinit var filterDialog: MenuDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setHasOptionsMenu(true)
         setHasNavigationMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.journal, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.filter) {
+            filterDialog.show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onMenuItemClick(itemId: Int) {
+        viewModel.filter = when(itemId) {
+            R.id.allRecords -> JOURNAL_FILTER_ALL
+            else -> JOURNAL_FILTER_NEW
+        }
     }
 
     override fun onCreateView(
@@ -46,6 +70,7 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        filterDialog = MenuDialog(requireContext(), R.menu.journal_filter, this)
         setupRecyclerView()
         setupObservers()
 

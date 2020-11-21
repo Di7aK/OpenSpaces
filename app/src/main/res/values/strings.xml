@@ -80,4 +80,7 @@
     <string name="logout">Logout</string>
     <string name="logout_confirm">Logout?</string>
     <string name="no_items_yet">No items yet</string>
+    <string name="all_records">All</string>
+    <string name="new_records">New</string>
+    <string name="filter">Filter</string>
 </resources>
