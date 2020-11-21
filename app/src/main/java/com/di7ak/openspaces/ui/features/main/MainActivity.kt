@@ -21,6 +21,7 @@ import com.di7ak.openspaces.ui.base.BaseActivity
 import com.di7ak.openspaces.ui.features.auth.AuthActivity
 import com.di7ak.openspaces.ui.features.auth.login.LoginFragment
 import com.di7ak.openspaces.utils.Resource
+import com.di7ak.openspaces.utils.ThemeColors
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -104,7 +105,7 @@ class MainActivity : BaseActivity() {
                         CODE_SUCCESS -> {
                             initNavHost()
                             setBadges(it.data.journalCnt, it.data.mailCnt)
-                            //ThemeColors.setNewThemeColor(requireActivity(), it.data.color)
+                            //ThemeColors.setNewThemeColor(this, it.data.color)
                         }
                         else -> {
                             openAuth(session.current?.name)

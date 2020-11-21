@@ -1,6 +1,5 @@
 package com.di7ak.openspaces.ui.features.main.lenta
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -90,7 +89,6 @@ class LentaViewModel @ViewModelInject constructor(
         currentPage = 1
         viewModelScope.launch {
             lentaRepository.fetch(currentPage).collect {
-                Log.d("lol", "res: ${it.data?.nextLinkUrl}")
                 when (it.status) {
                     Resource.Status.SUCCESS -> {
                         val events = it.data?.items?.filter { event ->
