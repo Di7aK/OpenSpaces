@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.di7ak.openspaces.data.Session
-import com.di7ak.openspaces.data.entities.AuthAttributes
 import com.di7ak.openspaces.data.entities.ProfileEntity
 import com.di7ak.openspaces.data.repository.AuthRepository
 import com.di7ak.openspaces.data.repository.ProfileRepository
@@ -25,7 +24,6 @@ class ProfileViewModel @ViewModelInject constructor(
     fun fetchProfile(userId: String) = viewModelScope.launch {
         profileRepository.fetch(userId).collect {
             _profile.value = it
-            _profile.postValue(Resource.ready())
         }
     }
 
