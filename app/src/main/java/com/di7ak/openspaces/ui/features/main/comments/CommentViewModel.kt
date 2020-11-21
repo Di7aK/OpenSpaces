@@ -93,7 +93,7 @@ class CommentViewModel @ViewModelInject constructor(
     }
 
     fun fetch() {
-        val id = post?.id ?: 0
+        val id = post?.id ?: guestBookUser
         val url = post?.commentUrl ?: url ?: ""
         viewModelScope.launch {
             commentsRepository.fetch(id, url).collect {
@@ -122,15 +122,15 @@ class CommentViewModel @ViewModelInject constructor(
         val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: if(guestBookUser != 0) 14 else 0
 
         commentsRepository.add(
-            postId = id, type=  type, comment = comment, cr = replyTo ?: 0).collect {
+            postId = id, type=  type, comment = comment, cr = replyTo ?: 0).collect { comment ->
             replyTo?.let { replyId ->
-                it.data?.replyCommentId = replyId
+                comment.data?.replyCommentId = replyId
                 _comments.value?.data?.find { it.id != 0 && it.id == replyId }?.let { replyComment ->
-                    it.data?.replyCommentText = replyComment.body
-                    it.data?.replyUserName = replyComment.author?.name ?: ""
+                    comment.data?.replyCommentText = replyComment.body
+                    comment.data?.replyUserName = replyComment.author?.name ?: ""
                 }
             }
-            _comment.postValue(it)
+            _comment.postValue(comment)
         }
     }
 

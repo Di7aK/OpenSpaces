@@ -79,4 +79,5 @@
     <string name="switch_theme">Switch theme</string>
     <string name="logout">Logout</string>
     <string name="logout_confirm">Logout?</string>
+    <string name="no_items_yet">No items yet</string>
 </resources>

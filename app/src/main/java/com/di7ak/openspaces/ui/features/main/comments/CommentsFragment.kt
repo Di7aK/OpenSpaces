@@ -13,21 +13,22 @@ import android.view.ViewGroup
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.*
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.ATTACH_TYPE_INTERNAL_VIDEO
 import com.di7ak.openspaces.data.entities.Attach
 import com.di7ak.openspaces.data.entities.CommentItemEntity
 import com.di7ak.openspaces.databinding.FragmentCommentsBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.features.main.profile.ProfileFragment
+import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -43,12 +44,12 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     private var binding: FragmentCommentsBinding by autoCleared()
     private val viewModel: CommentViewModel by viewModels()
     private lateinit var adapter: CommentsAdapter
-
+    private val progressAdapter: ProgressAdapter = ProgressAdapter(::retry)
     @Inject
     lateinit var imageGetter: HtmlImageGetter
-
     @Inject
     lateinit var attachmentParser: AttachmentParser
+    private lateinit var dividerItemDecoration: DividerItemDecoration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,10 +81,16 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     }
 
     override fun onBackPressed() {
-        animateViewsOut()
+        animateViewsOut {
+            super.onBackPressed()
+        }
     }
 
-    private fun animateViewsOut() {
+    private fun retry() {
+
+    }
+
+    private fun animateViewsOut(callback: () -> Unit) {
         val translateTo = binding.commentForm.commentFormContainer.height * 2f
         AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
             setTarget(binding.items)
@@ -94,7 +101,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
             .translationY(translateTo)
             .setDuration(350)
             .setInterpolator(AnticipateInterpolator(2f))
-            .withEndAction { super.onBackPressed() }
+            .withEndAction { callback() }
             .start()
     }
 
@@ -102,16 +109,11 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         adapter = CommentsAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        val dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        dividerItemDecoration = DividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
         dividerItemDecoration.setDrawable(requireContext().getDrawableFromAttr(R.attr.dividerDrawable))
-        binding.items.addItemDecoration(dividerItemDecoration)
 
         binding.items.layoutManager = LinearLayoutManager(requireContext())
-        binding.items.adapter = adapter
-    }
-
-    private fun setProgress(progress: Boolean) {
-        binding.progress.isGone = !progress
+        binding.items.adapter = ConcatAdapter(adapter, progressAdapter)
     }
 
     private fun setCommentProgress(progress: Boolean) {
@@ -147,23 +149,28 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
                 .setInterpolator(OvershootInterpolator(2f))
                 .start()
         }
+        if(adapter.itemCount == 0) {
+            progressAdapter.isEmpty = true
+        } else if(!replace) {
+            binding.items.addItemDecoration(dividerItemDecoration)
+        }
     }
 
     private fun setupObservers() {
         viewModel.comments.observe(viewLifecycleOwner, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    setProgress(false)
+                    progressAdapter.isProgress = false
                     setItems(it.data!!)
                 }
 
                 Resource.Status.ERROR -> {
-                    setProgress(false)
+                    progressAdapter.isError = true
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
                 }
 
                 Resource.Status.LOADING -> {
-                    setProgress(true)
+                    progressAdapter.isProgress = true
                 }
                 else -> {
                 }
@@ -267,6 +274,14 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
                 binding.commentForm.input.setText(item.body.fromHtml())
             }
         }
+    }
+
+    override fun onClickedUser(view: View?, item: CommentItemEntity) {
+        animateViewsOut {
+            val args = bundleOf(ProfileFragment.EXTRA_USER_ID to item.author?.id?.toInt())
+            findNavController().navigate(R.id.action_commentsFragment_to_profileFragment, args)
+        }
+
     }
 
     override fun onClickedAttach(view: View, item: Attach) {

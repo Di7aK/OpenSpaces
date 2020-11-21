@@ -33,6 +33,10 @@
         <argument
             android:name="guest_book_user"
             app:argType="integer" />
+
+        <action
+            android:id="@+id/action_commentsFragment_to_profileFragment"
+            app:destination="@id/navigation_other_profile" />
     </fragment>
 
     <fragment
@@ -54,6 +58,20 @@
         <action
             android:id="@+id/action_profileFragment_to_commentsFragment"
             app:destination="@id/navigation_comments" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_other_profile"
+        android:name="com.di7ak.openspaces.ui.features.main.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_profileFragment_to_commentsFragment"
+            app:destination="@id/navigation_comments" />
+
+        <argument android:name="user_id" app:argType="integer"/>
 
     </fragment>
 </navigation>

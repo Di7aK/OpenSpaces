@@ -40,6 +40,7 @@ class CommentsAdapter(
         fun onClickedDislike(view: View, item: CommentItemEntity)
         fun onClickedAttach(view: View, item: Attach)
         fun onClickedReply(view: View?, item: CommentItemEntity)
+        fun onClickedUser(view: View?, item: CommentItemEntity)
         fun onClickedMenuItemClick(view: View?, action: Int, item: CommentItemEntity)
     }
 
@@ -105,6 +106,8 @@ class CommentViewHolder(
         itemBinding.btnReply.setOnClickListener(this)
         itemBinding.reply.setOnClickListener(this)
         itemBinding.menu.setOnClickListener(this)
+        itemBinding.image.setOnClickListener(this)
+        itemBinding.name.setOnClickListener(this)
 
         val context = itemBinding.root.context
         animationVoteUp = AnimationUtils.loadAnimation(context, R.anim.vote_up)
@@ -222,6 +225,9 @@ class CommentViewHolder(
             }
             R.id.menu -> {
                 menu.show()
+            }
+            R.id.image, R.id.name -> {
+                listener.onClickedUser(v, comment)
             }
         }
     }

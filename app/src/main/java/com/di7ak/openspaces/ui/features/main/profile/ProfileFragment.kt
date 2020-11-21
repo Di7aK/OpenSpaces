@@ -32,13 +32,25 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     companion object {
         private const val REQUEST_CHANGE_ACCOUNT = 1
         private const val REQUEST_LOGOUT = 2
+
+        const val EXTRA_USER_ID = "user_id"
     }
     private var binding: FragmentProfileBinding by autoCleared()
     private val viewModel: ProfileViewModel by viewModels()
     private lateinit var switch: SwitchCompat
+    private var isOwner: Boolean = false
+    private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val extraUserId = arguments?.getInt(EXTRA_USER_ID)
+        (extraUserId ?: viewModel.session.current?.userId)?.let { userId ->
+            this.userId = userId
+            viewModel.fetchProfile(userId.toString())
+
+            isOwner = viewModel.session.current?.userId == userId
+        }
 
         setHasNavigationMenu(true)
     }
@@ -54,21 +66,25 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.session.current?.let { session -> viewModel.fetchProfile(session.userId.toString()) }
-
         setupMenu()
         setupObservers()
     }
 
     private fun setupMenu() {
+        if(isOwner) {
+            val itemSwitchTheme = binding.menu.menu.findItem(R.id.navigation_switch_theme)
+            switch = itemSwitchTheme.actionView.findViewById(R.id.switchView)
+            switch.isChecked = requireContext().isNightMode()
+            switch.setOnCheckedChangeListener { _, _ ->
+                changeTheme()
+            }
+        }
         binding.menu.setNavigationItemSelectedListener(this)
 
-        val itemSwitchTheme = binding.menu.menu.findItem(R.id.navigation_switch_theme)
-        switch = itemSwitchTheme.actionView.findViewById(R.id.switchView)
-        switch.isChecked = requireContext().isNightMode()
-        switch.setOnCheckedChangeListener { _, _ ->
-            changeTheme()
-        }
+        binding.menu.menu.findItem(R.id.navigation_logout).isVisible = isOwner
+        binding.menu.menu.findItem(R.id.navigation_change_account).isVisible = isOwner
+        binding.menu.menu.findItem(R.id.navigation_switch_theme).isVisible = isOwner
+
         binding.menuCard.startLayoutAnimation()
     }
 
@@ -116,7 +132,7 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
                 hideNavigation {
                     animateViewsOut {
                         val args =
-                            bundleOf(CommentsFragment.EXTRA_GUEST_BOOK_USER to viewModel.session.current?.userId)
+                            bundleOf(CommentsFragment.EXTRA_GUEST_BOOK_USER to userId)
                         findNavController().navigate(
                             R.id.action_profileFragment_to_commentsFragment,
                             args
@@ -186,12 +202,12 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     }
 
     override fun onBackPressed() {
-        animateViewsOut {
+        animateViewsOut(!isOwner) {
             super.onBackPressed()
         }
     }
 
-    private fun animateViewsOut(callback: () -> Unit) {
+    private fun animateViewsOut(hideNavigation: Boolean = false, callback: () -> Unit) {
         binding.menu.isEnabled = false
         AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
             setTarget(binding.menuCard)
@@ -202,6 +218,6 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
             withEndAction  { callback() }
             start()
         }
-        //hideNavigation(callback)
+        if(hideNavigation) hideNavigation()
     }
 }

@@ -35,7 +35,9 @@ class LentaRepository @Inject constructor(
                     nextPageCrutch = data?.nextLinkUrl ?: ""
                     data?.items?.forEach {
                         if(it.type == 0) {
-                            it.type = Uri.parse(it.bookmarkLink.fromHtml().toString()).getQueryParameter("object_type")?.toInt() ?: 0
+                            val unescaped = it.bookmarkLink.fromHtml().toString()
+                            val type = Uri.parse(unescaped).getQueryParameter("object_type")?.toInt() ?: 0
+                            it.type = type
                         }
                     }
                 }

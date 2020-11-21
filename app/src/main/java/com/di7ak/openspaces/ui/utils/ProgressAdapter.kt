@@ -1,10 +1,10 @@
 package com.di7ak.openspaces.ui.utils
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.di7ak.openspaces.databinding.ItemLoadEmptyBinding
 import com.di7ak.openspaces.databinding.ItemLoadErrorBinding
 import com.di7ak.openspaces.databinding.ItemLoadProgressBinding
 
@@ -13,9 +13,14 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
     companion object {
         private const val VIEW_TYPE_ERROR = 0
         private const val VIEW_TYPE_PROGRESS = 1
+        private const val VIEW_TYPE_EMPTY = 2
         private const val VIEW_TYPE_NOTHING = 2
     }
-
+    var isEmpty: Boolean = false
+        set(value) {
+            field = value
+            isError = false
+        }
     var isError: Boolean = false
         set(value) {
             field = value
@@ -37,6 +42,9 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
                 ItemLoadErrorBinding.inflate(inflater, parent, false),
                 retryCallback
             )
+            VIEW_TYPE_EMPTY -> ItemLoadEmptyViewHolder(
+                ItemLoadEmptyBinding.inflate(inflater, parent, false)
+            )
             else -> LoadViewHolder(View(parent.context))
         }
     }
@@ -52,6 +60,7 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
     open class LoadViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     class LoadProgressViewHolder(binding: ItemLoadProgressBinding) : LoadViewHolder(binding.root)
+    class ItemLoadEmptyViewHolder(binding: ItemLoadEmptyBinding) : LoadViewHolder(binding.root)
 
     class LoadErrorViewHolder(
         binding: ItemLoadErrorBinding,
