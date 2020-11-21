@@ -110,6 +110,7 @@
                 android:overScrollMode="never"
                 app:elevation="0dp"
                 app:itemBackground="@drawable/navigation_item_background"
+                app:itemIconTint="#fff"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
