@@ -96,18 +96,37 @@ class CommentViewModel @ViewModelInject constructor(
         val id = post?.id ?: guestBookUser
         val url = post?.commentUrl ?: url ?: ""
         viewModelScope.launch {
-            commentsRepository.fetch(id, url).collect {
-                when (it.status) {
-                    Resource.Status.SUCCESS -> {
-                        _comments.postValue(Resource.success(it.data!!))
+            if(id != 0) {
+                commentsRepository.fetch(id, url).collect {
+                    when (it.status) {
+                        Resource.Status.SUCCESS -> {
+                            _comments.postValue(Resource.success(it.data!!))
+                        }
+                        Resource.Status.ERROR -> {
+                            _comments.postValue(Resource.error(it.message ?: ""))
+                        }
+                        Resource.Status.LOADING -> {
+                            _comments.postValue(Resource.loading())
+                        }
+                        else -> {
+                        }
                     }
-                    Resource.Status.ERROR -> {
-                        _comments.postValue(Resource.error(it.message ?: ""))
+                }
+            } else {
+                commentsRepository.fetch(url).collect {
+                    when (it.status) {
+                        Resource.Status.SUCCESS -> {
+                            _comments.postValue(Resource.success(it.data!!.items))
+                        }
+                        Resource.Status.ERROR -> {
+                            _comments.postValue(Resource.error(it.message ?: ""))
+                        }
+                        Resource.Status.LOADING -> {
+                            _comments.postValue(Resource.loading())
+                        }
+                        else -> {
+                        }
                     }
-                    Resource.Status.LOADING -> {
-                        _comments.postValue(Resource.loading())
-                    }
-                    else -> {}
                 }
             }
         }

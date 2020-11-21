@@ -4,8 +4,10 @@ import android.animation.AnimatorInflater
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -15,6 +17,7 @@ import com.di7ak.openspaces.data.JOURNAL_FILTER_NEW
 import com.di7ak.openspaces.data.entities.JournalItemEntity
 import com.di7ak.openspaces.databinding.FragmentJournalBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.features.main.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.MenuDialog
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
@@ -138,6 +141,9 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
     }
 
     override fun onClickedItem(view: View, item: JournalItemEntity) {
-
+        animateViewsOut {
+            val args = bundleOf(CommentsFragment.EXTRA_URL to item.link)
+            findNavController().navigate(R.id.action_journalFragment_to_commentsFragment, args)
+        }
     }
 }

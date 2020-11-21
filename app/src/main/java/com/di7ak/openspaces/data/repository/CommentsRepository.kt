@@ -40,6 +40,14 @@ class CommentsRepository @Inject constructor(
         }
     )
 
+    fun fetch(url: String) = performGetOperation(
+
+        networkCall = {
+            remoteDataSource.fetch(url, session.current?.sid ?: "")
+        },
+        saveCallResult = {}
+    )
+
     fun add(postId: Int, type: Int, comment: String, cr: Int) = performGetOperation(
         networkCall = {
             val response = remoteDataSource.add(

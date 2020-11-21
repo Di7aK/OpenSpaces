@@ -46,7 +46,6 @@
         android:layout_marginTop="5dp"
         android:maxLines="1"
         android:ellipsize="end"
-        android:background="?selectableItemBackground"
         android:textSize="13sp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
