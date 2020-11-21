@@ -33,7 +33,7 @@ class ProgressAdapter(private val retryCallback: () -> Unit) :
             field = value
             notifyItemChanged(0)
         }
-    var contentAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
+    var contentAdapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>? = null
     var recyclerView: RecyclerView? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoadViewHolder {
