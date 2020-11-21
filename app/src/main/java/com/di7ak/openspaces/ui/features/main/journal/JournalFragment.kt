@@ -81,7 +81,7 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
     }
 
     override fun onBackPressed() {
-        animateViewsOut {
+        animateViewsOut(false) {
             super.onBackPressed()
         }
     }
@@ -90,12 +90,13 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
 
     }
 
-    private fun animateViewsOut(callback: () -> Unit) {
+    private fun animateViewsOut(hideNavigation: Boolean, callback: () -> Unit) {
         AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
             setTarget(binding.items)
             withEndAction { callback() }
             start()
         }
+        if(hideNavigation) hideNavigation()
     }
 
     private fun setupRecyclerView() {
@@ -141,7 +142,7 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
     }
 
     override fun onClickedItem(view: View, item: JournalItemEntity) {
-        animateViewsOut {
+        animateViewsOut(true) {
             val args = bundleOf(CommentsFragment.EXTRA_URL to item.link)
             findNavController().navigate(R.id.action_journalFragment_to_commentsFragment, args)
         }

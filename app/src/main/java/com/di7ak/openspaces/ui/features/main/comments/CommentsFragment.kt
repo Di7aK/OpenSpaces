@@ -49,6 +49,7 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
     lateinit var imageGetter: HtmlImageGetter
     @Inject
     lateinit var attachmentParser: AttachmentParser
+    private var navigateTo: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,9 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
 
         viewModel.post = requireArguments().getParcelable(EXTRA_POST)
         viewModel.guestBookUser = requireArguments().getInt(EXTRA_GUEST_BOOK_USER)
-        viewModel.url = requireArguments().getString(EXTRA_URL)
+        viewModel.url = requireArguments().getString(EXTRA_URL).apply {
+            navigateTo = Uri.parse(fromHtml().toString()).getQueryParameter("Scp")?.toIntOrNull() ?: 0
+        }
 
         viewModel.fetch()
     }
@@ -147,6 +150,14 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
                 .setDuration(450)
                 .setInterpolator(OvershootInterpolator(2f))
                 .start()
+            if(navigateTo != 0) {
+                val index = items.indexOfFirst { it.id == navigateTo }
+                if(index != -1) {
+                    binding.items.postDelayed({
+                        binding.items.smoothScrollToPosition(index)
+                    }, 100)
+                }
+            }
         }
         progressAdapter.isEmpty = adapter.itemCount == 0
     }
