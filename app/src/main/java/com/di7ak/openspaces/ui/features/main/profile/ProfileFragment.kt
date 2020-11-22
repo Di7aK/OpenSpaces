@@ -43,7 +43,7 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     private var isOwner: Boolean = false
     private var userId: Int = 0
     @Inject
-    private lateinit var imageGetter: HtmlImageGetter
+    lateinit var imageGetter: HtmlImageGetter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
