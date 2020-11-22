@@ -1,6 +1,7 @@
 package com.di7ak.openspaces.ui.features.auth.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.*
 import com.di7ak.openspaces.databinding.FragmentLoginBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
+import com.di7ak.openspaces.ui.features.scanner.ScannerActivity
 import com.di7ak.openspaces.utils.Resource
 import com.di7ak.openspaces.utils.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginFragment : BaseFragment() {
     companion object {
         const val EXTRA_USERNAME = "username"
+        const val REQUEST_QR_CODE = 3
     }
     private var binding: FragmentLoginBinding by autoCleared()
     private val viewModel: LoginViewModel by viewModels()
@@ -55,6 +58,18 @@ class LoginFragment : BaseFragment() {
 
             binding.loginInputLayout.error = null
             viewModel.login(login, password)
+        }
+        binding.btnSingInByQrCode.setOnClickListener {
+            startActivityForResult(Intent(requireContext(), ScannerActivity::class.java), REQUEST_QR_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == REQUEST_QR_CODE && resultCode == Activity.RESULT_OK) {
+            val sid = data!!.getStringExtra(ScannerActivity.RESULT_TEXT)!!
+            viewModel.loginBySid(sid)
         }
     }
 

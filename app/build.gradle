@@ -144,5 +144,8 @@ dependencies {
 
     //image viewer
     implementation 'com.github.stfalcon:stfalcon-imageviewer:1.0.1'
+
+    //qr reader
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

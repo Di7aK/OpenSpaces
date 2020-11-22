@@ -4,6 +4,7 @@
     package="com.di7ak.openspaces">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".App"
@@ -29,6 +30,11 @@
         </activity>
         <activity
             android:name=".ui.features.auth.AuthActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
+
+        </activity>
+        <activity
+            android:name=".ui.features.scanner.ScannerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
 
         </activity>

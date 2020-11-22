@@ -143,6 +143,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSingInByQrCode"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="48dp"
+                android:text="@string/login_by_qr_code"
+                android:textAllCaps="false"
+                android:textColor="@color/button_state_outlined_text_color"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/qrcode"
+                app:iconTint="@color/button_state_outlined_text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnSingUp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -30,4 +30,12 @@ class LoginViewModel @ViewModelInject constructor(
         }
     }
 
+    fun loginBySid(sid: String) = viewModelScope.launch {
+        repository.check(
+            sid = sid
+        ).collect {
+            _auth.postValue(it)
+        }
+    }
+
 }
