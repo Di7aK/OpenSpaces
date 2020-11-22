@@ -1,13 +1,17 @@
 package com.di7ak.openspaces.ui.features.auth.login
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.*
@@ -23,6 +27,7 @@ class LoginFragment : BaseFragment() {
     companion object {
         const val EXTRA_USERNAME = "username"
         const val REQUEST_QR_CODE = 3
+        private const val REQUEST_PERMISSIONS = 4
     }
     private var binding: FragmentLoginBinding by autoCleared()
     private val viewModel: LoginViewModel by viewModels()
@@ -60,7 +65,40 @@ class LoginFragment : BaseFragment() {
             viewModel.login(login, password)
         }
         binding.btnSingInByQrCode.setOnClickListener {
-            startActivityForResult(Intent(requireContext(), ScannerActivity::class.java), REQUEST_QR_CODE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkPermissions()
+            } else startScan()
+        }
+    }
+
+    private fun startScan() {
+        startActivityForResult(Intent(requireContext(), ScannerActivity::class.java), REQUEST_QR_CODE)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun checkPermissions() {
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) -> {
+                startScan()
+            }
+            else -> {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA),
+                    REQUEST_PERMISSIONS
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        when (requestCode) {
+            REQUEST_PERMISSIONS -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    startScan()
+                }
+            }
         }
     }
 
