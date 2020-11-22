@@ -14,6 +14,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.di7ak.openspaces.R
@@ -26,6 +27,7 @@ import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.*
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +42,8 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     private lateinit var switch: SwitchCompat
     private var isOwner: Boolean = false
     private var userId: Int = 0
+    @Inject
+    private lateinit var imageGetter: HtmlImageGetter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +95,10 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
     private fun bindProfile(profile: ProfileEntity) {
         binding.username.text = profile.name
         binding.fullName.text = profile.fullName
-        binding.status.text = profile.status
+        profile.status.fromHtml(lifecycleScope, imageGetter, {
+            binding.status.text = it
+        }, binding.status.createDrawableCallback())
+
         binding.status.isGone = profile.status.isNullOrBlank()
 
         Glide.with(binding.image)
