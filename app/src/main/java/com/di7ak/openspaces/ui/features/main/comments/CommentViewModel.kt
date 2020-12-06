@@ -140,7 +140,7 @@ class CommentViewModel @ViewModelInject constructor(
             return@launch
         }
         val id = post?.id ?: if(guestBookUser != 0) guestBookUser else 0
-        val type = ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: if(guestBookUser != 0) 14 else 0
+        val type = if(guestBookUser != 0) 14 else ObjectConst.OBJECT_TYPE_TO_COMMENT_TYPE[post?.type ?: 0] ?: 0
 
         commentsRepository.add(
             postId = id, type=  type, comment = comment, cr = replyTo ?: 0).collect { comment ->
