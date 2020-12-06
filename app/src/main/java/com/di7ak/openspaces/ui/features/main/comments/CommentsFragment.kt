@@ -74,10 +74,10 @@ class CommentsFragment : BaseFragment(), CommentsAdapter.CommentsItemListener {
         showReplyForm(false)
 
         viewModel.post = requireArguments().getParcelable(EXTRA_POST)
-        viewModel.guestBookUser = requireArguments().getInt(EXTRA_GUEST_BOOK_USER)
         viewModel.url = requireArguments().getString(EXTRA_URL).apply {
             navigateTo = Uri.parse(fromHtml().toString()).getQueryParameter("Scp")?.toIntOrNull() ?: 0
         }
+        viewModel.guestBookUser = requireArguments().getInt(EXTRA_GUEST_BOOK_USER)
 
         viewModel.fetch()
     }

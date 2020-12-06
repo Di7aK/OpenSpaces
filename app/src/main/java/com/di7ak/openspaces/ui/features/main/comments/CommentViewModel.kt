@@ -38,8 +38,10 @@ class CommentViewModel @ViewModelInject constructor(
     var guestBookUser: Int = 0
     set(value) {
         field = value
-        val base = remoteConfig.getString("base_url")
-        url = "$base/guestbook/index/$value"
+        if(value != 0) {
+            val base = remoteConfig.getString("base_url")
+            url = "$base/guestbook/index/$value"
+        }
     }
     var replyTo: Int? = null
     var edit: CommentItemEntity? = null
