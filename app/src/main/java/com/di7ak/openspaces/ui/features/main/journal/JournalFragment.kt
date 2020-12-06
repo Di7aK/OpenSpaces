@@ -40,8 +40,8 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasOptionsMenu(true)
-        //setHasNavigationMenu(true)
+        //setHasOptionsMenu(true)
+        setHasNavigationMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
