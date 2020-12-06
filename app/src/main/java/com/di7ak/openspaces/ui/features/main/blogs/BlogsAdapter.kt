@@ -162,6 +162,8 @@ class LentaViewHolder(
                 )
             )
 
+        date.isGone = true
+
         content.isGone = item.body.isEmpty()
 
         if (event.liked) {
