@@ -50,6 +50,15 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_blogs"
+        android:name="com.di7ak.openspaces.ui.features.main.blogs.BlogsFragment"
+        android:label="Blog"
+        tools:layout="@layout/fragment_blogs">
+
+        <argument android:name="user" app:argType="string"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_profile"
         android:name="com.di7ak.openspaces.ui.features.main.profile.ProfileFragment"
         android:label="@string/profile"
@@ -58,6 +67,9 @@
         <action
             android:id="@+id/action_profileFragment_to_commentsFragment"
             app:destination="@id/navigation_comments" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_blogs"
+            app:destination="@id/navigation_blogs" />
 
     </fragment>
 
@@ -72,6 +84,9 @@
             app:destination="@id/navigation_comments" />
 
         <argument android:name="user_id" app:argType="integer"/>
+        <action
+            android:id="@+id/action_navigation_other_profile_to_navigation_blogs"
+            app:destination="@id/navigation_blogs" />
 
     </fragment>
 

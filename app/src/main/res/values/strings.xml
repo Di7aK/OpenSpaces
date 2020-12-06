@@ -84,4 +84,5 @@
     <string name="new_records">New</string>
     <string name="filter">Filter</string>
     <string name="login_by_qr_code">Login by QR code</string>
+    <string name="blog">Blog</string>
 </resources>

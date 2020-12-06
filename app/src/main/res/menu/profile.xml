@@ -4,6 +4,11 @@
     <item android:id="@+id/navigation_guest_book"
         android:title="@string/guestbook"
         android:icon="@drawable/book_open"/>
+
+    <item android:id="@+id/navigation_blogs"
+        android:title="@string/blog"
+        android:icon="@drawable/newspaper_variant_outline"/>
+
     <item android:id="@+id/navigation_change_account"
         android:title="@string/change_account"
         android:icon="@drawable/account_supervisor_circle_outline"/>

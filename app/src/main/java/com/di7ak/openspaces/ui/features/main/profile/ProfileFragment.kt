@@ -22,6 +22,7 @@ import com.di7ak.openspaces.data.entities.ProfileEntity
 import com.di7ak.openspaces.databinding.FragmentProfileBinding
 import com.di7ak.openspaces.ui.base.BaseFragment
 import com.di7ak.openspaces.ui.features.auth.AuthActivity
+import com.di7ak.openspaces.ui.features.main.blogs.BlogsFragment
 import com.di7ak.openspaces.ui.features.main.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.ConfirmDialog
 import com.di7ak.openspaces.utils.*
@@ -142,6 +143,19 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
                             bundleOf(CommentsFragment.EXTRA_GUEST_BOOK_USER to userId)
                         findNavController().navigate(
                             R.id.action_profileFragment_to_commentsFragment,
+                            args
+                        )
+                    }
+                }
+            }
+
+            R.id.navigation_blogs -> {
+                hideNavigation {
+                    animateViewsOut {
+                        val args =
+                            bundleOf(BlogsFragment.ARG_USER to viewModel.profile.value?.data?.name)
+                        findNavController().navigate(
+                            R.id.action_navigation_profile_to_navigation_blogs,
                             args
                         )
                     }

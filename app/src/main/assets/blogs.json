@@ -1,0 +1,195 @@
+{
+  "nextLinkUrl": {
+    "type": "value",
+    "paths": [
+      "paginationWidget.next_link_url"
+    ]
+  },
+  "items": {
+    "type": "array",
+    "paths": [
+      "topicsWidgets"
+    ],
+    "map": {
+      "id": {
+        "type": "value",
+        "paths": [
+          "id",
+          "nid"
+        ]
+      },
+      "type": {
+        "type": "value",
+        "paths": [
+          "type"
+        ]
+      },
+      "title": {
+        "type": "value",
+        "paths": [
+          "header",
+          "subject"
+        ]
+      },
+      "body": {
+        "type": "value",
+        "paths": [
+          "description",
+          "subject"
+        ]
+      },
+      "likes": {
+        "type": "value",
+        "paths": [
+          "likes"
+        ]
+      },
+      "liked": {
+        "type": "value",
+        "paths": [
+          "liked"
+        ]
+      },
+      "commentUrl": {
+        "type": "value",
+        "paths": [
+          "commentUrl",
+          "comment_read_href"
+        ]
+      },
+      "bookmarkLink": {
+        "type": "value",
+        "paths": [
+          "links.bookmark_link"
+        ]
+      },
+      "dislikes": {
+        "type": "value",
+        "paths": [
+          "dislikes"
+        ]
+      },
+      "disliked": {
+        "type": "value",
+        "paths": [
+          "disliked"
+        ]
+      },
+      "date": {
+        "type": "value",
+        "paths": [
+          "sort_value"
+        ]
+      },
+      "commentsCount": {
+        "type": "value",
+        "paths": [
+          "comments"
+        ]
+      },
+      "eventType": {
+        "type": "value",
+        "paths": [
+          "event_type"
+        ]
+      },
+      "author": {
+        "type": "object",
+        "map": {
+          "id": {
+            "type": "value",
+            "paths": [
+              "userWidget.siteLink.id",
+              "author_widget.siteLink.id",
+              "author_widget.id"
+            ]
+          },
+          "profileImage": {
+            "type": "value",
+            "paths": [
+              "author_avatar.previewURL"
+            ]
+          },
+          "name": {
+            "type": "value",
+            "paths": [
+              "userWidget.siteLink.user_name",
+              "userWidget.name",
+              "author_widget.siteLink.user_name",
+              "commWidget.name",
+              "channel_name.name"
+            ]
+          }
+        }
+      },
+      "attachments": {
+        "type": "array",
+        "paths": [
+          "MainAttachWidget.attachWidgets",
+          "MainAttachWidget.pictureWidgets"
+        ],
+        "map": {
+          "id": {
+            "type": "value",
+            "paths": [
+              "attach.nid"
+            ]
+          },
+          "url": {
+            "type": "value",
+            "paths": [
+              "attach.downloadLinkSSL",
+              "attach.preview.downloadLinkSSL"
+            ]
+          },
+          "external": {
+            "type": "value",
+            "paths": [
+              "attach.external_video"
+            ]
+          },
+          "videoId": {
+            "type": "value",
+            "paths": [
+              "attach.video_id"
+            ]
+          },
+          "sourceType": {
+            "type": "value",
+            "paths": [
+              "attach.preview.player.externalVideo.source_type"
+            ]
+          },
+          "previewUrl": {
+            "type": "value",
+            "paths": [
+              "attach.preview.previewURL"
+            ]
+          },
+          "height": {
+            "type": "value",
+            "paths": [
+              "attach.preview.size.height"
+            ]
+          },
+          "type": {
+            "type": "value",
+            "paths": [
+              "attach.preview.type"
+            ]
+          },
+          "parent": {
+            "type": "value",
+            "paths": [
+              "attach.preview.parent.id"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "code": {
+    "type": "value",
+    "paths": ["code"]
+  }
+}
