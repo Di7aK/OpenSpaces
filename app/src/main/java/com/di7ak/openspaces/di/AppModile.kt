@@ -22,7 +22,6 @@ import okhttp3.OkHttpClient
 import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import java.util.*
 import javax.inject.Singleton
 
 @Module
@@ -53,7 +52,7 @@ object AppModule {
             level = HttpLoggingInterceptor.Level.BODY
         })
         .connectionSpecs(
-            Collections.singletonList(
+            listOf(
                 ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
                     .tlsVersions(TlsVersion.TLS_1_0)
                     .cipherSuites(
@@ -63,7 +62,8 @@ object AppModule {
                     )
                     .allEnabledTlsVersions()
                     .allEnabledCipherSuites()
-                    .build()
+                    .build(),
+                ConnectionSpec.CLEARTEXT
             )
         ).build()
 

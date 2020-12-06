@@ -21,16 +21,18 @@ import com.di7ak.openspaces.ui.features.main.comments.CommentsFragment
 import com.di7ak.openspaces.ui.utils.MenuDialog
 import com.di7ak.openspaces.ui.utils.ProgressAdapter
 import com.di7ak.openspaces.utils.*
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
-    MenuDialog.MenuDialogListener {
+    MenuDialog.MenuDialogListener, TabLayout.OnTabSelectedListener {
     private var binding: FragmentJournalBinding by autoCleared()
     private val viewModel: JournalViewModel by viewModels()
     private lateinit var adapter: JournalAdapter
     private val progressAdapter: ProgressAdapter = ProgressAdapter(::retry)
+
     @Inject
     lateinit var imageGetter: HtmlImageGetter
     private lateinit var filterDialog: MenuDialog
@@ -39,24 +41,24 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-        setHasNavigationMenu(true)
+        //setHasNavigationMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
-        inflater.inflate(R.menu.journal, menu)
+        //inflater.inflate(R.menu.journal, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.filter) {
+    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.filter) {
             filterDialog.show()
         }
         return super.onOptionsItemSelected(item)
-    }
+    }*/
 
     override fun onMenuItemClick(itemId: Int) {
-        viewModel.filter = when(itemId) {
+        viewModel.filter = when (itemId) {
             R.id.allRecords -> JOURNAL_FILTER_ALL
             else -> JOURNAL_FILTER_NEW
         }
@@ -74,6 +76,7 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
         super.onViewCreated(view, savedInstanceState)
 
         filterDialog = MenuDialog(requireContext(), R.menu.journal_filter, this)
+        setupTabs()
         setupRecyclerView()
         setupObservers()
 
@@ -86,6 +89,19 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
         }
     }
 
+    private fun setupTabs() {
+        val tabNew = binding.tabs.newTab().setText(R.string.new_records).setTag(R.id.newRecords)
+        val tabAll = binding.tabs.newTab().setText(R.string.all_records).setTag(R.id.allRecords)
+        binding.tabs.addTab(tabNew)
+        binding.tabs.addTab(tabAll)
+
+        when (viewModel.filter) {
+            JOURNAL_FILTER_ALL -> tabAll.select()
+            JOURNAL_FILTER_NEW -> tabNew.select()
+        }
+        binding.tabs.addOnTabSelectedListener(this)
+    }
+
     private fun retry() {
 
     }
@@ -96,7 +112,7 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
             withEndAction { callback() }
             start()
         }
-        if(hideNavigation) hideNavigation()
+        if (hideNavigation) hideNavigation()
     }
 
     private fun setupRecyclerView() {
@@ -146,5 +162,20 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
             val args = bundleOf(CommentsFragment.EXTRA_URL to item.link)
             findNavController().navigate(R.id.action_journalFragment_to_commentsFragment, args)
         }
+    }
+
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        viewModel.filter = when (tab?.tag) {
+            R.id.allRecords -> JOURNAL_FILTER_ALL
+            else -> JOURNAL_FILTER_NEW
+        }
+    }
+
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+    }
+
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+
     }
 }
