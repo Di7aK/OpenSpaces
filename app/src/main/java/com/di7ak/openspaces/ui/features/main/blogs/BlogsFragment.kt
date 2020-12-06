@@ -177,7 +177,7 @@ class BlogsFragment : BaseFragment(), LentaAdapter.LentaItemListener {
         val args = bundleOf(CommentsFragment.EXTRA_POST to item)
 
         animateViewsOut {
-            findNavController().navigate(R.id.action_lentaFragment_to_commentsFragment, args)
+            findNavController().navigate(R.id.action_navigation_blogs_to_navigation_comments, args)
         }
     }
 
