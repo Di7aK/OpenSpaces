@@ -150,7 +150,6 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
             }
 
             R.id.navigation_blogs -> {
-                hideNavigation {
                     animateViewsOut {
                         val args =
                             bundleOf(BlogsFragment.ARG_USER to viewModel.profile.value?.data?.name)
@@ -159,7 +158,6 @@ class ProfileFragment : BaseFragment(), NavigationView.OnNavigationItemSelectedL
                             args
                         )
                     }
-                }
             }
 
             R.id.navigation_change_account -> changeAccount()

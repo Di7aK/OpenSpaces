@@ -92,7 +92,7 @@ class BlogsFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasNavigationMenu(false)
+        setHasNavigationMenu(true)
 
         adapter = LentaAdapter(imageGetter, attachmentParser, lifecycleScope, this)
     }
@@ -176,8 +176,13 @@ class BlogsFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private fun openPost(item: LentaItemEntity) {
         val args = bundleOf(CommentsFragment.EXTRA_POST to item)
 
-        animateViewsOut {
-            findNavController().navigate(R.id.action_navigation_blogs_to_navigation_comments, args)
+        hideNavigation {
+            animateViewsOut {
+                findNavController().navigate(
+                    R.id.action_navigation_blogs_to_navigation_comments,
+                    args
+                )
+            }
         }
     }
 
@@ -190,7 +195,7 @@ class BlogsFragment : BaseFragment(), LentaAdapter.LentaItemListener {
     private fun animateViewsOut(callback: () -> Unit) {
         AnimatorInflater.loadAnimator(activity, R.animator.main_list_animator).apply {
             setTarget(binding.items)
-            withEndAction { callback() }
+            withEndAction(callback)
             start()
         }
     }
