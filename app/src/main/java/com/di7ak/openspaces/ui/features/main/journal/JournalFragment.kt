@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.JOURNAL_FILTER_ALL
@@ -119,7 +118,6 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
         adapter = JournalAdapter(imageGetter, lifecycleScope, this)
         (binding.items.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-        binding.items.layoutManager = LinearLayoutManager(requireContext())
         binding.items.adapter = ConcatAdapter(adapter, progressAdapter.apply {
             recyclerView = binding.items
             contentAdapter = adapter

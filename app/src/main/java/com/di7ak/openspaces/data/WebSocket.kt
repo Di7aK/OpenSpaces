@@ -1,0 +1,45 @@
+package com.di7ak.openspaces.data
+
+@Suppress("unused")
+object WebSocket {
+    object TopCounterTypes {
+        const val TYPE_JOURNAL = 1
+        const val TYPE_LENTA = 2
+        const val TYPE_MAIL = 3
+    }
+    object Actions {
+        const val WEB_SOCKET_ACTION_NOTIFICATION_SEND = 20
+        const val WEB_SOCKET_ACTION_TOP_COUNTER_UPDATE = 21
+        const val WEB_SOCKET_ACTION_VIDEO_CONVERT = 25
+        const val WEB_SOCKET_ACTION_REFRESH_WIDGETS = 26
+        const val WEB_SOCKET_ACTION_COMM_COUNTER_UPDATE = 27
+        const val WEB_SOCKET_ACTION_SETTINGS = 28
+        const val WEB_SOCKET_ACTION_BIND_EMAIL_RESULT = 29
+        const val WEB_SOCKET_ACTION_CHAT_SEND_MESSAGE = 32
+        const val WEB_SOCKET_ACTION_CHAT_DELETE_MESSAGE = 33
+        const val WEB_SOCKET_ACTION_MAIL_MESSAGE_RECEIVE = 1
+        const val WEB_SOCKET_ACTION_MAIL_CONTACT_READ = 2
+        const val WEB_SOCKET_ACTION_MAIL_CONTACT_SWAP = 4
+        const val WEB_SOCKET_ACTION_MAIL_CONTACT_ERASE = 5
+        const val WEB_SOCKET_ACTION_MAIL_CONTACT_ARCHIVE = 6
+        const val WEB_SOCKET_ACTION_MAIL_CONTACT_SPAM = 7
+        const val WEB_SOCKET_ACTION_MAIL_CLEAR_GARBAGE = 8
+        const val WEB_SOCKET_ACTION_MAIL_MESSAGE_FAV = 9
+        const val WEB_SOCKET_ACTION_MAIL_MESSAGE_SWAP = 10
+        const val WEB_SOCKET_ACTION_MAIL_MESSAGE_ERASE = 11
+        const val WEB_SOCKET_ACTION_MAIL_TYPING = 24
+        const val WEB_SOCKET_ACTION_MAIL_MESSAGE_SEND = 18
+        const val WEB_SOCKET_ACTION_MAIL_TALK_MEMBER_ADD = 36
+        const val WEB_SOCKET_ACTION_MAIL_TALK_MEMBER_DELETE = 37
+        const val WEB_SOCKET_ACTION_MAIL_TALK_MEMBER_LEAVE = 38
+        const val WEB_SOCKET_ACTION_MAIL_TALK_MEMBER_RETURN = 39
+        const val WEB_SOCKET_ACTION_LOADED_FILE = 34
+        const val WEB_SOCKET_ACTION_STATUS_CHANGE = 35
+        const val WEB_SOCKET_ACTION_COMMENT_ADD = 40
+        const val WEB_SOCKET_ACTION_COMMENT_DELETE = 41
+        const val WEB_SOCKET_ACTION_KARMA_CHANGED = 42
+        const val WEB_SOCKET_ACTION_DEVICE_TYPE_CHANGE = 44
+        const val WEB_SOCKET_ACTION_LOGOUT = 30
+        const val WEB_SOCKET_ACTION_UOBJ_RECOMMENDATIONS_UPDATE = 45
+    }
+}

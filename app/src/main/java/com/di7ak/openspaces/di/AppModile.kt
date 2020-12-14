@@ -6,6 +6,8 @@ import com.di7ak.openspaces.data.local.AppDatabase
 import com.di7ak.openspaces.data.repository.AssetsRepository
 import com.di7ak.openspaces.data.converters.ConfigMapperConverterFactory
 import com.di7ak.openspaces.data.local.AuthDao
+import com.di7ak.openspaces.data.remote.WebSocketDataSource
+import com.di7ak.openspaces.data.repository.WebSocketRepository
 import com.di7ak.openspaces.utils.AttachmentParser
 import com.di7ak.openspaces.utils.HtmlImageGetter
 import com.google.firebase.ktx.Firebase
@@ -92,4 +94,15 @@ object AppModule {
     @Singleton
     @Provides
     fun provideAttachmentParser(remoteConfig: FirebaseRemoteConfig) = AttachmentParser(remoteConfig)
+
+    @Singleton
+    @Provides
+    fun provideWebSocketRepository(
+        client: OkHttpClient,
+        webSocketDataSource: WebSocketDataSource
+    ) = WebSocketRepository(client, webSocketDataSource)
+
+    @Singleton
+    @Provides
+    fun provideWebSocketDataSource() = WebSocketDataSource()
 }

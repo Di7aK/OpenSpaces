@@ -96,6 +96,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupObservers() {
+        viewModel.updatedTopCount.observe(this) {
+            setBadges(it.journalCnt, it.mailCnt)
+        }
         viewModel.topCount.observe(this, {
 
             when (it.status) {
@@ -105,6 +108,7 @@ class MainActivity : BaseActivity() {
                         CODE_SUCCESS -> {
                             initNavHost()
                             setBadges(it.data.journalCnt, it.data.mailCnt)
+                            viewModel.startWebSocket()
                             //ThemeColors.setNewThemeColor(this, it.data.color)
                         }
                         CODE_AUTH_REQUIRED -> {
