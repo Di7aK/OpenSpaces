@@ -163,9 +163,16 @@ class JournalFragment : BaseFragment(), JournalAdapter.JournalItemListener,
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
+        adapter.setItems(arrayListOf())
         viewModel.filter = when (tab?.tag) {
-            R.id.allRecords -> JOURNAL_FILTER_ALL
-            else -> JOURNAL_FILTER_NEW
+            R.id.allRecords -> {
+                adapter.expanded = false
+                JOURNAL_FILTER_ALL
+            }
+            else -> {
+                adapter.expanded = true
+                JOURNAL_FILTER_NEW
+            }
         }
     }
 

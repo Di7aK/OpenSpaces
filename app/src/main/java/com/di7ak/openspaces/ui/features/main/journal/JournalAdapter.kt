@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.di7ak.openspaces.R
 import com.di7ak.openspaces.data.entities.JournalItemEntity
@@ -21,6 +22,7 @@ class JournalAdapter(
     private val listener: JournalItemListener
 ) :
     RecyclerView.Adapter<JournalViewHolder>() {
+    var expanded: Boolean = true
 
     interface JournalItemListener {
         fun onClickedItem(view: View, item: JournalItemEntity)
@@ -43,7 +45,7 @@ class JournalAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: JournalViewHolder, position: Int) =
-        holder.bind(items[position])
+        holder.bind(items[position], expanded)
 }
 
 class JournalViewHolder(
@@ -62,12 +64,14 @@ class JournalViewHolder(
     }
 
     @SuppressLint("SetTextI18n")
-    fun bind(item: JournalItemEntity) {
+    fun bind(item: JournalItemEntity, expanded: Boolean) {
         this.record = item
 
         itemBinding.header.text = item.header
         itemBinding.date.text = timePlaceholder.format(item.date)
-        itemBinding.date.isGone = item.date.isNullOrBlank()
+        itemBinding.date.isGone = !expanded || item.date.isNullOrBlank()
+        itemBinding.message.isGone = item.commentUserName.isNullOrBlank()
+        itemBinding.header.isVisible = expanded
         item.message.fromHtml(scope, imageGetter, {
             itemBinding.message.text = it
         }, itemBinding.message.createDrawableCallback())
